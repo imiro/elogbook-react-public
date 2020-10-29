@@ -6,6 +6,11 @@ export default {
       icon: 'Home',
     },
     {
+      name: 'Dashboard',
+      url: '/dashboard',
+      icon: 'Activity'
+    },
+    {
       name: 'UI Elements',
       icon: 'Layers',
       children: [
