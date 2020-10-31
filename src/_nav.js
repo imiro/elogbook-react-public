@@ -1,15 +1,15 @@
 export default {
-  top: [
+  top: [ /*
     {
       name: 'Home',
       url: '/home',
       icon: 'Home',
-    },
+    }, */
     {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'Activity'
-    },
+    }, /*
     {
       name: 'UI Elements',
       icon: 'Layers',
@@ -122,9 +122,9 @@ export default {
       badge: {
         text: 'NEW',
       },
-    },
+    }, */
   ],
-  bottom: [
+  bottom: [ /*
     {
       name: 'Get Vibe',
       url: 'https://github.com/NiceDash/Vibe',
@@ -140,6 +140,6 @@ export default {
         variant: 'success',
         text: '3',
       },
-    },
+    }, */
   ],
 };

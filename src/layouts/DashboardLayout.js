@@ -89,10 +89,7 @@ export default class DashboardLayout extends Component {
             </Page>
           </div>
           <Footer>
-            <span>Copyright © 2019 Nice Dash. All rights reserved.</span>
-            <span>
-              <a href="#!">Terms</a> | <a href="#!">Privacy Policy</a>
-            </span>
+            <span>Powered by ©2019 Nice Dash. All rights reserved.</span>
             <span className="ml-auto hidden-xs">
               Made with{' '}
               <span role="img" aria-label="taco">
@@ -100,11 +97,11 @@ export default class DashboardLayout extends Component {
               </span>
             </span>
           </Footer>
-          <Chat.Container>
+        {/*  <Chat.Container>
             {this.state.showChat1 && (
               <Chat.ChatBox name="Messages" status="online" image={avatar1} close={this.closeChat} />
             )}
-          </Chat.Container>
+          </Chat.Container> */}
         </div>
       </ContextProviders>
     );
