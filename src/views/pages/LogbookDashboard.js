@@ -160,7 +160,7 @@ export default class LogbookDashboardPage extends Component {
         <div className="m-b">
           <h2>Good morning!</h2>
           <p className="text-muted">
-            Here's what's going on with your business today.
+            Here's what's going on!
           </p>
         </div>
 

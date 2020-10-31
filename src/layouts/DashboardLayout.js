@@ -64,7 +64,7 @@ export default class DashboardLayout extends Component {
             <SidebarNav
               nav={nav}
               logo={Logo}
-              logoText="VIBE."
+              logoText="ELOGBOOK."
               isSidebarCollapsed={sidebarCollapsed}
               toggleSidebar={this.toggleSideCollapse}
               {...this.props}
@@ -76,7 +76,7 @@ export default class DashboardLayout extends Component {
                 routes={routes}
                 {...this.props}
               >
-                <HeaderNav />
+              {/*  <HeaderNav /> */}
               </Header>
               <PageContent>
                 <Switch>
