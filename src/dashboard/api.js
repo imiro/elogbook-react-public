@@ -1,4 +1,4 @@
-const api = "http://localhost:8001/stats/"
+const api = process.env.REACT_APP_API_URL + "/stats/"
 
 class API {
 
