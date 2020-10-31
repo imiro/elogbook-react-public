@@ -62,6 +62,11 @@ export default function FilterableLineChart(props)
   var lineChart = !data ? <span>Loading...</span> :
                           <Line
                               data={data}
+                              options={{
+                                legend: {
+                                  display: false
+                                }
+                              }}
                            />
 
   return (

@@ -144,7 +144,13 @@ export default class LogbookDashboardPage extends Component {
     if(this.state.barData)
     {
       barChart = <Bar
-                  data={this.state.barData} />
+                  data={this.state.barData}
+                  options={ {
+                    legend: {
+                      display: false
+                    }
+                  }}
+                 />
     } else {
       barChart = <span>Loading...</span>
     }
