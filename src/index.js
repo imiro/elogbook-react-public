@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './registerServiceWorker';
-import App from './App';
+// import App from './App';
+import App from './AppExperiment';
 
 ReactDOM.render(<App />, document.getElementById('app'));
 // If you want your app to work offline and load faster, you can change
