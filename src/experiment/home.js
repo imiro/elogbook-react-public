@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '../providers/auth'
 import { useAPI, DictionaryResolver } from '../providers/api'
 
+import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap'
+
 const headings = {
   "id": "#",
   "stase": "Stase",
@@ -80,20 +82,24 @@ function dateHelper(dateString) {
 }
 
 function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
-	
+	const [dropdownOpen, setDropdownOpen] = useState(false)
+
+	const toggleOpen = () => setDropdownOpen(prevState => !prevState)
 	return (
-	   <div>
-		<strong>{placeholder}</strong>
-		{Object.keys(filterData).map(function (qey) {
-			return <label key={qey}>
+		<Dropdown className='d-inline-block' isOpen={dropdownOpen} toggle={toggleOpen}>
+			<DropdownToggle caret>{placeholder}</DropdownToggle>
+			<DropdownMenu>
+			{Object.keys(filterData).map(function (qey) {
+			return <DropdownItem key={qey} onClick={onToggle(qey)}><label>
 				<input type='checkbox'
-				       checked={filterData[qey]}
-				       onChange={onToggle(qey)}
+			checked={filterData[qey]}
+			onChange={onToggle(qey)}
 				/>
 				{DictionaryResolver[kind](qey)}
-				</label>
-		}) }
-       	</div>
+				</label></DropdownItem>
+			}) }
+			</DropdownMenu>
+		</Dropdown>
 	)
 }
 
