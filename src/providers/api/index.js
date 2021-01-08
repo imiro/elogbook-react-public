@@ -40,7 +40,11 @@ export const useAPI = function() {
   const getUserEntries = function() {
     let url = '/entries'
     return fetchWithAuth(url)
-			.then(res => res.json())
+			.then(res => {
+				return	res.json()
+			}).then(json => {
+					return json
+			})
   }
 
   return {
@@ -57,6 +61,7 @@ export const DictionaryResolver = (function() {
 		lokasi: {},
 		wahana: {}
 	}
+	let beres = false
 	fetch(endpoint + "/dictionary")
 	.then(resp => resp.json())
 	.then(items => {
@@ -66,6 +71,8 @@ export const DictionaryResolver = (function() {
 				o[item.qey] = item.value
 				Object.assign(dict[item.kind], o)
 		}
+		beres = true
+		return items
 	})
 	
 	return {
@@ -77,6 +84,17 @@ export const DictionaryResolver = (function() {
 		},
 		lokasi(lok) {
 				return dict.lokasi[lok]
+		},
+		dictWithBoolValue(val) {
+			if(!beres) return {}
+			let ret = {}
+			Object.keys(dict).map(function (kind) {
+				ret[kind] = {}
+				Object.keys(dict[kind]).map(function (qey) {
+					ret[kind] = {...ret[kind], [qey]: val}
+				})
+			})
+			return ret
 		}
 	}
 })()

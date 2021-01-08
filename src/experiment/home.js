@@ -21,51 +21,102 @@ export default function HomePage() {
   const { user } = useAuth()
   const { getUserEntries } = useAPI()
   const [data, setData] = useState(null) 
+  const [filters, setFilters] = useState(
+	  DictionaryResolver.dictWithBoolValue(true))
+
+  function handleFilterToggle(kind) {
+	return function (key) {
+		return function(e) {
+			setFilters({
+				...filters,
+				[ kind ]: {
+					...filters[kind],
+					[key]: !filters[kind][key]
+				}
+			})
+		}
+	}
+  }
 
   useEffect(function() {
 	  getUserEntries().then( (respData) => {
-		//console.log('respData', respData)
-		return respData.map( function(datum) {
-			datum.stase  = DictionaryResolver.stase(datum.stase)
-			datum.lokasi = DictionaryResolver.stase(datum.lokasi)
-			datum.wahana = DictionaryResolver.stase(datum.wahana)
-			return datum
-		} )
-	  }).then( (mappedData) => {
-		console.log('mapData', mappedData)
-		setData( mappedData )
+		  setData(respData)
 	  })
   },[])
 
+
+	function dataFilterer(datum) {
+		let bool = (filters.stase[datum.stase] &&
+			filters.lokasi[datum.lokasi] &&
+			filters.wahana[datum.wahana] )
+		return bool
+	}
+
+	function dataMapper(datum) {
+		let datum_new = {...datum}
+		datum_new.stase  = DictionaryResolver.stase(datum.stase)
+		datum_new.lokasi = DictionaryResolver.lokasi(datum.lokasi)
+		datum_new.wahana = DictionaryResolver.wahana(datum.wahana)
+		return datum_new
+	} 
+	
   return (
     <div>
       <div>Welcome, {user.name}!</div>
 	  {/* <div><Link to="/dashboard">Dashboard</Link></div> */}
-      {/* TODO: filter buttons component */}
- 	{data ? <TableComponent data={data} /> : null }
+	 <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
+	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
+	  <AFilterComponent kind="lokasi" onToggle={handleFilterToggle("lokasi")} filterData={filters.lokasi} placeholder="Lokasi" /> 
+ 	{data ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
     </div>
   )
+}
+
+function dateHelper(dateString) {
+	let date = new Date(dateString)
+	const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+		       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+	return (date.getDate() + "-" + month[date.getMonth()] + "-" + date.getFullYear() )
+}
+
+function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
+	
+	return (
+	   <div>
+		<strong>{placeholder}</strong>
+		{Object.keys(filterData).map(function (qey) {
+			return <label key={qey}>
+				<input type='checkbox'
+				       checked={filterData[qey]}
+				       onChange={onToggle(qey)}
+				/>
+				{DictionaryResolver[kind](qey)}
+				</label>
+		}) }
+       	</div>
+	)
 }
 
 function SlidingCardsComponent({ data }) {
 
 }
 
-function TableComponent({ data }) {
+function TableComponent({ datanya }) {
 
+	const data = datanya
 
 	return (
 
 	<div className="row d-none-xs">
         <div className="col-md-12">
           <table className='table'>
-            <thead>
+            <thead><tr>
 		{
 			Object.keys(headings).map(function(key, index) {
 				return <th key={key}>{headings[key]}</th>
 			})
 		}
-            </thead>
+            </tr></thead>
 	    <tbody>
 		{ data.map(function (datum) {
 			return (
@@ -78,7 +129,7 @@ function TableComponent({ data }) {
 				<td>{datum.nrm}</td>
 				<td>{datum.diagnosis}</td>
 				<td>{datum.kegiatan == "tindakan" ? ("Tindakan: " + datum.tindakan) : "Anamnesis/PF/Edukasi" }</td>
-				<td>{datum.created_at}</td>
+				<td>{dateHelper(datum.created_at)}</td>
 			</tr> )
 		    })
 		}
