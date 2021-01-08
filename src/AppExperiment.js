@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import './vibe/scss/styles.scss';
-import { AuthWrapper, useAuth, PrivateRoute } from './auth'
+import { AuthWrapper, PrivateRoute } from './providers/auth'
 import LoginPage from './experiment/login'
+import HomePage from './experiment/home'
 
 export default function App() {
 
@@ -17,6 +18,7 @@ export default function App() {
           <Route exact path="/login">
             <LoginPage />
           </Route>
+          <PrivateRoute path="/home" component={HomePage} />
           <PrivateRoute component={DashboardLayout} />
         </Switch>
       </BrowserRouter>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Redirect, useHistory } from 'react-router-dom'
 
 import { useAuth } from '../providers/auth'
+import './sb-admin-2.css'
 
 export default function LoginPage() {
 
@@ -19,7 +20,8 @@ export default function LoginPage() {
     // setTimeout(() => {}, 2000)
   }
 
-  function handleSSOLogin() {
+  function handleSSOLogin(e) {
+    e.preventDefault()
     window.updateUserCredentials = function(token) {
       processTokenUpdate(token)
     }
@@ -53,9 +55,25 @@ export default function LoginPage() {
     )
   } else {
     return (
-      <div>
-        <div><button onClick={handleSSOLogin}>Log In with SSO-UI</button></div>
+  <div className="limiter">
+    <div className="container-login100">
+      <div className="wrap-login100">
+        <div className="login100-form-title" >
+          <span className="login100-form-title-1">
+            Logbook Praktik Klinik Program Studi Pendidikan Dokter FKUI
+          </span>
+        </div>
+
+        <form className="login100-form validate-form"  action="" >
+
+          <div className="container-login100-form-btn">
+            <input id="login-submit" type="submit" value="Login with SSO-UI" className="btn btn-lg btn-success btn-block" onClick={handleSSOLogin} />
+          </div>
+
+        </form>
       </div>
+    </div>
+  </div>
 
     )
   }

@@ -22,6 +22,7 @@ import ProgressBars from './elements/ProgressBars';
 import PaginationPage from './elements/Pagination';
 import ErrorPage from './pages/404';
 import LogbookDashboardPage from './pages/LogbookDashboard'
+import LogbookPage from './pages/LogbookPage'
 
 // See React Router documentation for details: https://reacttraining.com/react-router/web/api/Route
 const pageList = [
@@ -34,6 +35,11 @@ const pageList = [
     name: 'Logbook Dashboard',
     path: '/dashboard',
     component: LogbookDashboardPage
+  },
+  {
+    name: 'Logbook',
+    path: '/logbook',
+    component: LogbookPage
   },
   {
     name: 'Buttons',
