@@ -4,7 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useAuth } from '../providers/auth'
 import { useAPI, DictionaryResolver } from '../providers/api'
+import { ResponsiveCardsComponent } from './CardsComponent'
 
+import { Popover, PopoverBody, Button } from 'reactstrap'
 import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap'
 
 const headings = {
@@ -86,6 +88,28 @@ function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
 
 	const toggleOpen = () => setDropdownOpen(prevState => !prevState)
 	return (
+	  <div className="d-inline-block">
+		<Button id={kind} type="button" onClick={toggleOpen}>
+		{placeholder}
+		</Button>
+		{'  '}
+		<Popover placement='bottom' isOpen={dropdownOpen} target={kind} toggle={toggleOpen} >
+			<PopoverBody>
+			{Object.keys(filterData).map(function (qey) {
+			return <label key={qey} onClick={onToggle(qey)}>
+				<input type='checkbox'
+					checked={filterData[qey]}
+					onChange={onToggle(qey)}
+				/>
+				{DictionaryResolver[kind](qey)}
+				</label>
+			}) }
+			</PopoverBody>
+		</Popover>
+
+	</div>
+	)
+	return (
 		<Dropdown className='d-inline-block' isOpen={dropdownOpen} toggle={toggleOpen}>
 			<DropdownToggle caret>{placeholder}</DropdownToggle>
 			<DropdownMenu>
@@ -113,7 +137,7 @@ function TableComponent({ datanya }) {
 
 	return (
 
-	<div className="row d-none-xs">
+	<div className="row d-none d-lg-block">
         <div className="col-md-12">
           <table className='table'>
             <thead><tr>
