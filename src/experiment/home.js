@@ -71,7 +71,9 @@ export default function HomePage() {
 	 <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
 	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
 	  <AFilterComponent kind="lokasi" onToggle={handleFilterToggle("lokasi")} filterData={filters.lokasi} placeholder="Lokasi" /> 
+
  	{data ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
+ 	{data ? <ResponsiveCardsComponent data={data.filter(dataFilterer).map(dataMapper)} /> : null }
     </div>
   )
 }
