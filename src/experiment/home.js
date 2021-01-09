@@ -6,7 +6,8 @@ import { useAuth } from '../providers/auth'
 import { useAPI, DictionaryResolver } from '../providers/api'
 import { ResponsiveCardsComponent } from './CardsComponent'
 
-import { Popover, PopoverBody, Button } from 'reactstrap'
+import { Popover, PopoverBody, Button, Container, Row } from 'reactstrap'
+import { ChevronDown } from 'react-feather'
 import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap'
 
 const headings = {
@@ -61,20 +62,23 @@ export default function HomePage() {
 		datum_new.stase  = DictionaryResolver.stase(datum.stase)
 		datum_new.lokasi = DictionaryResolver.lokasi(datum.lokasi)
 		datum_new.wahana = DictionaryResolver.wahana(datum.wahana)
+		datum_new.tanggal = dateHelper(datum_new.tanggal)
 		return datum_new
 	} 
 	
   return (
-    <div>
-      <div>Welcome, {user.name}!</div>
+  <Container>
+  {/* <div>Welcome, {user.name}!</div> */}
 	  {/* <div><Link to="/dashboard">Dashboard</Link></div> */}
-	 <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
+	  <Row className="m-3">
+	  <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
 	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
 	  <AFilterComponent kind="lokasi" onToggle={handleFilterToggle("lokasi")} filterData={filters.lokasi} placeholder="Lokasi" /> 
+	  </Row>
 
- 	{data ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
- 	{data ? <ResponsiveCardsComponent data={data.filter(dataFilterer).map(dataMapper)} /> : null }
-    </div>
+	  {data ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
+	  {data ? <ResponsiveCardsComponent data={data.filter(dataFilterer).map(dataMapper)} /> : null }
+  </Container>
   )
 }
 
@@ -82,7 +86,7 @@ function dateHelper(dateString) {
 	let date = new Date(dateString)
 	const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 		       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-	return (date.getDate() + "-" + month[date.getMonth()] + "-" + date.getFullYear() )
+	return (date.getDate() + " " + month[date.getMonth()] + " " + date.getFullYear() )
 }
 
 function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
@@ -92,7 +96,7 @@ function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
 	return (
 	  <div className="d-inline-block">
 		<Button id={kind} type="button" onClick={toggleOpen}>
-		{placeholder}
+		{placeholder} <ChevronDown />
 		</Button>
 		{'  '}
 		<Popover placement='bottom' isOpen={dropdownOpen} target={kind} toggle={toggleOpen} >

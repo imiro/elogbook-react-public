@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, CardBody, CardHeader, CardText,
-		 Container, Badge } from 'reactstrap'
+import { Card, CardBody, CardHeader, CardText, CardTitle,
+		 Container, Row, Col, Badge } from 'reactstrap'
 
 
 export const ResponsiveCardsComponent = (props) => {
@@ -17,21 +17,25 @@ const SingleCardComponent = ({ item }) => {
 	lokasi, wahana,
 	nama, gender, usia, satuanusia,
 	nrm, diagnosis, kegiatan, tindakan } = item
-  return (
-    <Card>
-		  <CardBody>
-		  <Badge color="primary" >{stase}</Badge>
-		  <Badge color="success" >{lokasi}</Badge>
-		  <Badge color="info" >{wahana}</Badge>
-		  <Badge color="light">{tanggal}</Badge>
-		  <CardText>
-				{nama} ({gender == "pr" ? "Pr" : "Lk"}, {usia} {satuanusia})
-				 <br/>
-				  {diagnosis}
-				  <br/>
-				  {kegiatan == "tindakan" ? ("Tindakan: " + tindakan) : "Anamnesis/PF/Edukasi"}
-		  </CardText>
-      </CardBody>
-    </Card>
-  )
+	return (
+	<Card>
+		<CardBody className="p-0"> 
+		<Row noGutters="true">
+			<Col xs="5" className="bg-light p-1">
+				<CardText className="small">{ tanggal }</CardText>
+				<CardTitle className="text-center">{ stase }</CardTitle>
+				<CardText className="px-1">
+					<Badge color="info">{lokasi}</Badge> <br/>
+					<Badge color="info">{wahana}</Badge>
+				</CardText>
+			</Col>
+			<Col xs="7" >
+				<CardText className="pt-1">{nama} ({gender == "pr" ? "Pr" : "Lk"}, {usia} {satuanusia})</CardText>
+				<CardText>{diagnosis}</CardText>
+				<CardText> {kegiatan == "tindakan" ? ("Tindakan: " + tindakan) : "Anamnesis/PF/Edukasi"}</CardText>
+			</Col>
+		</Row>
+	</CardBody>
+	</Card>
+	)
 }
