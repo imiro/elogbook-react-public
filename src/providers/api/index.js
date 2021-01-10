@@ -59,7 +59,8 @@ export const DictionaryResolver = (function() {
 	let dict = {
 		stase: {},
 		lokasi: {},
-		wahana: {}
+		wahana: {},
+		kode: {}
 	}
 	let beres = false
 	fetch(endpoint + "/dictionary")
@@ -84,6 +85,9 @@ export const DictionaryResolver = (function() {
 		},
 		lokasi(lok) {
 				return dict.lokasi[lok]
+		},
+		kode(kod) {
+				return dict.kode[kod]
 		},
 		dictWithBoolValue(val) {
 			if(!beres) return {}

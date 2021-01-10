@@ -16,7 +16,7 @@ const SingleCardComponent = ({ item }) => {
   const { id, stase, tanggal,
 	lokasi, wahana,
 	nama, gender, usia, satuanusia,
-	nrm, diagnosis, kegiatan, tindakan } = item
+	nrm, diagnosis, kegiatan, tindakan, kode } = item
 	return (
 	<Card>
 		<CardBody className="p-0"> 
@@ -32,7 +32,11 @@ const SingleCardComponent = ({ item }) => {
 			<Col xs="7" >
 				<CardText className="pt-1">{nama} ({gender == "pr" ? "Pr" : "Lk"}, {usia} {satuanusia})</CardText>
 				<CardText>{diagnosis}</CardText>
-				<CardText> {kegiatan == "tindakan" ? ("Tindakan: " + tindakan) : "Anamnesis/PF/Edukasi"}</CardText>
+				<CardText> 
+				{kegiatan == "tindakan" ?
+						<>Tindakan:   { tindakan } <Badge color="warning" className="small text-wrap">{kode}</Badge></> 
+					  : "Anamnesis/PF/Edukasi"}
+				</CardText>
 			</Col>
 		</Row>
 	</CardBody>

@@ -62,6 +62,7 @@ export default function HomePage() {
 		datum_new.stase  = DictionaryResolver.stase(datum.stase)
 		datum_new.lokasi = DictionaryResolver.lokasi(datum.lokasi)
 		datum_new.wahana = DictionaryResolver.wahana(datum.wahana)
+		datum_new.kode = DictionaryResolver.kode(datum.kode)
 		datum_new.tanggal = dateHelper(datum_new.tanggal)
 		return datum_new
 	} 
