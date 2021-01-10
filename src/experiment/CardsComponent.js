@@ -20,18 +20,23 @@ const SingleCardComponent = ({ item }) => {
 	return (
 	<Card>
 		<CardBody className="p-0"> 
-		<Row noGutters="true">
+		<Row noGutters>
 			<Col xs="5" className="bg-light p-1">
-				<CardText className="small">{ tanggal }</CardText>
+				<CardText className="small text-center mb-2 mt-3">{ tanggal }</CardText>
 				<CardTitle className="text-center">{ stase }</CardTitle>
-				<CardText className="px-1">
+				<CardText className="px-1 text-center">
 					<Badge color="info">{lokasi}</Badge> <br/>
 					<Badge color="info">{wahana}</Badge>
 				</CardText>
 			</Col>
 			<Col xs="7" >
-				<CardText className="pt-1">{nama} ({gender == "pr" ? "Pr" : "Lk"}, {usia} {satuanusia})</CardText>
-				<CardText>{diagnosis}</CardText>
+				<CardText className="pt-1 mb-1">
+					<Badge className="small" secondary>Identitas:</Badge><br/>
+					{nama} ({gender == "pr" ? "Pr" : "Lk"}, {usia} {satuanusia})
+				</CardText>
+				<CardText className="mb-1">
+					<Badge className="small" secondary>Diagnosis:</Badge><br/><strong>{diagnosis}</strong>
+				</CardText>
 				<CardText> 
 				{kegiatan == "tindakan" ?
 						<>Tindakan:   { tindakan } <Badge color="warning" className="small text-wrap">{kode}</Badge></> 

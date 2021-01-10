@@ -108,7 +108,7 @@ function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
 					checked={filterData[qey]}
 					onChange={onToggle(qey)}
 				/>
-				{DictionaryResolver[kind](qey)}
+				{' '}{DictionaryResolver[kind](qey)}
 				</label>
 			}) }
 			</PopoverBody>
