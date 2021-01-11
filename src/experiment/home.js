@@ -27,8 +27,7 @@ export default function HomePage() {
   const { user } = useAuth()
   const { getUserEntries } = useAPI()
   const [data, setData] = useState(null) 
-  const [filters, setFilters] = useState(
-	  DictionaryResolver.dictWithBoolValue(true))
+  const [filters, setFilters] = useState(null)
 
   function handleFilterToggle(kind) {
 	return function (key) {
@@ -45,6 +44,9 @@ export default function HomePage() {
   }
 
   useEffect(function() {
+	  DictionaryResolver.fetchDictionary()
+	  .then( fs => setFilters(fs) )
+
 	  getUserEntries().then( (respData) => {
 		  setData(respData)
 	  })
@@ -68,16 +70,25 @@ export default function HomePage() {
 		return datum_new
 	} 
 	
+  const Filters = () => {
+	if(!filters) return null
+	 return (
+	 <>
+	  <div className="text-left w-100 h-auto font-weight-bold">FILTER BY</div>
+	  <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
+	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
+	  <AFilterComponent kind="lokasi" onToggle={handleFilterToggle("lokasi")} filterData={filters.lokasi} placeholder="Lokasi" /> 
+	 </>
+	)	   
+  }
+
   return (
   <Container>
   {/* <div>Welcome, {user.name}!</div> */}
 	  {/* <div><Link to="/dashboard">Dashboard</Link></div> */}
 	  <NavHeaderComponent user={user} />
 	  <Row className="m-3">
-	  <div className="text-left w-100 h-auto font-weight-bold">FILTER BY</div>
-	  <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
-	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
-	  <AFilterComponent kind="lokasi" onToggle={handleFilterToggle("lokasi")} filterData={filters.lokasi} placeholder="Lokasi" /> 
+	  	<Filters />
 	  </Row>
 
 	  {data ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
