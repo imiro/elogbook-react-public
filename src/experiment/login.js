@@ -25,7 +25,24 @@ export default function LoginPage() {
     window.updateUserCredentials = function(token) {
       processTokenUpdate(token)
     }
-    window.open(url)
+    window.addEventListener('message', function(e) {
+		if(e.data.message == "deliverToken") {
+			let tkn = e.data.result
+			e.source.close()
+			processTokenUpdate(tkn)
+		}
+	})
+    let child = window.open(url)
+    let interval = setInterval(function() {
+		try {
+			child.postMessage({message: "requestToken"}, "*")
+		} catch(e) {
+			if(child.closed) {
+				clearInterval(interval)
+				return
+			}
+		}
+	}, 500)
   }
 
   useEffect(function() {
