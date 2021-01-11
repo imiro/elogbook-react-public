@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '../providers/auth'
 import { useAPI, DictionaryResolver } from '../providers/api'
 import { ResponsiveCardsComponent } from './CardsComponent'
+import { NavHeaderComponent } from './NavHeaderComponent.js'
 
 import { Popover, PopoverBody, Button, Container, Row } from 'reactstrap'
 import { ChevronDown } from 'react-feather'
@@ -71,6 +72,7 @@ export default function HomePage() {
   <Container>
   {/* <div>Welcome, {user.name}!</div> */}
 	  {/* <div><Link to="/dashboard">Dashboard</Link></div> */}
+	  <NavHeaderComponent user={user} />
 	  <Row className="m-3">
 	  <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
 	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
