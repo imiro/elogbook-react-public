@@ -74,6 +74,7 @@ export default function HomePage() {
 	  {/* <div><Link to="/dashboard">Dashboard</Link></div> */}
 	  <NavHeaderComponent user={user} />
 	  <Row className="m-3">
+	  <div className="text-left w-100 h-auto font-weight-bold">FILTER BY</div>
 	  <AFilterComponent kind="stase" onToggle={handleFilterToggle("stase")} filterData={filters.stase} placeholder="Stase" />
 	  <AFilterComponent kind="wahana" onToggle={handleFilterToggle("wahana")} filterData={filters.wahana} placeholder="Wahana" />
 	  <AFilterComponent kind="lokasi" onToggle={handleFilterToggle("lokasi")} filterData={filters.lokasi} placeholder="Lokasi" /> 
