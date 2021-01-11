@@ -91,8 +91,8 @@ export default function HomePage() {
 	  	<Filters />
 	  </Row>
 
-	  {data ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
-	  {data ? <ResponsiveCardsComponent data={data.filter(dataFilterer).map(dataMapper)} /> : null }
+	  {data && filters ? <TableComponent datanya={data.filter(dataFilterer).map(dataMapper)} /> : null }
+	  {data && filters ? <ResponsiveCardsComponent data={data.filter(dataFilterer).map(dataMapper)} /> : null }
   </Container>
   )
 }
