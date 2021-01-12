@@ -7,7 +7,7 @@ import { useAPI, DictionaryResolver } from '../providers/api'
 import { ResponsiveCardsComponent } from './CardsComponent'
 import { NavHeaderComponent } from './NavHeaderComponent.js'
 
-import { Popover, PopoverBody, Button, Container, Row } from 'reactstrap'
+import { Popover, PopoverBody, Button, Badge, Container, Row } from 'reactstrap'
 import { ChevronDown } from 'react-feather'
 import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap'
 
@@ -114,7 +114,7 @@ function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
 		{placeholder} <ChevronDown />
 		</Button>
 		{'  '}
-		<Popover placement='bottom' isOpen={dropdownOpen} target={kind} toggle={toggleOpen} >
+		<Popover trigger="click" placement='bottom' isOpen={dropdownOpen} target={kind} toggle={toggleOpen} >
 			<PopoverBody>
 			{Object.keys(filterData).map(function (qey) {
 			return <label key={qey} onClick={onToggle(qey)}>
@@ -148,10 +148,6 @@ function AFilterComponent({ placeholder, onToggle, kind, filterData }) {
 	)
 }
 
-function SlidingCardsComponent({ data }) {
-
-}
-
 function TableComponent({ datanya }) {
 
 	const data = datanya
@@ -179,7 +175,7 @@ function TableComponent({ datanya }) {
 				<td>{datum.nama} ({datum.gender == "pr" ? "Perempuan" : "Laki-laki"}, {datum.usia} {datum.satuanusia})</td>
 				<td>{datum.nrm}</td>
 				<td>{datum.diagnosis}</td>
-				<td>{datum.kegiatan == "tindakan" ? ("Tindakan: " + datum.tindakan) : "Anamnesis/PF/Edukasi" }</td>
+				<td>{datum.kegiatan == "tindakan" ? <>Tindakan:   { datum.tindakan } <Badge color="warning" className="small text-wrap">{datum.kode}</Badge></> : "Anamnesis/PF/Edukasi" }</td>
 				<td>{dateHelper(datum.created_at)}</td>
 			</tr> )
 		    })
