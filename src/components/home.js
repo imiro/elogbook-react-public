@@ -154,7 +154,7 @@ function TableComponent({ datanya }) {
 
 	return (
 
-	<div className="row d-none d-lg-block">
+	<div className="row d-none d-lg-block overflow-auto">
         <div className="col-md-12">
           <table className='table'>
             <thead><tr>
