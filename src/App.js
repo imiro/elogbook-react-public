@@ -5,6 +5,8 @@ import { AuthWrapper, PrivateRoute } from './providers/auth'
 import LoginPage from './components/login'
 import HomePage from './components/home'
 
+import * as Mirage from './mirage'
+
 export default function App() {
 
   return (

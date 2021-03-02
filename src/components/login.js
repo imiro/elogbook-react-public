@@ -22,6 +22,11 @@ export default function LoginPage() {
 
   function handleSSOLogin(e) {
     e.preventDefault()
+    if(process.env.REACT_APP_MOCK_USER) {
+	processTokenUpdate("toKen123")    
+	return
+    }
+
     window.updateUserCredentials = function(token) {
       processTokenUpdate(token)
     }
