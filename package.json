@@ -6,11 +6,13 @@
   "homepage": "https://dashboard-beta.elogbookfkui.com",
   "private": true,
   "dependencies": {
+    "@trendmicro/react-sidenav": "^0.5.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
-    "node-sass": "^4.11.0",
-    "react": "^16.8.1",
+    "font-awesome": "^4.7.0",
+    "node-sass": "^4.14.1",
+    "react": "^16.14.0",
     "react-chartjs-2": "2.6.4",
     "react-date-picker": "^8.0.3",
     "react-dom": "^16.8.1",
@@ -18,7 +20,8 @@
     "react-fontawesome": "1.6.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "2.1.3",
-    "reactstrap": "^8.8.1"
+    "reactstrap": "^8.8.1",
+    "validator": "^13.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
