@@ -22,7 +22,7 @@ export default function LoginForgotPasswordPage() {
               <label for="email" className="login-label">Email UI </label>
               <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className="login-textfield"></input>
               <Link id="link-login" to="/login-confirm-password" ><button id="forgot-password-submit" value="Kirim" className="send-button">Kirim</button></Link>
-              <div className="login-confirm">Kembali ke halaman <Link id="link-login" to="/test" >Login</Link></div>
+              <div className="login-confirm">Kembali ke halaman <Link id="link-login" to="/login" >Login</Link></div>
             </div>
           </form>
         </div>

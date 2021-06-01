@@ -1,74 +1,156 @@
 import React, { Component } from 'react'
+import Sidebar from './NavSidebar'
+import Navbar from './Navbar'
+import logo from '../assets/images/dashboard/dashboard-quote.png'
+import caseLogo from '../assets/images/dashboard/case_logo.png'
+import competencyLogo from '../assets/images/dashboard/competency_logo.png'
+import staseLogo from '../assets/images/dashboard/stase_logo.png'
+import info from '../assets/images/dashboard/info.png'
+import graph1 from '../assets/images/dashboard/graph1.png'
+import graph2 from '../assets/images/dashboard/graph2.png'
+import left from '../assets/images/dashboard/chevron_left.png'
+import right from '../assets/images/dashboard/chevron_right.png'
+import sort from '../assets/images/dashboard/sort.png'
 
 class Dashboard extends Component {
   render() {
-    let dataPie = {
-      labels: ["40%", "20%", "40%"],
-      series: [40, 20, 40]
+    const showTable = () =>{
+      document.getElementById("dashboard-table-title").style.display = "block";
+      document.getElementById("dashboard-table-content").style.display = "block";
     }
-    let dataSales = {
-      labels: [
-        "9:00AM",
-        "12:00AM",
-        "3:00PM",
-        "6:00PM",
-        "9:00PM",
-        "12:00PM",
-        "3:00AM",
-        "6:00AM"
-      ],
-      series: [
-        [287, 385, 490, 492, 554, 586, 698, 695],
-        [67, 152, 143, 240, 287, 335, 435, 437],
-        [23, 113, 67, 108, 190, 239, 307, 308]
-      ]
-    }
-    return (
-      <div className="content">
-        <div className="container-fluid">
-          <div className="row">
 
-            <div className="col-md-4">
-              <div className="card ">
-                <div className="card-header ">
-                  <h4 className="card-title">Email Statistics</h4>
-                  <p className="card-category">Last Campaign Performance</p>
+    const showCaseTip = () =>{
+      document.getElementById("case-tip").style.visibility = "visible";
+    }
+
+    const hideCaseTip = () =>{
+      document.getElementById("case-tip").style.visibility = "hidden";
+    }
+
+    const showCompetencyTip = () =>{
+      document.getElementById("competency-tip").style.visibility = "visible";
+    }
+
+    const hideCompetencyTip = () =>{
+      document.getElementById("competency-tip").style.visibility = "hidden";
+    }
+
+    return (
+      <div className="container-dashboard">
+        <Sidebar />
+        <div className="content-dashboard">
+          <Navbar />
+          <div className="dashboard-box">
+            <div className="top-container-dashboard">
+                <div className="quote-dashboard">
+                  <div className="quote-username-dashboard">Selamat Pagi, John!</div>
+                  <div className="quote-content-dashboard">“We should be concerned not only about the health of individual patients, but also the health of our entire society.”</div>
+                  <div className="quote-content-dashboard">- Ben Carson</div>
                 </div>
-                <div className="card-body ">
-                  <div className="legend">
-                    <i className="fa fa-circle text-info"></i> Open
-                                        <i className="fa fa-circle text-danger"></i> Bounce
-                                        <i className="fa fa-circle text-warning"></i> Unsubscribe
-                                    </div>
-                  <hr />
-                  <div className="stats">
-                    <i className="fa fa-clock-o"></i> Campaign sent 2 days ago
-                                    </div>
+                <span className="quote-logo-dashboard">
+                <img src={logo}></img>
+                </span>
+            </div>
+            <div className="stase-container">
+              <label className="label-stase">Stase</label>
+              <select name="stase" className="stase" onChange={showTable}>
+                <option disabled selected value>Pilih Stase</option>
+                <option value="">Stase 1</option>
+                <option value="">Stase 2</option>
+                <option value="">Stase 3</option>
+              </select>
+            </div>
+           
+            <div className="row1-container-dashboard">
+              <div id="row1-container-dashboard-case" className="row1-container-dashboard-content">
+                <img src={caseLogo}></img>
+                <div className="row1-text">
+                  <div className="progress-number">12</div>
+                  <div className="total-number">/ 20</div>
+                  <div className="row1-title">Total kasus ditemui</div>
+                </div>
+              </div>
+              <div id="row1-container-dashboard-competency" className="row1-container-dashboard-content">
+                <img src={competencyLogo}></img>
+                <div className="row1-text">
+                  <div className="progress-number">20</div>
+                  <div className="total-number">/ 56</div>
+                  <div className="row1-title">Total kompetensi didapat</div>
+                </div>
+              </div>
+              <div id="row1-container-dashboard-stase" className="row1-container-dashboard-content">
+                <img src={staseLogo}></img>
+                <div className="row1-text">
+                  <div className="progress-number">10</div>
+                  <div className="total-number">/ 14</div>
+                  <div className="row1-title">Total stase diselesaikan</div>
                 </div>
               </div>
             </div>
-            <div className="col-md-8">
-              <div className="card">
-                <div className="card-header ">
-                  <h4 className="card-title">Users Behavior</h4>
-                  <p className="card-category">24 Hours performance</p>
+            <div className="row2-container-dashboard">
+              <div className="row2-container-dashboard-content">
+                <div className="row2-title">
+                  <div>Kasus Ditemui</div>
+                  <img src={info} onMouseOver={showCaseTip} onMouseOut={hideCaseTip}></img>
                 </div>
-                <div className="card-body ">
-                </div>
-                <div className="card-footer ">
-                  <div className="legend">
-                    <i className="fa fa-circle text-info"></i> Open
-                    <i className="fa fa-circle text-danger"></i> Click
-                    <i className="fa fa-circle text-warning"></i> Click Second Time
-                </div>
-                  <hr />
-                  <div className="stats">
-                    <i className="fa fa-history"></i> Updated 3 minutes ago
+                <div className="row2-select">
+                  <select name="case-period" id="case-period" className="period">
+                    <option value="">Daily</option>
+                    <option value="">Weekly</option>
+                    <option value="">Monthly</option>
+                  </select>
+                  <span id="case-tip" className="tooltiptext">Kasus ditemui adalah grafik jumlah kasus yang sudah Anda temui di stase dan waktu tertentu</span>
+                  <div className="row2-select-period">
+                    <img src={left}></img>
+                    <div>12 Oct-18 Oct,2020</div>
+                    <img src={right}></img>
                   </div>
                 </div>
+                <div className="dashboard-graph">
+                  <img src={graph1}></img>
+                </div>
+              </div>
+              <div className="row2-container-dashboard-content">
+                <div className="row2-title">
+                  <div>Kompetensi Didapat</div>
+                  <img src={info} onMouseOver={showCompetencyTip} onMouseOut={hideCompetencyTip}></img>
+                </div>
+                <div className="row2-select">
+                  <select name="case-period" id="case-period" className="period">
+                    <option value="">Daily</option>
+                    <option value="">Weekly</option>
+                    <option value="">Monthly</option>
+                  </select>
+                  <span id="competency-tip" className="tooltiptext">Kompetensi didapat adalah grafik jumlah kompetensi yang sudah Anda dapat di stase dan waktu tertentu</span>
+                  <div className="row2-select-period">
+                    <img src={left}></img>
+                    <div>12 Oct-18 Oct,2020</div>
+                    <img src={right}></img>
+                  </div>
+                </div>
+                <div className="dashboard-graph">
+                  <img src={graph2}></img>
+                </div>
               </div>
             </div>
-
+            <div id="dashboard-table-title">Diagnosis Stase Kesehatan Anak dan Remaja</div>
+              <table id="dashboard-table-content">
+                <tr>
+                  <th>Diagnosis</th>
+                  <th>Kompetensi</th>
+                  <th><img src={sort}></img>Jumlah ditemui</th>
+                </tr>
+                <tr>
+                  <td>Trauma Kimia</td>
+                  <td>3A</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>Luka Tembak</td>
+                  <td>3A</td>
+                  <td>1</td>
+                </tr>
+              </table>
           </div>
         </div>
       </div>

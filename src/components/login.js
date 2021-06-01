@@ -97,7 +97,7 @@ export default function LoginPage() {
     // TODO redirect to original location, using callbacks
     // SEE https://reactrouter.com/web/example/auth-workflow
 
-    return <Redirect to="/home" />
+    return <Redirect to="/dashboard" />
 
     return (
       <div>
@@ -127,7 +127,7 @@ export default function LoginPage() {
               <Link id="forgot-password" to="/login-forgot-password">Lupa password?</Link>
             </div>
             <input id="login-submit" type="submit" value="Login" className="login-button" onClick={handleSSOLogin}/>
-            <div id="login-or"><img src={atau}></img></div>
+            <div className="login-or"><img src={atau}></img></div>
             <Link id="link-login" to="/login-atur-password-baru"><button id="login-sso-submit" type="submit" value="Login dengan SSO" className="login-button">Login dengan SSO</button></Link>
             <div className="login-confirm"><div>Pertama kali menggunakan E-Logbook? </div><div>Silahkan Login dengan SSO terlebih dahulu</div> </div>
           </div>
