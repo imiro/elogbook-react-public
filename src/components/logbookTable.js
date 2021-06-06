@@ -32,6 +32,7 @@ import {
 // } from './demo-data/generator';
 import edit from '../assets/images/logbook/edit.png'
 import remove from '../assets/images/logbook/delete.png'
+import { red } from '@material-ui/core/colors';
 
 
 
@@ -62,6 +63,21 @@ const styles = theme => ({
     },
   });
 
+  const fixedStyles = theme => ({
+    tableStriped: {
+      '& thead': {
+        backgroundColor: '#004445',
+        border: '1px solid #FFFFFF !important',
+      },
+      '& tbody tr:nth-of-type(odd)': {
+        backgroundColor: '#FFFDFF',
+      },
+      '& tbody tr:nth-of-type(even)': {
+        backgroundColor: '#DBF1FF',
+      },
+    },
+  });
+
   const TableComponentBase = ({ classes, ...restProps }) => (
     <Table.Table
       {...restProps}
@@ -71,31 +87,139 @@ const styles = theme => ({
     
   );
 
+  const HighlightedFixedCell = ({ value, style, ...restProps}) => (
+    // alert(row),
+    <TableFixedColumns.Cell
+      {...restProps}
+      style={{
+        // backgroundColor: 'initial', 
+        // color: 'blue',
+        // cursor:'pointer',
+
+        ...style,
+      }}
+    >
+      <span
+        // style={{
+        //   color: 'white',
+        //   cursor:'pointer',
+        // }}
+      >
+      </span>
+    </TableFixedColumns.Cell>
+  );
+
   const HighlightedCell = ({ value, style, ...restProps }) => (
     <Table.Cell
       {...restProps}
-      // style={{
-      //   backgroundColor: 'red',
-      //   ...style,
-      // }}
+      style={{
+        // backgroundColor: 'red',
+        color: 'blue',
+
+        ...style,
+      }}
+    >
+      <span
+        style={{
+          color: 'white',
+          cursor:'pointer',
+        }}
+      >
+        <NavLink to="/logbook-entry"><img src={edit}></img></NavLink>
+        <img src={remove} onClick="" className="delete-row-icon"></img>
+      </span>
+    </Table.Cell>
+  );
+
+  const HighlightedRowDetailCell = ({ row, value, style, ...restProps }) => (
+    <TableRowDetail.Cell
+      {...restProps}
+      style={{
+        backgroundColor: '#DCE0E9',
+        // position:'relative',
+        // height:'300px',
+        // overflow:'hidden',
+        ...style,
+      }}
     >
       <span
         // style={{
         //   color: 'white',
         // }}
       >
-        <NavLink to="/logbook-entry"><img src={edit}></img></NavLink>
-        <img src={remove} ></img>
+        <div className="row-detail">
+          <div className="row-detail-column">
+            <div className="row-detail-label">NRM</div>
+            <div>{row.nrm}</div>
+            <div className="row-detail-label">Tanggal</div>
+            <div>{row.tanggal}</div>
+            <div className="row-detail-label">Inisisal Pasien</div>
+            <div>{row.inisialPasien}</div>
+          </div>
+          <div className="row-detail-column">
+            <div className="row-detail-label">Jenis Kelamin</div>
+            <div>{row.jenisKelamin}</div>
+            <div className="row-detail-label">Usia</div>
+            <div>{row.usia}</div>
+            <div className="row-detail-label">Stase</div>
+            <div>{row.stase}</div>
+          </div>
+          <div className="row-detail-column">
+            <div className="row-detail-label">Lokasi RS</div>
+            <div>{row.lokasiRS}</div>
+            <div className="row-detail-label">Ruangan</div>
+            <div>{row.ruangan}</div>
+            <div className="row-detail-label">Diagnosis</div>
+            <div>{row.diagnosis}</div>
+          </div>
+          <div className="row-detail-column">
+            <div className="row-detail-label">Kompetensi Diagnosis</div>
+            <div>{row.kompetensiDiagnosis}</div>
+            <div className="row-detail-label">Jenis Tindakan</div>
+            <div>{row.jenisTindakan}</div>
+            <div className="row-detail-label">Keterampilan</div>
+            <div>{row.jenisKeterampilan}</div>
+          </div>
+          <div className="row-detail-column">
+            <div className="row-detail-label">Kompetensi Keterampilan</div>
+            <div>{row.kompetensiKeterampilan}</div>
+            <div className="row-detail-label">Catatan</div>
+            <div>{row.catatan}</div>
+          </div>
+        </div>
       </span>
-    </Table.Cell>
+    </TableRowDetail.Cell>
   );
   
+  
+
+  const fixedCell = (props) => {
+    
+    const column  = props;
+      // alert(column.position)
+      if (column.side === 'right') {
+        return <HighlightedFixedCell {...props} />;
+     }
+    
+    
+  return <TableFixedColumns.Cell {...props} />;
+  };
+
   const Cell = (props) => {
-    const { column } = props;
+    
+    const {column}  = props;
     if (column.name === 'action') {
-      return <HighlightedCell {...props} />;
+       return <HighlightedCell {...props} />;
     }
   return <Table.Cell {...props} />;
+  };
+
+  const rowDetailCell = (props) => {
+    const { column } = props;
+    // if (column.name === 'action') {
+      return <HighlightedRowDetailCell {...props} />;
+    // }
+  return <TableRowDetail.Cell {...props} />;
   };
 
 const TableHeaderContent = ({ children, ...restProps }) => (
@@ -111,38 +235,13 @@ const TableHeaderContent = ({ children, ...restProps }) => (
 );
 
 const commandMessage = {deleteCommand:"Hapus"}  
-
-  export const TableComponent = withStyles(styles, { name: 'TableComponent' })(TableComponentBase);
-
-const RowDetail = ({ row }) => (
-  <div>
-    Details for
-    {' '}
-    {row.region}
-    {' '}
-    from
-    {' '}
-    {row.sector}
-  </div>
-);
+export const TableComponent = withStyles(styles, { name: 'TableComponent' })(TableComponentBase);
 
 
 const getRowId = row => row.id;
 
 export default function logbookTable ()  {
-//   const [columns] = useState([
-//     { name: 'region', title: 'Region' },
-//     { name: 'sector', title: 'Sector' },
-//     { name: 'channel', title: 'Channel' },
-//     { name: 'customer', title: 'Customer' },
-//     { name: 'product', title: 'Product' },
-//     { name: 'saleDate', title: 'Sale date' },
-//     { name: 'units', title: 'Units' },
-//     { name: 'amount', title: 'Sale Amount' },
-//   ]);
   const [columns] = useState([
-    // { name: 'test2', title: 'test2' },
-    // { name: 'test', title: 'test' },
     { name: 'noentry', title: 'No. Entry' },
     { name: 'nrm', title: 'NRM' },
     { name: 'tanggal', title: 'Tanggal' },
@@ -160,11 +259,7 @@ export default function logbookTable ()  {
     { name: 'catatan', title: 'Catatan' },
     { name: 'action', title: 'Action' },
   ]);
-  // const [rows] = useState(generateRows({ columnValues: globalSalesValues, length: 8 }));
-//   const [rows, setRows] = useState(generateRows({
-//     columnValues: { id: ({ index }) => index, ...globalSalesValues },
-//     length: 8,
-//   }));
+
   const [rows, setRows] = useState([
     {id: ({ index }) => index,
       noentry: '105986',
@@ -264,6 +359,27 @@ export default function logbookTable ()  {
     setRows(changedRows);
   };
 
+  const tes = (e) => {
+    alert(getRowId(e))
+  }
+
+  const stylesDetailRow = {
+    
+      backgroundColor: '#f5f5f5',
+  };
+
+  const TableRow = ({ row, ...restProps }) => (
+    <TableRowDetail.Row
+      {...restProps}
+      style={{
+        // backgroundColor:'#000000',
+        // color:'#red',
+        // cursor:'pointer'
+        ...stylesDetailRow[row],
+      }}
+    />
+  );
+  
 //   const [tableColumnExtensions] = useState([
 //     { columnName: 'region', width: 150 },
 //     { columnName: 'sector', width: 180 },
@@ -295,9 +411,9 @@ export default function logbookTable ()  {
     { columnName: 'catatan', width: 200 },
     { columnName: 'action', width: 200 },
   ]);
-  const [leftColumns] = useState([TableRowDetail.COLUMN_TYPE,'noentry']);
-  const [rightColumns] = useState([TableEditColumn.COLUMN_TYPE]);
-
+  const [leftColumns] = useState([TableRowDetail.COLUMN_TYPE,TableRowDetail.ROW_TYPE,'noentry']);
+  const [rightColumns] = useState(['action']);
+  
 
   return (
     <Paper>
@@ -306,9 +422,9 @@ export default function logbookTable ()  {
         columns={columns}
         getRowId={getRowId}
       >
-         <EditingState
+         {/* <EditingState
           onCommitChanges={commitChanges}
-        />
+        /> */}
         <RowDetailState
           defaultExpandedRowIds={[2,5]}
         />
@@ -332,7 +448,9 @@ export default function logbookTable ()  {
         <PagingPanel />
         <TableHeaderRow  />
         <TableRowDetail
-          contentComponent={RowDetail}
+          // contentComponent={RowDetail}
+          // rowComponent = {TableRow}
+          cellComponent ={rowDetailCell}
         />
         {/* <TableEditRow tableComponent={TableComponent}/>
         <TableEditColumn
@@ -345,8 +463,8 @@ export default function logbookTable ()  {
         /> */}
         <TableFixedColumns
           leftColumns={leftColumns}
-          rightColumns={rightColumns}
-          // cellComponent={Cell}
+          // rightColumns={rightColumns}
+          // cellComponent={fixedCell}
         /> 
        
       </Grid>

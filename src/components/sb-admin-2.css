@@ -1195,6 +1195,7 @@ body {
     .logbook-filter{
         display: flex;
         flex-direction: row;
+        align-items: flex-end;
         flex-wrap: wrap;
     }
 
@@ -1232,7 +1233,7 @@ body {
         position: relative;
         z-index: 400;
         width:160px;
-        /* height:40px; */
+        height:40px;
         background-color: #FFFDFF;
         border: 1px solid #C5C9D7;
         box-sizing: border-box;
@@ -1294,13 +1295,58 @@ body {
     }
 
     .logbook-filter-result{
+        margin-top:16px;
         margin-bottom: 16px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap:wrap; 
+    }
+
+    .logbook-filter-item{
+        background-color: #008C8F;
+        color:#FFFDFF;
+        border-radius: 16px;
+        padding:6px 16px 6px 16px;
+        margin-right: 4px;
+        margin-bottom: 4px;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .logbook-filter-cancel{
+        width:20px;
+        height:20px;
+        cursor:pointer;
+    }
+
+    .logbook-filter-cancelAll{
+        display: flex;
+        width:160px;
+        height:40px;
+        background-color: #004445;
+        color:#FFFDFF;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px;
+        cursor:pointer;
+    }
+
+    .logbook-filter-cancelAll-disabled{
+        display: flex;
+        width:160px;
+        height:40px;
+        background: #DCE0E9;
+        color: #A5A5AA;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px;
+        cursor:default;
+        /* opacity: 0.4; */
     }
 
     .logbook-table-content th{
         /* height: 56px; */
         border: 1px solid #FFFFFF;
-        
         background-color: #004445;
         font-family: Source Sans Pro;
         font-style: normal;
@@ -1354,7 +1400,7 @@ body {
         border-bottom: 1px solid #EDF0F5;
         text-align:center;
         background-color: #DBF1FF;
-        color:#00000;
+        color:#000000;
     }
 
     .logbook-table-content tr:nth-child(even) > td:nth-child(2) {
@@ -1374,6 +1420,40 @@ body {
     .logbook-table-content tr:nth-child(even){
         /* border: 1px solid #EDF0F5; */
         background-color:  #DBF1FF !important;
+    }
+
+    .table tr{
+        background-color:  #DBF1FF;
+    }
+
+    .delete-row-icon{
+        cursor:pointer;
+    }
+
+    .row-detail{
+        display: flex;
+        flex-direction: row;
+        /* background-color: #C43006; */
+        /* position: absolute;
+        float:left; */
+        /* z-index: 0; */
+        /* overflow: hidden; */
+    }
+
+    .row-detail-column{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: left;
+        margin-left: 48px;
+        margin-right:48px;
+        color: #726E73;
+    }
+
+    .row-detail-label{
+        font-size: 14px;
+        line-height: 20px;
+        color:#474748;
     }
 
     #logbook-new-entry{
@@ -1450,7 +1530,7 @@ body {
     }
 
     .logbook-entry-label{
-        /* position: fixed; */
+        position: re;
         font-family: Source Sans Pro;
         font-style: normal;
         font-weight: normal;
@@ -1477,7 +1557,7 @@ body {
     }
 
     .logbook-entry-select{
-        /* position: relative; */
+        position: relative;
         width:326px;
         height:40px;
         border: 1px solid #C5C9D7;
