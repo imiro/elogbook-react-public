@@ -9,17 +9,19 @@ import search from '../assets/images/logbook/search.png'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 import { AlignLeft } from 'react-feather';
 import LogbookData from './logbook_data'
+import { useEntries } from '../providers/api'
 
 class Logbook extends Component <*, State> {
   constructor(props) {
     super(props);
-    this.state = {isData: true};
+    this.state = {
+    };
   }
-  handleData = () =>{
-    this.setState({
-      isData:!this.state.isData
-    })
+
+
+  handleData = (data) => {
   }
+  
 
 
   render() {
@@ -44,7 +46,7 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
-          {this.state.isData ? <LogbookData/> : 
+          {this.props.data ? <LogbookData data={this.props.data}/> : 
               null
           }
           </div>
@@ -55,4 +57,15 @@ class Logbook extends Component <*, State> {
   }
 }
 
-export default Logbook
+function injectAPI(Component) {
+	const Injectedx = function(props) {
+		const entries = useEntries()
+		console.log(entries)
+		console.log("^ entries")
+		return <Component {...props} data={entries} />
+	}
+	
+	return Injectedx;
+}
+
+export default injectAPI(Logbook)

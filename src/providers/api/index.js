@@ -1,6 +1,38 @@
 import { useAuth } from '../auth';
+import { useState, useEffect } from 'react'
 
 const endpoint = process.env.REACT_APP_API_URL 
+const api_url = process.env.REACT_APP_API_URL 
+
+function useFetchWithAuth(endpoint, init) {
+	const { token } = useAuth()
+	  var url = api_url + endpoint
+	  if(!init) init = {}
+	  if(init && init.headers) {
+	console.log('entries')
+	    if(init.headers instanceof Headers)
+	      init.headers.append('Authorization', 'Bearer ' + token)
+	    else
+	      init.headers = {...init.headers, 'Authorization': 'Bearer ' + token}
+	  } else
+	    init.headers = {'Authorization': 'Bearer ' + token}
+
+	  return fetch(url, init)
+}
+
+export const useEntries = function() {
+
+	// TODO caching?
+	const req = useFetchWithAuth('/entries')
+	const [entries, setEntries] = useState([]);
+
+	useEffect(() => {
+		req.then(res => res.json())
+		   .then(json => setEntries(json))
+	}, [])
+
+	return entries;
+}
 
 export const useAPI = function() {
   const { token } = useAuth()
