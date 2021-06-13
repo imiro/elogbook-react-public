@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import {NavLink} from 'react-router-dom'
 import Paper from '@material-ui/core/Paper';
 import { 
@@ -10,7 +10,9 @@ import {
   IntegratedSorting,
 } from '@devexpress/dx-react-grid';
 import { withStyles } from '@material-ui/core/styles';
-// import {  } from '@devexpress/dx-react-grid';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Button from '@material-ui/core/Button';
 
 import {
   Grid,
@@ -121,6 +123,9 @@ const styles = theme => ({
     >
       <span
         style={{
+          display:'flex',
+          flexDirection:'row',
+          justifyContent: 'center',
           color: 'white',
           cursor:'pointer',
         }}
@@ -130,6 +135,42 @@ const styles = theme => ({
       </span>
     </Table.Cell>
   );
+  
+  const SortingIcon = ({ direction }) => (
+    direction === 'asc'
+      ? <ArrowUpward style={{ fontSize: '18px', color:'#FFFFFF' }} />
+      : <ArrowDownward style={{ fontSize: '18px', color:'#FFFFFF' }} />
+  );
+
+  const sortLabel = ({ disabled,onSort,children, direction }) => (
+    // <TableHeaderRow.SortLabel
+    //   {...restProps}
+    //   style={{
+        // backgroundColor: '#FFFFFF',
+    //     // position:'relative',
+    //     // height:'168px',
+    //     // overflow:'hidden',
+    //     ...style,
+    //   }}
+    // >
+    // </TableHeaderRow.SortLabel>
+  //   <Button
+  //   size="small"
+  //   variant="contained"
+  //   onClick={onSort}
+  // >
+  disabled === false
+  ?
+    <div onClick={onSort}>
+      {children}
+      {( <SortingIcon direction={direction} />)}
+    </div>
+  : 
+  // </Button>
+  <div>
+    {children}
+  </div>
+  );
 
   const HighlightedRowDetailCell = ({ row, value, style, ...restProps }) => (
     <TableRowDetail.Cell
@@ -137,7 +178,7 @@ const styles = theme => ({
       style={{
         backgroundColor: '#DCE0E9',
         // position:'relative',
-        // height:'300px',
+        height:'168px',
         // overflow:'hidden',
         ...style,
       }}
@@ -222,6 +263,14 @@ const styles = theme => ({
   return <TableRowDetail.Cell {...props} />;
   };
 
+  const sortCell = (props) => {
+    
+    const {column}  = props;
+    if (column.name === 'tanggal') {
+       return <sortLabel {...props} />;
+    }
+  };
+
 const TableHeaderContent = ({ children, ...restProps }) => (
   <TableEditColumn.HeaderCell
     // column={column}
@@ -240,7 +289,7 @@ export const TableComponent = withStyles(styles, { name: 'TableComponent' })(Tab
 
 const getRowId = row => row.id;
 
-export default function logbookTable ()  {
+export default function logbookTable (props)  {
   const [columns] = useState([
     { name: 'noentry', title: 'No. Entry' },
     { name: 'nrm', title: 'NRM' },
@@ -287,7 +336,7 @@ export default function logbookTable ()  {
      ruangan: 'Poliklinik',
      inisialPasien: 'IT',
      jenisKelamin: 'Perempuan',
-     usia: '15',
+     usia: '16',
      diagnosis: 'Text',
      kompetensiDiagnosis: '4A, 4A',
      jenisTindakan: 'Observasi',
@@ -306,7 +355,7 @@ export default function logbookTable ()  {
      ruangan: 'Poliklinik',
      inisialPasien: 'IT',
      jenisKelamin: 'Perempuan',
-     usia: '15',
+     usia: '17',
      diagnosis: 'Text',
      kompetensiDiagnosis: '4A, 4A',
      jenisTindakan: 'Observasi',
@@ -324,7 +373,7 @@ export default function logbookTable ()  {
      ruangan: 'Poliklinik',
      inisialPasien: 'IT',
      jenisKelamin: 'Perempuan',
-     usia: '15',
+     usia: '18',
      diagnosis: 'Text',
      kompetensiDiagnosis: '4A, 4A',
      jenisTindakan: 'Observasi',
@@ -394,29 +443,50 @@ export default function logbookTable ()  {
   const [tableColumnExtensions] = useState([
     // { columnName: 'tes2', width: 200 },
     // { columnName: 'tes', width: 200 },
-    { columnName: 'noentry', width: 200, backgroundColor:'#000000 !important'},
-    { columnName: 'nrm', width: 200 },
-    { columnName: 'tanggal', width: 200 },
-    { columnName: 'stase', width: 200 },
-    { columnName: 'lokasiRS', width: 200 },
-    { columnName: 'ruangan', width: 200 },
-    { columnName: 'inisialPasien', width: 200 },
-    { columnName: 'jenisKelamin', width: 200 },
-    { columnName: 'usia', width: 200},
-    { columnName: 'diagnosis', width: 200 },
-    { columnName: 'kompetensiDiagnosis', width: 200 },
-    { columnName: 'jenisTindakan', width: 200 },
-    { columnName: 'jenisKeterampilan', width: 200 },
-    { columnName: 'kompetensiKeterampilan', width: 200 },
-    { columnName: 'catatan', width: 200 },
-    { columnName: 'action', width: 200 },
+    { columnName: 'noentry', width: 110},
+    { columnName: 'nrm', width: 132 },
+    { columnName: 'tanggal', width: 150 },
+    { columnName: 'stase', width: 168 },
+    { columnName: 'lokasiRS', width: 150 },
+    { columnName: 'ruangan', width: 150 },
+    { columnName: 'inisialPasien', width: 150 },
+    { columnName: 'jenisKelamin', width: 150 },
+    { columnName: 'usia', width: 150},
+    { columnName: 'diagnosis', width: 150 },
+    { columnName: 'kompetensiDiagnosis', width: 170 },
+    { columnName: 'jenisTindakan', width: 150 },
+    { columnName: 'jenisKeterampilan', width: 150  },
+    { columnName: 'kompetensiKeterampilan', width: 170 },
+    { columnName: 'catatan', width: 173 },
+    { columnName: 'action', width: 96 },
   ]);
   const [leftColumns] = useState([TableRowDetail.COLUMN_TYPE,TableRowDetail.ROW_TYPE,'noentry']);
   const [rightColumns] = useState(['action']);
+  const [pageSizes] = useState([1,2,3,4,5, 10, 50, 1000]);
+  const [sortingStateColumnExtensions] = useState([
+    { columnName: 'noentry', sortingEnabled: false },
+    { columnName: 'nrm', sortingEnabled: false },
+    { columnName: 'stase', sortingEnabled: false },
+    { columnName: 'lokasiRS', sortingEnabled: false },
+    { columnName: 'ruangan', sortingEnabled: false },
+    { columnName: 'inisialPasien', sortingEnabled: false },
+    { columnName: 'diagnosis', sortingEnabled: false },
+    { columnName: 'kompetensiDiagnosis', sortingEnabled: false },
+    { columnName: 'jenisTindakan', sortingEnabled: false },
+    { columnName: 'jenisKeterampilan', sortingEnabled: false },
+    { columnName: 'kompetensiKeterampilan', sortingEnabled: false },
+    { columnName: 'catatan', sortingEnabled: false },
+    { columnName: 'action', sortingEnabled: false },
+  ]);
+
   
 
   return (
+    alert(props.greeting),
     <Paper>
+      {/* <div className="logbook-popup">popup</div> */}
+      {/* {this.props.greeting} */}
+      
       <Grid
         rows={rows}
         columns={columns}
@@ -430,11 +500,12 @@ export default function logbookTable ()  {
         />
         <PagingState
           defaultCurrentPage={0}
-          pageSize={5}
+          defaultPageSize={5}
         />
         <IntegratedPaging />
         <SortingState
-          defaultSorting={[]}
+          defaultSorting={[{ columnName: 'tanggal', direction: 'asc' },{ columnName: 'usia', direction: 'asc' },{ columnName: 'jenisKelamin', direction: 'asc' }]}
+          columnExtensions={sortingStateColumnExtensions}
         />
         <IntegratedSorting />
         {/* <DragDropProvider /> */}
@@ -445,8 +516,11 @@ export default function logbookTable ()  {
          {/* <TableColumnReordering
           defaultOrder={['noentry','nrm','tanggal','stase','lokasiRS','ruangan','inisialPasien', 'jenisKelamin','usia', 'diagnosis','kompetensiDiagnosis','jenisTindakan', 'jenisKeterampilan','catatan','kompetensiKeterampilan',TableEditColumn.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE]}
         /> */}
-        <PagingPanel />
-        <TableHeaderRow  />
+        <PagingPanel pageSizes={pageSizes} />
+        <TableHeaderRow 
+          showSortingControls 
+          sortLabelComponent={sortLabel}
+          />
         <TableRowDetail
           // contentComponent={RowDetail}
           // rowComponent = {TableRow}
@@ -463,7 +537,7 @@ export default function logbookTable ()  {
         /> */}
         <TableFixedColumns
           leftColumns={leftColumns}
-          // rightColumns={rightColumns}
+          rightColumns={rightColumns}
           // cellComponent={fixedCell}
         /> 
        
@@ -471,3 +545,4 @@ export default function logbookTable ()  {
     </Paper>
   );
 };
+

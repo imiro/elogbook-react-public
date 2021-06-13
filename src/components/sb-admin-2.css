@@ -1238,7 +1238,7 @@ body {
         border: 1px solid #C5C9D7;
         box-sizing: border-box;
         border-radius: 6px;
-        
+        /* color:#C5C9D7; */
       }
 
       .filter-box-dropdown > input{
@@ -1303,6 +1303,9 @@ body {
     }
 
     .logbook-filter-item{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
         background-color: #008C8F;
         color:#FFFDFF;
         border-radius: 16px;
@@ -1312,6 +1315,10 @@ body {
         font-size: 14px;
         line-height: 20px;
     }
+
+    .logbook-filter-item img{
+        margin-left:8px;
+    } 
 
     .logbook-filter-cancel{
         width:20px;
@@ -1391,13 +1398,13 @@ body {
     }
 
     .logbook-table-content td{
-        border: 1px solid #EDF0F5;
+        border: 1px solid #DCE0E9;
         text-align:center;
     }
 
     .logbook-table-content tr:nth-child(even) > td:nth-child(1) {
         border: 0px solid #000000;
-        border-bottom: 1px solid #EDF0F5;
+        border-bottom: 1px solid #DCE0E9;
         text-align:center;
         background-color: #DBF1FF;
         color:#000000;
@@ -1405,14 +1412,14 @@ body {
 
     .logbook-table-content tr:nth-child(even) > td:nth-child(2) {
         border: 0px solid #000000;
-        border-bottom: 1px solid #EDF0F5;
+        border-bottom: 1px solid #DCE0E9;
         text-align:center;
         background-color: #DBF1FF ;
     }
 
-    .logbook-table-content tr:nth-child(even) > td:nth-child(3) {
+    .logbook-table-content tr:nth-child(even) > td:nth-child(17) {
         border: 0px solid #000000;
-        border-bottom: 1px solid #EDF0F5;
+        border-bottom: 1px solid #DCE0E9;
         text-align:center;
         background-color: #DBF1FF ;
     }
@@ -1426,8 +1433,13 @@ body {
         background-color:  #DBF1FF;
     }
 
+    .table-sort-label{
+        cursor: pointer;
+    }
+
     .delete-row-icon{
         cursor:pointer;
+        margin-left: 16px;
     }
 
     .row-detail{
@@ -1452,8 +1464,19 @@ body {
 
     .row-detail-label{
         font-size: 14px;
+        font-weight: bold;
         line-height: 20px;
         color:#474748;
+        margin-top:8px;
+    }
+
+    .logbook-popup{
+        position:fixed;
+        width: ;
+        height: 300px;
+        background-color: white;
+        color:black;
+        z-index: 450;
     }
 
     #logbook-new-entry{

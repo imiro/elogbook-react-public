@@ -16,7 +16,7 @@ class LogbookData extends Component{
         room: [],
         competence:[],
         // startDate: new Date(),
-        startDate: null,
+        startDate: new Date(),
         endDate: null,
         rangeDate: "", 
       };
@@ -211,7 +211,7 @@ class LogbookData extends Component{
               }
               let newFilter= this.state.filter
               newFilter.splice(index,1)
-              alert(newFilter)
+              // alert(newFilter)
               joinStase = joinStase.filter(x=>newFilter.includes(x.label))
               joinRS = joinRS.filter(x=>newFilter.includes(x.label))
               joinRoom = joinRoom.filter(x=>newFilter.includes(x.label))
@@ -263,7 +263,41 @@ class LogbookData extends Component{
       console.groupEnd();
     };
 
-    
+    placeholderStase =
+    {
+      "allItemsAreSelected": "Semua opsi dipilih",
+      "noOptions": "tidak ada opsi",
+      "search": "Cari opsi",
+      "selectAll": "Pilih semua",
+      "selectSomeItems": "Pilih stase"
+    }
+
+    placeholderLokasiRS =
+    {
+      "allItemsAreSelected": "Semua opsi dipilih",
+      "noOptions": "tidak ada opsi",
+      "search": "Cari opsi",
+      "selectAll": "Pilih semua",
+      "selectSomeItems": "Pilih lokasi RS"
+    }
+
+    placeholderRuangan =
+    {
+      "allItemsAreSelected": "Semua opsi dipilih",
+      "noOptions": "tidak ada opsi",
+      "search": "Cari opsi",
+      "selectAll": "Pilih semua",
+      "selectSomeItems": "Pilih ruangan"
+    }
+
+    placeholderKompetensi =
+    {
+      "allItemsAreSelected": "Semua opsi dipilih",
+      "noOptions": "tidak ada opsi",
+      "search": "Cari opsi",
+      "selectAll": "Pilih semua",
+      "selectSomeItems": "Kompetensi"
+    }
   
   
     render() {
@@ -346,6 +380,7 @@ class LogbookData extends Component{
                         onChange={this.setStaseSelected}
                         labelledBy="Pilih Stase" 
                         className="filter-box-dropdown"
+                        overrideStrings={this.placeholderStase}
                       />
                   </div>
                   <div className="filter-box">
@@ -357,6 +392,7 @@ class LogbookData extends Component{
                         onChange={this.setRSSelected}
                         labelledBy="Pilih lokasi RS" 
                         className="filter-box-dropdown"
+                        overrideStrings={this.placeholderLokasiRS}
                       />
                   </div>
                   <div className="filter-box">
@@ -368,6 +404,7 @@ class LogbookData extends Component{
                         onChange={this.setRoomSelected}
                         labelledBy="Pilih ruangan" 
                         className="filter-box-dropdown"
+                        overrideStrings={this.placeholderRuangan}
                       />
                   </div>
                   <div className="filter-box">
@@ -379,6 +416,7 @@ class LogbookData extends Component{
                         onChange={this.setCompetenceSelected}
                         labelledBy="Kompetensi" 
                         className="filter-box-dropdown"
+                        overrideStrings={this.placeholderKompetensi}
                       />
                   </div>        
                       <div className="filter-box">
@@ -402,9 +440,9 @@ class LogbookData extends Component{
                 </div>
                 <div className="logbook-filter-result">
                     {/* {this.state.filter} */}
-                  {this.state.filter.map((item, index) => (<div className="logbook-filter-item" >{item}<img src={cancel} className="logbook-filter-cancel" onClick={()=>this.cancelFilter(item, index)}></img></div>))}
+                  {this.state.filter.map((item, index) => (<div className="logbook-filter-item" ><div>{item}</div><img src={cancel} className="logbook-filter-cancel" onClick={()=>this.cancelFilter(item, index)}></img></div>))}
                 </div>
-                 <LogbookTable/>
+                 <LogbookTable greeting="hello"/>
           </div>
       );
     }
