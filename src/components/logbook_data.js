@@ -331,8 +331,22 @@ class LogbookData extends Component{
 	if(!this.props.dictionary.stase) return [];
 	if(!this.props.dictionary.skdi_dx.length) return [];
 	    
-	//if(this.state.stase.length)
-	 //   data = data.filter(item => this.state.stase.has(item))
+	if(this.state.stase.length)
+	  data = data.filter(item => this.state.stase.find(x => x.value == item.stase))
+	if(this.state.rs.length)
+	  data = data.filter(item => this.state.rs.find(x => x.value == item.wahana))
+	if(this.state.room.length)
+	  data = data.filter(item => this.state.room.find(x => x.value == item.lokasi))
+	if(this.state.competence.length)
+	  data = data.filter(item => {
+		for(var dx of item.skdi_dx) {
+			var sdx = this.props.dictionary.skdi_dx.find(o => o.id == dx)
+			if(sdx && sdx.kompetensi && this.state.competence.find(k => k.value == sdx.kompetensi))
+				return true
+		}
+		return false
+	  })
+	// console.log('processData data', data)
 	return data.map(item => {
           var ret = {
 		  noentry: item.id,
@@ -354,7 +368,7 @@ class LogbookData extends Component{
 		ret.diagnosis += (item.diagnosis.length ? ", " : "") + item.diagnosisExtra
 	   
 
-	   console.log('processData', ret)
+	   // console.log('processData', ret)
 	   return ret;
 	});
     }
@@ -429,6 +443,7 @@ class LogbookData extends Component{
 	 return "Loading..."
       }
 
+      // var processedData = this.processData(this.props.data)
       if( !this.props.data.length )
 	    return <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
          

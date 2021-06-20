@@ -428,7 +428,7 @@ export default function logbookTable (props)  {
 
   
   useEffect(() => {
-	  setRows(props.data.map(item => {return {...item, id:({index}) => index}}))
+	  setRows(props.data.map(item => {return {...item, id: item.noentry}}))
   }, [props.data])
 
   return (

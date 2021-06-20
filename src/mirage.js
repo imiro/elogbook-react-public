@@ -127,17 +127,20 @@ createServer({
 			    {
 				            "id": 1,
 				            "diagnosis": "Kekerasan tumpul",
-				            "kategori": "Ilmu Kedokteran Forensik dan Medikolegal"
+				            "kategori": "Ilmu Kedokteran Forensik dan Medikolegal",
+				    	    "kompetensi": "4A"
 				        },
 			    {
 				            "id": 2,
 				            "diagnosis": "Kekerasan tajam",
-				            "kategori": "Ilmu Kedokteran Forensik dan Medikolegal"
+				            "kategori": "Ilmu Kedokteran Forensik dan Medikolegal",
+				    	    "kompetensi": "3B"
 				        },
 			    {
 				            "id": 811,
 				            "diagnosis": "Paralisis \/ Parese Pita Suara",
-				            "kategori": "Tidak ada di SKDI"
+				            "kategori": "Tidak ada di SKDI",
+				    	    "kompetensi": ""
 				        }
 		]
 		return JSON.stringify(resp)
