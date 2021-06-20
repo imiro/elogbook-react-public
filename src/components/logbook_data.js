@@ -454,7 +454,7 @@ class LogbookData extends Component{
 	 return "Loading..."
       }
 
-      // var processedData = this.processData(this.props.data)
+      var processedData = this.processData(this.props.data)
       if( !this.props.data.length )
 	    return <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
          
@@ -536,7 +536,9 @@ class LogbookData extends Component{
                     {/* {this.state.filter} */}
                   {this.state.filter.map((item, index) => (<div className="logbook-filter-item" ><div>{item}</div><img src={cancel} className="logbook-filter-cancel" onClick={()=>this.cancelFilter(item, index)}></img></div>))}
                 </div>
-                 <LogbookTable greeting="hello" data={this.processData(this.props.data)}/>
+	      { processedData.length ? 
+		      <LogbookTable greeting="hello" data={processedData}/>
+		      : <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>}
           </div>
       );
     }
