@@ -131,7 +131,7 @@ const styles = theme => ({
         }}
       >
         <NavLink to="/logbook-entry"><img src={edit}></img></NavLink>
-        <img src={remove} onClick="" className="delete-row-icon"></img>
+        <img src={remove} onClick={() => {}} className="delete-row-icon"></img>
       </span>
     </Table.Cell>
   );
@@ -482,13 +482,13 @@ export default function logbookTable (props)  {
   
 
   return (
-    alert(props.greeting),
+    // alert(props.greeting),
     <Paper>
       {/* <div className="logbook-popup">popup</div> */}
       {/* {this.props.greeting} */}
       
       <Grid
-        rows={rows}
+        rows={props.data}
         columns={columns}
         getRowId={getRowId}
       >

@@ -28,10 +28,41 @@ export const useEntries = function() {
 
 	useEffect(() => {
 		req.then(res => res.json())
-		   .then(json => setEntries(json))
+		   .then(json => setEntries(json.data))
 	}, [])
 
 	return entries;
+}
+
+let dictionary = {}
+export const useDictionary = function() {
+	const [dict, setDict] = useState(dictionary)
+	useEffect(() => {
+		if(!dictionary.stase)
+		  fetch(api_url + '/dictionary').then(resp => resp.json())
+		  .then(d => {
+			dictionary = {...d}
+			setDict(d)
+		  })
+	}, [])
+
+	return dict;
+}
+
+let skdi_dx = []
+export const useSkdiDxList = function() {
+	const [dx, setDx] = useState(skdi_dx)
+	useEffect(() => {
+		if(!dx.length)
+			fetch(api_url + '/skdi_dx/list')
+			.then(resp => resp.json())
+			.then(dx_a => {
+			    skdi_dx = dx_a
+			    setDx(dx_a)
+			})
+	})
+
+	return dx
 }
 
 export const useAPI = function() {

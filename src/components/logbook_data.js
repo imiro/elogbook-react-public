@@ -10,7 +10,8 @@ class LogbookData extends Component{
 
     constructor(props) {
       super(props);
-      this.state = {filter:[],
+      this.state = {
+	filter:[],
         stase :[],
         rs: [],
         room: [],
@@ -19,6 +20,10 @@ class LogbookData extends Component{
         startDate: new Date(),
         endDate: null,
         rangeDate: "", 
+	optionStase: [],
+	optionRoom: [],
+	optionRS: [],
+	optionCompetence: []
       };
     }
 
@@ -299,6 +304,59 @@ class LogbookData extends Component{
       "selectSomeItems": "Kompetensi"
     }
   
+    componentDidMount() {
+    }
+
+    processData(data) {
+	
+    /*{
+     id: ({ index }) => index,
+     noentry: '105986',
+     nrm: '487441',
+     tanggal: '07/05/2016',
+     stase : 'Bedah dan ATLS',
+     lokasiRS: 'RSCM',
+     ruangan: 'Poliklinik',
+     inisialPasien: 'IT',
+     jenisKelamin: 'Perempuan',
+     usia: '15',
+     diagnosis: 'Text',
+     kompetensiDiagnosis: '4A, 4A',
+     jenisTindakan: 'Observasi',
+     jenisKeterampilan: 'Text',
+     kompetensiKeterampilan: '1, 2',
+     catatan: 'Tidak ada gejala'
+  } (*/
+	if(!this.props.dictionary.stase) return [];
+	if(!this.props.dictionary.skdi_dx.length) return [];
+	    
+	if(this.state.stase.length)
+	    data = data.filter(item => this.state.stase.has(item))
+	return data.map(item => {
+          var ret = {
+		  noentry: item.id,
+		  nrm: item.nrm,
+		  tanggal: item.tanggal,
+		  stase: this.props.dictionary.stase[item.stase],
+		  lokasiRS: this.props.dictionary.wahana[item.wahana],
+		  ruangan: this.props.dictionary.lokasi[item.lokasi],
+		  inisialPasien: item.nama,
+		  jenisKelamin: item.gender == "lk" ? "Laki-laki" : "Perempuan",
+		  usia: item.usia,
+		  jenisTindakan: this.props.dictionary.kode[item.kode],
+		  catatan: item.catatan,
+	  }
+	  ret.diagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).diagnosis)
+	  ret.kompetensiDiagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).kompetensi).join(',')
+	  ret.diagnosis = ret.diagnosis.join(', ')
+	  if(item.diagnosisExtra)
+		ret.diagnosis += (item.diagnosis.length ? ", " : "") + item.diagnosisExtra
+	   
+
+	   console.log('processData', ret)
+	   return ret;
+	});
+    }
   
     render() {
       var today = new Date();
@@ -363,6 +421,12 @@ class LogbookData extends Component{
           { value: '3B', label: '3B' },
           { value: '4A', label: '4A' }
         ]
+      
+      if( !this.props.optionRS || !this.props.optionRoom || 
+	  !this.props.optionStase || !this.props.optionCompetence )
+      {
+	 return "Loading..."
+      }
          
       return (
         // <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
@@ -375,7 +439,7 @@ class LogbookData extends Component{
                       // value={optionStase.find(obj => obj.value === selectedValue)}
                       options={optionStase}  isSearchable={isSearchable} closeMenuOnSelect={false} className="filter-box-dropdown" onChange={this.filterHandle} /> */}
                       <MultiSelect
-                        options={optionStase}
+                        options={this.props.optionStase}
                         value={this.state.stase}
                         onChange={this.setStaseSelected}
                         labelledBy="Pilih Stase" 
@@ -387,7 +451,7 @@ class LogbookData extends Component{
                       <div className="filter-box-title">Lokasi RS</div>
                       {/* <Select placeholder="Pilih lokasi RS"options={optionRS} className="filter-box-dropdown" onChange={this.filterHandle}/> */}
                       <MultiSelect
-                        options={optionRS}
+                        options={this.props.optionRS}
                         value={this.state.rs}
                         onChange={this.setRSSelected}
                         labelledBy="Pilih lokasi RS" 
@@ -399,7 +463,7 @@ class LogbookData extends Component{
                       <div className="filter-box-title">Ruangan</div>
                       {/* <Select placeholder="Pilih ruangan"options={optionRoom} className="filter-box-dropdown" onChange={this.filterHandle}/> */}
                       <MultiSelect
-                        options={optionRoom}
+                        options={this.props.optionRoom}
                         value={this.state.room}
                         onChange={this.setRoomSelected}
                         labelledBy="Pilih ruangan" 
@@ -411,7 +475,7 @@ class LogbookData extends Component{
                       <div className="filter-box-title">Kompetensi</div>
                       {/* <Select placeholder="Kompetensi"options={optionCompetence} className="filter-box-dropdown" onChange={this.filterHandle}/> */}
                       <MultiSelect
-                        options={optionCompetence}
+                        options={this.props.optionCompetence}
                         value={this.state.competence}
                         onChange={this.setCompetenceSelected}
                         labelledBy="Kompetensi" 
@@ -442,7 +506,7 @@ class LogbookData extends Component{
                     {/* {this.state.filter} */}
                   {this.state.filter.map((item, index) => (<div className="logbook-filter-item" ><div>{item}</div><img src={cancel} className="logbook-filter-cancel" onClick={()=>this.cancelFilter(item, index)}></img></div>))}
                 </div>
-                 <LogbookTable greeting="hello"/>
+                 <LogbookTable greeting="hello" data={this.processData(this.props.data)}/>
           </div>
       );
     }
