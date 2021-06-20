@@ -5,6 +5,7 @@ import cancel from '../assets/images/logbook/cancel.png'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import nodata from '../assets/images/logbook/no_data.png'
 
 class LogbookData extends Component{
 
@@ -330,8 +331,8 @@ class LogbookData extends Component{
 	if(!this.props.dictionary.stase) return [];
 	if(!this.props.dictionary.skdi_dx.length) return [];
 	    
-	if(this.state.stase.length)
-	    data = data.filter(item => this.state.stase.has(item))
+	//if(this.state.stase.length)
+	 //   data = data.filter(item => this.state.stase.has(item))
 	return data.map(item => {
           var ret = {
 		  noentry: item.id,
@@ -427,6 +428,9 @@ class LogbookData extends Component{
       {
 	 return "Loading..."
       }
+
+      if( !this.props.data.length )
+	    return <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
          
       return (
         // <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
