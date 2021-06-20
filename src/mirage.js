@@ -54,7 +54,7 @@ createServer({
 				"skdi_dx": [2,811]
 			    }, {
 				"id": 4600,
-				"tanggal": "2021-02-03",
+				"tanggal": "2021-06-20",
 				"stase": 2,
 				"lokasi": "igd",
 				"wahana": 2,

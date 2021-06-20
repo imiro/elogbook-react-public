@@ -346,6 +346,17 @@ class LogbookData extends Component{
 		}
 		return false
 	  })
+  	 if(this.state.startDate && this.state.endDate)
+	    data = data.filter(item => {
+		const date = new Date(item.tanggal)
+		const {startDate, endDate} = this.state
+		// DatePicker sets the selection hours to current time
+		// so need to set the hours to standardize
+		date.setHours(0,0,0,0)
+		startDate.setHours(0,0,0,0)
+		endDate.setHours(23,59,59,0)
+		return (startDate <= date && date <= endDate)
+	    })
 	// console.log('processData data', data)
 	return data.map(item => {
           var ret = {
@@ -365,7 +376,7 @@ class LogbookData extends Component{
 	  ret.kompetensiDiagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).kompetensi).join(',')
 	  ret.diagnosis = ret.diagnosis.join(', ')
 	  if(item.diagnosisExtra)
-		ret.diagnosis += (item.diagnosis.length ? ", " : "") + item.diagnosisExtra
+		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.diagnosisExtra
 	   
 
 	   // console.log('processData', ret)
