@@ -33,32 +33,117 @@ createServer({
 
 	// this.passthrough()
  	this.get("/entries", function() {
-		return [
-		{
-			  "id": 2,
-			  "user_id": "mock",
-			  "tanggal": "2020-08-10",
-			  "stase": 9,
-			  "wahana": 3,
-			  "lokasi": "ranap",
-			  "nama": "KK",
-			  "gender": "lk",
-			  "usia": "52",
-			  "satuanusia": "tahun",
-			  "nrm": "1100111",
-			  "diagnosis": "efusi pleura",
-			  "kegiatan": "tindakan",
-			  "tindakan": "Pungsi Pleura",
-			  "kode": 1,
-			  "verifikator": "",
-			  "verified": 0,
-			  "created_at": "2020-08-10T05:41:03.000000Z"
+		var resp = {
+			    "data": [
+	   		 {
+				"id": 4611,
+				"tanggal": "2021-02-03",
+				"stase": 2,
+				"lokasi": "igd",
+				"wahana": 2,
+				"nama": "XY",
+				"usia": "47",
+				"satuanusia": "tahun",
+				"gender": "lk",
+				"nrm": "X1234",
+				"keterampilan": null,
+				"catatan": null,
+				"kegiatan": "Anam\/PF",
+				"tindakan": "",
+				"kode": 2,
+				"skdi_dx": [2,811]
+			    }, {
+				"id": 4600,
+				"tanggal": "2021-06-20",
+				"stase": 2,
+				"lokasi": "igd",
+				"wahana": 2,
+				"nama": "XY",
+				"usia": "47",
+				"satuanusia": "tahun",
+				"gender": "lk",
+				"nrm": "X1234",
+				"keterampilan": null,
+				"catatan": null,
+				"kegiatan": "Anam\/PF",
+				"tindakan": "",
+				"kode": 2,
+				"skdi_dx": [1]
+			    }
+				        ]
 		}
-		]
+		return JSON.stringify(resp)
 	})	
 
 	this.get("/dictionary", function() {
-	    return [ {"kind":"stase","qey":"0","value":"IPD"},{"kind":"stase","qey":"1","value":"IKA"},{"kind":"stase","qey":"10","value":"Neuro"},{"kind":"stase","qey":"11","value":"Forensik"},{"kind":"stase","qey":"12","value":"MPI"},{"kind":"stase","qey":"2","value":"Bedah"},{"kind":"stase","qey":"3","value":"Obgyn"},{"kind":"stase","qey":"4","value":"Kardiologi"},{"kind":"stase","qey":"5","value":"Mata"},{"kind":"stase","qey":"6","value":"THT"},{"kind":"stase","qey":"7","value":"Kulit"},{"kind":"stase","qey":"8","value":"Psikiatri"},{"kind":"stase","qey":"9","value":"Pulmo"},{"kind":"wahana","qey":"0","value":"RSCM"},{"kind":"wahana","qey":"1","value":"RSUT"},{"kind":"wahana","qey":"2","value":"RSF"},{"kind":"wahana","qey":"3","value":"RSP"},{"kind":"wahana","qey":"4","value":"RSPI SS"},{"kind":"wahana","qey":"5","value":"RSPJNHK"},{"kind":"wahana","qey":"6","value":"Lainnya"},{"kind":"lokasi","qey":"icu","value":"ICU"},{"kind":"lokasi","qey":"igd","value":"IGD"},{"kind":"lokasi","qey":"kamar-autopsi","value":"Kamar Autopsi"},{"kind":"lokasi","qey":"ok","value":"Kamar Operasi"},{"kind":"lokasi","qey":"poliklinik","value":"Poliklinik"},{"kind":"lokasi","qey":"ranap","value":"Rawat Inap"},{"kind":"lokasi","qey":"rumah","value":"Home Visit"},{"kind":"lokasi","qey":"vk","value":"VK"},{"kind":"kode","qey":"1","value":"Observasi"},{"kind":"kode","qey":"2","value":"Asistensi"},{"kind":"kode","qey":"3","value":"Operator dalam Supervisi Tidak Langsung"},{"kind":"kode","qey":"4","value":"Operator dalam Supervisi Langsung"},{"kind":"kode","qey":"5","value":"Operator Mandiri"}]
+		var ret = {
+			    "stase": {
+				            "0": "IPD",
+				            "1": "IKA",
+				            "10": "Neuro",
+				            "11": "Forensik",
+				            "12": "MPI",
+				            "2": "Bedah",
+				            "3": "Obgyn",
+				            "4": "Kardiologi",
+				            "5": "Mata",
+				            "6": "THT",
+				            "7": "Kulit",
+				            "8": "Psikiatri",
+				            "9": "Pulmo"
+				        },
+			    "wahana": [
+				            "RSCM",
+				            "RSUT",
+				            "RSF",
+				            "RSP",
+				            "RSPI SS",
+				            "RSPJNHK",
+				            "Lainnya"
+				        ],
+			    "lokasi": {
+				            "icu": "ICU",
+				            "igd": "IGD",
+				            "kamar-autopsi": "Kamar Autopsi",
+				            "ok": "Kamar Operasi",
+				            "poliklinik": "Poliklinik",
+				            "ranap": "Rawat Inap",
+				            "rumah": "Home Visit",
+				            "vk": "VK"
+				        },
+			    "kode": {
+				            "1": "Observasi",
+				            "2": "Asistensi",
+				            "3": "Operator dalam Supervisi Tidak Langsung",
+				            "4": "Operator dalam Supervisi Langsung",
+				            "5": "Operator Mandiri"
+				        }
+		}
+		return JSON.stringify(ret)
+	})
+
+	this.get('/skdi_dx/list', function() {
+		let resp = [
+			    {
+				            "id": 1,
+				            "diagnosis": "Kekerasan tumpul",
+				            "kategori": "Ilmu Kedokteran Forensik dan Medikolegal",
+				    	    "kompetensi": "4A"
+				        },
+			    {
+				            "id": 2,
+				            "diagnosis": "Kekerasan tajam",
+				            "kategori": "Ilmu Kedokteran Forensik dan Medikolegal",
+				    	    "kompetensi": "3B"
+				        },
+			    {
+				            "id": 811,
+				            "diagnosis": "Paralisis \/ Parese Pita Suara",
+				            "kategori": "Tidak ada di SKDI",
+				    	    "kompetensi": ""
+				        }
+		]
+		return JSON.stringify(resp)
 	})
     }
 })

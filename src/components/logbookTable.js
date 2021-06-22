@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import {NavLink} from 'react-router-dom'
 import Paper from '@material-ui/core/Paper';
 import { 
@@ -131,7 +131,7 @@ const styles = theme => ({
         }}
       >
         <NavLink to="/logbook-entry"><img src={edit}></img></NavLink>
-        <img src={remove} onClick="" className="delete-row-icon"></img>
+        <img src={remove} onClick={() => {}} className="delete-row-icon"></img>
       </span>
     </Table.Cell>
   );
@@ -309,43 +309,9 @@ export default function logbookTable (props)  {
     { name: 'action', title: 'Action' },
   ]);
 
-  const [rows, setRows] = useState([
-    {id: ({ index }) => index,
-      noentry: '105986',
-     nrm: '487441',
-     tanggal: '07/05/2016',
-     stase : 'Bedah dan ATLS',
-     lokasiRS: 'RSCM',
-     ruangan: 'Poliklinik',
-     inisialPasien: 'IT',
-     jenisKelamin: 'Perempuan',
-     usia: '15',
-     diagnosis: 'Text',
-     kompetensiDiagnosis: '4A, 4A',
-     jenisTindakan: 'Observasi',
-     jenisKeterampilan: 'Text',
-     kompetensiKeterampilan: '1, 2',
-     catatan: 'Tidak ada gejala'
-  },
-  {id: ({ index }) => index,
-    noentry: '105987',
-     nrm: '487441',
-     tanggal: '07/05/2016',
-     stase : 'Bedah dan ATLS',
-     lokasiRS: 'RSCM',
-     ruangan: 'Poliklinik',
-     inisialPasien: 'IT',
-     jenisKelamin: 'Perempuan',
-     usia: '16',
-     diagnosis: 'Text',
-     kompetensiDiagnosis: '4A, 4A',
-     jenisTindakan: 'Observasi',
-     jenisKeterampilan: 'Text',
-     kompetensiKeterampilan: '1, 2',
-     catatan: 'Tidak ada gejala'
-
-
-  },
+  const [rows, setRows] = useState([]
+  // props.data.map(item => { return {...item, id:({index}) => index}})
+  /*[
   {id: ({ index }) => index,
     noentry: '105988',
      nrm: '487441',
@@ -362,28 +328,9 @@ export default function logbookTable (props)  {
      jenisKeterampilan: 'Text',
      kompetensiKeterampilan: '1, 2',
      catatan: 'Tidak ada gejala',
-
-  },
-  {id: ({ index }) => index,
-    noentry: '105989',
-     nrm: '487441',
-     tanggal: '07/05/2016',
-     stase : 'Bedah dan ATLS',
-     lokasiRS: 'RSCM',
-     ruangan: 'Poliklinik',
-     inisialPasien: 'IT',
-     jenisKelamin: 'Perempuan',
-     usia: '18',
-     diagnosis: 'Text',
-     kompetensiDiagnosis: '4A, 4A',
-     jenisTindakan: 'Observasi',
-     jenisKeterampilan: 'Text',
-     kompetensiKeterampilan: '1, 2',
-     catatan: 'Tidak ada gejala'
-
-
   }
-  ]);
+  ]*/
+  );
 
 
   const commitChanges = ({ added, changed, deleted }) => {
@@ -480,9 +427,12 @@ export default function logbookTable (props)  {
   ]);
 
   
+  useEffect(() => {
+	  setRows(props.data.map(item => {return {...item, id: item.noentry}}))
+  }, [props.data])
 
   return (
-    alert(props.greeting),
+    // alert(props.greeting),
     <Paper>
       {/* <div className="logbook-popup">popup</div> */}
       {/* {this.props.greeting} */}
