@@ -1,5 +1,5 @@
 import React,
-      { Component, useState, createContext, useContext } from 'react';
+      { Component, useEffect, useState, createContext, useContext } from 'react';
 
 
 const AuthContext = createContext()
@@ -19,17 +19,20 @@ const AuthWrapper = function(props) {
    * Set token to null to log out
    */
   function updateCredentials(newToken, newUser = null) {
-    if(newToken && !newUser) {
-      // TODO fetch user from API here
-      newUser = {
-        nama: "Aji mock user",
-        npm: "1306440032"
-      }
-      // return; // callback aja yg panggil setToken
-    }
     setToken(newToken)
-    setUser(newUser)
   }
+  
+  useEffect(() => {
+     if(!token) {
+	     setUser(null)
+	     return
+     }
+     fetch(process.env.REACT_APP_API_URL+'/user', {
+       headers: {'Authorization': 'Bearer ' + token}
+     })
+     .then(resp => resp.json())
+     .then(obj => setUser(obj))
+  }, [token])
 
 
   const contextValue = {
@@ -46,4 +49,20 @@ const AuthWrapper = function(props) {
   )
 }
 
-export { AuthContext, useAuth, AuthWrapper }
+async function attemptPasswordLogin(email, password) {
+     return fetch(process.env.REACT_APP_API_URL+'/login', {
+	method: "POST",
+	body: JSON.stringify({email: email, password: password}),
+	headers: {
+		'Content-Type': 'application/json'
+	}
+     })
+     .then(function(resp) {
+	if(resp.ok) return resp.json()
+	throw resp	
+     }).then(function (obj) {
+	return obj.apiToken
+     })
+}
+
+export { AuthContext, useAuth, AuthWrapper, attemptPasswordLogin }
