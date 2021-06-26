@@ -8,11 +8,13 @@ import {
   RowDetailState,
   SortingState,
   IntegratedSorting,
+  TableSummaryRow,
+  DataTypeProvider,
 } from '@devexpress/dx-react-grid';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import {
   Grid,
@@ -25,6 +27,7 @@ import {
   TableRowDetail,
   TableColumnReordering,
   PagingPanel,
+  TableColumnResizing,
 } from '@devexpress/dx-react-grid-material-ui';
 
 // import {
@@ -143,33 +146,18 @@ const styles = theme => ({
   );
 
   const sortLabel = ({ disabled,onSort,children, direction }) => (
-    // <TableHeaderRow.SortLabel
-    //   {...restProps}
-    //   style={{
-        // backgroundColor: '#FFFFFF',
-    //     // position:'relative',
-    //     // height:'168px',
-    //     // overflow:'hidden',
-    //     ...style,
-    //   }}
-    // >
-    // </TableHeaderRow.SortLabel>
-  //   <Button
-  //   size="small"
-  //   variant="contained"
-  //   onClick={onSort}
-  // >
-  disabled === false
-  ?
-    <div onClick={onSort}>
+    disabled === false
+    ?
+      <div onClick={onSort}>
+        {children}
+        <div className="sort-table-icon">
+        {( <SortingIcon direction={direction}/>)}
+        </div>
+      </div>
+    : 
+    <div>
       {children}
-      {( <SortingIcon direction={direction} />)}
     </div>
-  : 
-  // </Button>
-  <div>
-    {children}
-  </div>
   );
 
   const HighlightedRowDetailCell = ({ row, value, style, ...restProps }) => (
@@ -311,6 +299,82 @@ export default function logbookTable (props)  {
 
   const [rows, setRows] = useState([
     {id: ({ index }) => index,
+    noentry: '105986',
+     nrm: '487441',
+     tanggal: '07/05/2016',
+     stase : 'Bedah dan ATLS',
+     lokasiRS: 'RSCM',
+     ruangan: 'Poliklinik',
+     inisialPasien: 'IT',
+     jenisKelamin: 'Perempuan',
+     usia: '15',
+     diagnosis: 'Text',
+     kompetensiDiagnosis: '4A, 4A',
+     jenisTindakan: 'Observasi',
+     jenisKeterampilan: 'Text',
+     kompetensiKeterampilan: '1, 2',
+     catatan: 'Tidak ada gejala aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+  },
+  {id: ({ index }) => index,
+    noentry: '105987',
+     nrm: '487441',
+     tanggal: '07/05/2016',
+     stase : 'Bedah dan ATLS',
+     lokasiRS: 'RSCM',
+     ruangan: 'Poliklinik',
+     inisialPasien: 'IT',
+     jenisKelamin: 'Perempuan',
+     usia: '16',
+     diagnosis: 'Text',
+     kompetensiDiagnosis: '4A, 4A',
+     jenisTindakan: 'Observasi',
+     jenisKeterampilan: 'Text',
+     kompetensiKeterampilan: '1, 2',
+     catatan: 'Tidak ada gejala'
+
+
+  },
+  {id: ({ index }) => index,
+    noentry: '105988',
+     nrm: '487441',
+     tanggal: '07/05/2016',
+     stase : 'Bedah dan ATLS',
+     lokasiRS: 'RSCM',
+     ruangan: 'Poliklinik',
+     inisialPasien: 'IT',
+     jenisKelamin: 'Perempuan',
+     usia: '17',
+     diagnosis: 'Text',
+     kompetensiDiagnosis: '4A, 4A',
+     jenisTindakan: 'Observasi',
+     jenisKeterampilan: 'Text',
+     kompetensiKeterampilan: '1, 2',
+     catatan: 'Tidak ada gejala',
+
+  },
+  {id: ({ index }) => index,
+    noentry: '105989',
+     nrm: '487441',
+     tanggal: '07/05/2016',
+     stase : 'Bedah dan ATLS',
+     lokasiRS: 'RSCM',
+     ruangan: 'Poliklinik',
+     inisialPasien: 'IT',
+     jenisKelamin: 'Perempuan',
+     usia: '18',
+     diagnosis: 'Text',
+     kompetensiDiagnosis: '4A, 4A',
+     jenisTindakan: 'Observasi',
+     jenisKeterampilan: 'Text',
+     kompetensiKeterampilan: '1, 2',
+     catatan: 'Tidak ada gejala'
+
+
+  }
+  ]);
+
+  const tesRow = [
+    {id: ({ index }) => index,
       noentry: '105986',
      nrm: '487441',
      tanggal: '07/05/2016',
@@ -383,8 +447,9 @@ export default function logbookTable (props)  {
 
 
   }
-  ]);
-
+  ]
+  
+  
 
   const commitChanges = ({ added, changed, deleted }) => {
     let changedRows;
@@ -479,10 +544,28 @@ export default function logbookTable (props)  {
     { columnName: 'action', sortingEnabled: false },
   ]);
 
+  const TooltipFormatter = ({ value }) => (
+    <Tooltip title={(
+      <span>
+        {value}
+      </span>
+    )}
+    >
+      <span>
+        {value}
+      </span>
+    </Tooltip>
+  );
   
+  const CellTooltip = props => (
+    <DataTypeProvider
+      for={columns.map(({ name }) => name)}
+      formatterComponent={TooltipFormatter}
+      {...props}
+    />
+  );
 
   return (
-    alert(props.greeting),
     <Paper>
       {/* <div className="logbook-popup">popup</div> */}
       {/* {this.props.greeting} */}
@@ -509,6 +592,7 @@ export default function logbookTable (props)  {
         />
         <IntegratedSorting />
         {/* <DragDropProvider /> */}
+        <CellTooltip />
         <Table columnExtensions={tableColumnExtensions} 
             tableComponent={TableComponent}
             cellComponent={Cell}
@@ -516,7 +600,9 @@ export default function logbookTable (props)  {
          {/* <TableColumnReordering
           defaultOrder={['noentry','nrm','tanggal','stase','lokasiRS','ruangan','inisialPasien', 'jenisKelamin','usia', 'diagnosis','kompetensiDiagnosis','jenisTindakan', 'jenisKeterampilan','catatan','kompetensiKeterampilan',TableEditColumn.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE]}
         /> */}
+       
         <PagingPanel pageSizes={pageSizes} />
+        <TableColumnResizing defaultColumnWidths={tableColumnExtensions} />
         <TableHeaderRow 
           showSortingControls 
           sortLabelComponent={sortLabel}

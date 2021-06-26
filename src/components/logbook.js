@@ -22,7 +22,7 @@ class Logbook extends Component <*, State> {
   handleData = (data) => {
   }
   
-
+ 
 
   render() {
     return (
@@ -46,6 +46,7 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
+          
           {this.props.data ? <LogbookData data={this.props.data}/> : 
               null
           }

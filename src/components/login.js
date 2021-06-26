@@ -110,9 +110,10 @@ export default function LoginPage() {
     <div className="container-login">
       <LoginStaticPage/>
       <div className="form-login">
-        <div className="login-text">Login</div>
+        
         <form>
           <div className="form-input">
+          <div className="login-text">Login</div>
             <label for="email" className="login-label">Email UI </label>
             <div className= "email-box">
               <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className={emailError ? "login-textfield-error" : "login-textfield"} onChange={(e) => validateEmail(e)}></input>

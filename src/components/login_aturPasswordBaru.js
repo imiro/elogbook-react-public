@@ -37,7 +37,6 @@ const [isSaved, setSaved] = useState("false");
       <LoginStaticPage/>
         <div className={isSaved ? "alert-password" : "alert-password-saved"}></div>
         <span id={isSaved ? "alert-password-text" : "alert-password-saved-text"}>Atur password baru Anda yang nanti dapat digunakan untuk masuk ke dalam akun <br></br> E-logbook Anda dengan menggunakan email UI</span>
-        
         <div className="form-new-password">
             <div className="login-text">Atur Password Baru</div>
             <form>
