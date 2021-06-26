@@ -5,12 +5,14 @@ import cancel from '../assets/images/logbook/cancel.png'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import nodata from '../assets/images/logbook/no_data.png'
 
 class LogbookData extends Component{
 
     constructor(props) {
       super(props);
-      this.state = {filter:[],
+      this.state = {
+	filter:[],
         stase :[],
         rs: [],
         room: [],
@@ -19,6 +21,10 @@ class LogbookData extends Component{
         startDate: null,
         endDate: null,
         rangeDate: "", 
+	optionStase: [],
+	optionRoom: [],
+	optionRS: [],
+	optionCompetence: []
       };
     }
 
@@ -299,6 +305,84 @@ class LogbookData extends Component{
       "selectSomeItems": "Kompetensi"
     }
   
+    componentDidMount() {
+    }
+
+    processData(data) {
+	
+    /*{
+     id: ({ index }) => index,
+     noentry: '105986',
+     nrm: '487441',
+     tanggal: '07/05/2016',
+     stase : 'Bedah dan ATLS',
+     lokasiRS: 'RSCM',
+     ruangan: 'Poliklinik',
+     inisialPasien: 'IT',
+     jenisKelamin: 'Perempuan',
+     usia: '15',
+     diagnosis: 'Text',
+     kompetensiDiagnosis: '4A, 4A',
+     jenisTindakan: 'Observasi',
+     jenisKeterampilan: 'Text',
+     kompetensiKeterampilan: '1, 2',
+     catatan: 'Tidak ada gejala'
+  } (*/
+	if(!this.props.dictionary.stase) return [];
+	if(!this.props.dictionary.skdi_dx.length) return [];
+	    
+	if(this.state.stase.length)
+	  data = data.filter(item => this.state.stase.find(x => x.value == item.stase))
+	if(this.state.rs.length)
+	  data = data.filter(item => this.state.rs.find(x => x.value == item.wahana))
+	if(this.state.room.length)
+	  data = data.filter(item => this.state.room.find(x => x.value == item.lokasi))
+	if(this.state.competence.length)
+	  data = data.filter(item => {
+		for(var dx of item.skdi_dx) {
+			var sdx = this.props.dictionary.skdi_dx.find(o => o.id == dx)
+			if(sdx && sdx.kompetensi && this.state.competence.find(k => k.value == sdx.kompetensi))
+				return true
+		}
+		return false
+	  })
+  	 if(this.state.startDate && this.state.endDate)
+	    data = data.filter(item => {
+		const date = new Date(item.tanggal)
+		const {startDate, endDate} = this.state
+		// DatePicker sets the selection hours to current time
+		// so need to set the hours to standardize
+		date.setHours(0,0,0,0)
+		startDate.setHours(0,0,0,0)
+		endDate.setHours(23,59,59,0)
+		return (startDate <= date && date <= endDate)
+	    })
+	// console.log('processData data', data)
+	return data.map(item => {
+          var ret = {
+		  noentry: item.id,
+		  nrm: item.nrm,
+		  tanggal: item.tanggal,
+		  stase: this.props.dictionary.stase[item.stase],
+		  lokasiRS: this.props.dictionary.wahana[item.wahana],
+		  ruangan: this.props.dictionary.lokasi[item.lokasi],
+		  inisialPasien: item.nama,
+		  jenisKelamin: item.gender == "lk" ? "Laki-laki" : "Perempuan",
+		  usia: item.usia,
+		  jenisTindakan: this.props.dictionary.kode[item.kode],
+		  catatan: item.catatan,
+	  }
+	  ret.diagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).diagnosis)
+	  ret.kompetensiDiagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).kompetensi).join(',')
+	  ret.diagnosis = ret.diagnosis.join(', ')
+	  if(item.diagnosisExtra)
+		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.diagnosisExtra
+	   
+
+	   // console.log('processData', ret)
+	   return ret;
+	});
+    }
   
     render() {
       var today = new Date();
@@ -363,6 +447,16 @@ class LogbookData extends Component{
           { value: '3B', label: '3B' },
           { value: '4A', label: '4A' }
         ]
+      
+      if( !this.props.optionRS || !this.props.optionRoom || 
+	  !this.props.optionStase || !this.props.optionCompetence )
+      {
+	 return "Loading..."
+      }
+
+      var processedData = this.processData(this.props.data)
+      if( !this.props.data.length )
+	    return <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
          
       return (
         // <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
@@ -376,7 +470,7 @@ class LogbookData extends Component{
                       // value={optionStase.find(obj => obj.value === selectedValue)}
                       options={optionStase}  isSearchable={isSearchable} closeMenuOnSelect={false} className="filter-box-dropdown" onChange={this.filterHandle} /> */}
                       <MultiSelect
-                        options={optionStase}
+                        options={this.props.optionStase}
                         value={this.state.stase}
                         onChange={this.setStaseSelected}
                         labelledBy="Pilih Stase" 
@@ -388,7 +482,7 @@ class LogbookData extends Component{
                       <div className="filter-box-title">Lokasi RS</div>
                       {/* <Select placeholder="Pilih lokasi RS"options={optionRS} className="filter-box-dropdown" onChange={this.filterHandle}/> */}
                       <MultiSelect
-                        options={optionRS}
+                        options={this.props.optionRS}
                         value={this.state.rs}
                         onChange={this.setRSSelected}
                         labelledBy="Pilih lokasi RS" 
@@ -400,7 +494,7 @@ class LogbookData extends Component{
                       <div className="filter-box-title">Ruangan</div>
                       {/* <Select placeholder="Pilih ruangan"options={optionRoom} className="filter-box-dropdown" onChange={this.filterHandle}/> */}
                       <MultiSelect
-                        options={optionRoom}
+                        options={this.props.optionRoom}
                         value={this.state.room}
                         onChange={this.setRoomSelected}
                         labelledBy="Pilih ruangan" 
@@ -412,7 +506,7 @@ class LogbookData extends Component{
                       <div className="filter-box-title">Kompetensi</div>
                       {/* <Select placeholder="Kompetensi"options={optionCompetence} className="filter-box-dropdown" onChange={this.filterHandle}/> */}
                       <MultiSelect
-                        options={optionCompetence}
+                        options={this.props.optionCompetence}
                         value={this.state.competence}
                         onChange={this.setCompetenceSelected}
                         labelledBy="Kompetensi" 
@@ -443,7 +537,9 @@ class LogbookData extends Component{
                     {/* {this.state.filter} */}
                   {this.state.filter.map((item, index) => (<div className="logbook-filter-item" ><div>{item}</div><img src={cancel} className="logbook-filter-cancel" onClick={()=>this.cancelFilter(item, index)}></img></div>))}
                 </div>
-                 <LogbookTable greeting="hello"/>
+	      { processedData.length ? 
+		      <LogbookTable greeting="hello" data={processedData}/>
+		      : <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>}
           </div>
       );
     }
