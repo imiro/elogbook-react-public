@@ -65,6 +65,29 @@ export const useSkdiDxList = function() {
 	return dx
 }
 
+export const requestForgotPassword = function(email) {
+	return fetch(api_url + '/forgot-password')
+	.then(function(resp) {
+		return !!resp.ok
+	})
+}
+
+export const setPassword = function({token, email, password, password_confirmation}) {
+	return fetch(api_url + '/set-password', {
+		method: "POST",
+		header: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({token, email, password, password_confirmation})
+	}).then(function(resp) {
+		if(resp.ok) return {ok: true}
+		return resp.json()
+		// TODO handle error
+	}).then(function (err) {
+		return {ok: false, ...err}
+	})
+}
+
 export const useAPI = function() {
   const { token } = useAuth()
 

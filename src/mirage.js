@@ -43,6 +43,14 @@ const options = {
 		}
 	})
 
+	this.get('/forgot-password', function() {
+		return "OK"
+	})
+	this.post('/set-password', function(schema, request) {
+		console.log('set-password', request)
+		return "OK"
+	})
+
 	// this.passthrough()
  	this.get("/entries", function() {
 		var resp = {

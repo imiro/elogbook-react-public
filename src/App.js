@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthWrapper, PrivateRoute } from './providers/auth'
 import LoginPage from './components/login'
 import HomePage from './components/home'
@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <AuthWrapper>
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route exact path="/login">
             <LoginPage />
@@ -43,7 +43,7 @@ export default function App() {
           <PrivateRoute path="/skdi" component={SKDI} />
           <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/logout" component={Logout} />
-      </BrowserRouter>
+      </HashRouter>
     </AuthWrapper>
   );
 }

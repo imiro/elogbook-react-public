@@ -104,8 +104,10 @@ export default function LoginPage() {
     // SEE https://reactrouter.com/web/example/auth-workflow
 
 	  // TODO to dashboard if password set, to password setting otherwise
-    // if(user.is_password_set)
-    return <Redirect to="/dashboard" />
+    if(user.is_password_set)
+    	return <Redirect to="/dashboard" />
+    else
+	  return <Redirect to={`/login-atur-password-baru?email=${user.email}&token=${user.set_password_token}`} />
 
     return (
       <div>
