@@ -375,9 +375,13 @@ class LogbookData extends Component{
 	  ret.diagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).diagnosis)
 	  ret.kompetensiDiagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).kompetensi).join(',')
 	  ret.diagnosis = ret.diagnosis.join(', ')
-	  if(item.diagnosisExtra)
-		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.diagnosisExtra
-	   
+	  if(item.dx_extra)
+		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.dx_extra.join(', ')
+
+	   ret.jenisKeterampilan = item.skdi_ktn.map(x => this.props.dictionary.skdi_ktn.find(o => o.id == x).keterampilan).join(',')
+	   ret.kompetensiKeterampilan = item.skdi_ktn.map(x => this.props.dictionary.skdi_ktn.find(o => o.id == x).kompetensi).join(',')
+	   if(item.keterampilan_extra) 
+		ret.jenisKeterampilan += (item.skdi_ktn.length ? ", " : "") + item.keterampilan_extra.join(", ") 
 
 	   // console.log('processData', ret)
 	   return ret;

@@ -65,6 +65,30 @@ export const useSkdiDxList = function() {
 	return dx
 }
 
+let skdi_ktn = []
+export const useSkdiKtnList = function() {
+	const [ktn, setKtn] = useState(skdi_ktn)
+	useEffect(() => {
+		if(!ktn.length)
+			fetch(api_url + '/skdi_keterampilan/list')
+			.then(resp => resp.json())
+			.then(dx_a => {
+			    skdi_ktn = dx_a
+			    setKtn(dx_a)
+			})
+	})
+
+	return ktn
+}
+
+export const useCompleteDictionary = function() {
+	const dx = useSkdiDxList()
+	const ktn = useSkdiKtnList()
+	const dict = useDictionary()
+
+	return {...dict, skdi_dx: dx, skdi_ktn: ktn}
+}
+
 export const requestForgotPassword = function(email) {
 	return fetch(api_url + '/forgot-password')
 	.then(function(resp) {

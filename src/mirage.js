@@ -34,12 +34,13 @@ const options = {
 	this.get("/user", function() {
 		return {
 			name: "Test Mock User",
+			email: "test@ui.ac.id",
 			role: "admin",
 			api_token: "toKen123",
 			user_id: "mock",
-			is_password_set: true, /*
+			is_password_set: true,
 			is_password_set: false,
-			set_password_token: "t0kenr3set" */
+			set_password_token: "t0kenr3set"
 		}
 	})
 
@@ -71,7 +72,8 @@ const options = {
 				"kegiatan": "Anam\/PF",
 				"tindakan": "",
 				"kode": 2,
-				"skdi_dx": [2,811]
+				"skdi_dx": [2,811],
+				"skdi_ktn": []
 			    }, {
 				"id": 4600,
 				"tanggal": "2021-06-20",
@@ -88,7 +90,9 @@ const options = {
 				"kegiatan": "Anam\/PF",
 				"tindakan": "",
 				"kode": 2,
-				"skdi_dx": [1]
+				"skdi_dx": [1],
+				"skdi_ktn": [1],
+				"keterampilan_extra": ["Menjahit luka batin"]
 			    }
 				        ]
 		}
@@ -164,6 +168,10 @@ const options = {
 				        }
 		]
 		return JSON.stringify(resp)
+	})
+
+	this.get('/skdi_keterampilan/list', function() {
+		return [{"id":1,"keterampilan":"Inspeksi kulit","kategori":"Sistem Integumen","kompetensi":"4A","level":null}];
 	})
     }
 }
