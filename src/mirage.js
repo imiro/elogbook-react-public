@@ -1,7 +1,7 @@
-import { createServer } from "miragejs"
+import { createServer, Response } from "miragejs"
 console.log("MIRAGE FILE START")
 
-createServer({
+const options = {
     routes() {
 	this.urlPrefix = process.env.REACT_APP_API_URL
 
@@ -22,12 +22,24 @@ createServer({
 		return ret
 	})
 
+	this.post("/login", function(schema, request) {
+	  let {email, password} = JSON.parse(request.requestBody)
+	  if(email != "test@ui.ac.id" || password != "test123")
+		return new Response(422)
+	  return {
+		apiToken: "toKen123"
+	  }
+	})
+
 	this.get("/user", function() {
 		return {
 			name: "Test Mock User",
 			role: "admin",
 			api_token: "toKen123",
-			user_id: "mock"
+			user_id: "mock",
+			is_password_set: true, /*
+			is_password_set: false,
+			set_password_token: "t0kenr3set" */
 		}
 	})
 
@@ -146,4 +158,6 @@ createServer({
 		return JSON.stringify(resp)
 	})
     }
-})
+}
+createServer(options)
+
