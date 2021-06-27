@@ -90,19 +90,21 @@ export const useCompleteDictionary = function() {
 }
 
 export const requestForgotPassword = function(email) {
-	return fetch(api_url + '/forgot-password')
+	return fetch(api_url + '/forgot-password?email=' + email)
 	.then(function(resp) {
 		return !!resp.ok
 	})
 }
 
-export const setPassword = function({token, email, password, password_confirmation}) {
+export const setPassword = function(params) {
+	let {token, email, password, password_confirmation} = params
+	console.log('sending', params)
 	return fetch(api_url + '/set-password', {
 		method: "POST",
-		header: {
+		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({token, email, password, password_confirmation})
+		body: JSON.stringify(params)
 	}).then(function(resp) {
 		if(resp.ok) return {ok: true}
 		return resp.json()
@@ -110,6 +112,22 @@ export const setPassword = function({token, email, password, password_confirmati
 	}).then(function (err) {
 		return {ok: false, ...err}
 	})
+}
+
+export const useCreateEntry = function() {
+	const { token } = useAuth()
+	return function createEntry(inputs) {
+	return fetch(api_url + '/entry', {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + token},
+		body: JSON.stringify(inputs)
+	}).then(function (resp) {
+		if(resp.ok) return resp.json();
+		throw resp;
+	})
+}
 }
 
 export const useAPI = function() {

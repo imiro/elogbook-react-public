@@ -53,6 +53,7 @@ const options = {
 	})
 
 	// this.passthrough()
+	this.post("/entry", {"status": "success"})
  	this.get("/entries", function() {
 		var resp = {
 			    "data": [

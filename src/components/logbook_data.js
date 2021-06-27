@@ -20,11 +20,7 @@ class LogbookData extends Component{
         // startDate: new Date(),
         startDate: new Date(),
         endDate: null,
-        rangeDate: "", 
-	optionStase: [],
-	optionRoom: [],
-	optionRS: [],
-	optionCompetence: []
+        rangeDate: ""
       };
     }
 
@@ -427,6 +423,7 @@ class LogbookData extends Component{
           }),
         };
   
+	/*
         const optionStase = [
           { value: '1', label: 'Stase 1', searchable: false },
           { value: '2', label: 'Stase 2' },
@@ -450,7 +447,7 @@ class LogbookData extends Component{
           { value: '3A', label: '3A' },
           { value: '3B', label: '3B' },
           { value: '4A', label: '4A' }
-        ]
+        ] */
       
       if( !this.props.optionRS || !this.props.optionRoom || 
 	  !this.props.optionStase || !this.props.optionCompetence )
