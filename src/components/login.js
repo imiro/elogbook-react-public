@@ -24,7 +24,8 @@ export default function LoginPage() {
   
   function handleSSOLogin(ev) {
       ev.preventDefault()
-      if(process.env.REACT_APP_MOCK_USER) {
+      if(process.env.REACT_APP_MOCK_USER === 'true') {
+	    console.warn("Mock SSO user")
             processTokenUpdate("toKen123")    
             return
       }
