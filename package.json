@@ -1,9 +1,9 @@
 {
   "name": "elogbookfkui-dashboard",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Elogbook Dashboard",
-  "author": "Nice Dash",
-  "homepage": "https://dashboard-beta.elogbookfkui.com",
+  "author": "E-Logbook FKUI Team",
+  "homepage": "https://beta.elogbookfkui.com",
   "private": true,
   "dependencies": {
     "@devexpress/dx-react-core": "^2.7.5",
