@@ -83,9 +83,6 @@ export default function LoginPage() {
 		return
 	}
 
-	console.log(e.target.email.value)
-	console.log(e.target.password.value)
-	
 	attemptPasswordLogin(e.target.email.value,
 			     e.target.password.value)
 	.then(function (tkn) {
@@ -123,12 +120,12 @@ export default function LoginPage() {
         <div className="login-text">Login</div>
         <form onSubmit={e => handleLogin(e)}>
           <div className="form-input">
-            <label for="email" className="login-label">Email UI </label>
+            <label htmlFor="email" className="login-label">Email UI </label>
             <div className= "email-box">
               <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className={emailError ? "login-textfield-error" : "login-textfield"} onChange={(e) => validateEmail(e)}></input>
               <span className="email-error"><img id="email-error" src={error}/>{emailError}</span> 
             </div>
-            <label for="password" className="login-label">Password </label>
+            <label htmlFor="password" className="login-label">Password </label>
             <div className= "password-box">
               <input id="password" type="password" name="password" placeholder="Masukkan Password Anda" className="login-textfield"></input>
               <div id="togglePassword" className={isHide ? "hide-password" : "show-password"} onClick={togglePassword}></div>

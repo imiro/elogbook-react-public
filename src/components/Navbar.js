@@ -84,7 +84,7 @@ class Navbar extends Component {
                 </div>
               </div>
               <div className="dropdown-divider"></div>
-              <div claasName="dropdown-menu-box-bottom">
+              <div className="dropdown-menu-box-bottom">
                 <NavLink className="dropdown-item-menu"  style={ {textDecoration: 'none'}} to='/profile'><img src={profile}></img> Lihat Profil</NavLink>
                 <div className="dropdown-item-menu" onClick={this.togglePopup.bind(this)}><img src={logout}></img>Sign Out</div>
               </div>
