@@ -29,11 +29,11 @@ const [isHideConfirm, setHideConfirm] = useState("false");
     password.setAttribute('type', type);
   };
 
-const [isSaved, setSaved] = useState("false");
+const [isSaved, setSaved] = useState(false);
 
   const toggleAlertSaved = () => {
     setSaved(!isSaved);
-    document.getElementById('alert-password-text').innerHTML = "Password berhasil disimpan";
+    // document.getElementById('alert-password-text').innerHTML = "Password berhasil disimpan";
   };
 
     const [redirect, setRedirect] = useState(false)
@@ -51,11 +51,12 @@ const [isSaved, setSaved] = useState("false");
 		email,
 		password,
 		password_confirmation
-	}).then(function(resp) {
+	}).then(async function(resp) {
 		if(resp.ok) {
 			setSaved(true)
 			setTimeout(() => setRedirect(true), 1500)
 		} else {
+			console.error(resp)
 			alert('Failed')
 			// handle error
 		}
@@ -68,23 +69,24 @@ const [isSaved, setSaved] = useState("false");
       <div className="container-login">
       <LoginStaticPage/>
         <div className={isSaved ? "alert-password" : "alert-password-saved"}></div>
-        <span id={isSaved ? "alert-password-text" : "alert-password-saved-text"}>Atur password baru Anda yang nanti dapat digunakan untuk masuk ke dalam akun <br></br> E-logbook Anda dengan menggunakan email UI</span>
+	{isSaved ? <span id="alert-password-text">Password berhasil disimpan</span>
+		 : <span id="alert-password-saved-text">Atur password baru Anda yang nanti dapat digunakan untuk masuk ke dalam akun <br></br>E-logbook Anda dengan menggunakan email UI</span>}
         
         <div className="form-new-password">
             <div className="login-text">Atur Password Baru</div>
             <form onSubmit={e => handleFormSubmit(e)}>
                 <div className="form-input">
-                    <label for="password" className="login-label">Password Baru</label>
+                    <label htmlFor="password" className="login-label">Password Baru</label>
                     <div className= "password-box">
                     <input id="passwordbaru" type="password" name="password" placeholder="Masukkan Password Baru Anda" className="login-textfield"></input>
                     <div id="togglePassword" className={isHideNew ? "hide-password" : "show-password"} onClick={togglePasswordNew}></div>
                     </div>
-                    <label for="password" className="login-label">Konfirmasi Password </label>
+                    <label htmlFor="password" className="login-label">Konfirmasi Password </label>
                     <div className= "password-box">
                     <input id="passwordkonfirmasi" type="password" name="password_confirmation" placeholder="Konfirmasi Password Anda" className="login-textfield"></input>
                     <div id="togglePassword" className={isHideConfirm ? "hide-password" : "show-password"} onClick={togglePasswordConfirm}></div>
                     </div>
-                    <button id="" value="simpan" className="send-button" onClick={toggleAlertSaved}>Simpan</button>
+                    <button id="" value="simpan" className="send-button" >Simpan</button>
                     </div>
             </form>
             </div>
