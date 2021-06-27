@@ -1,10 +1,16 @@
 import React from 'react'
 import { useAuth } from './_components'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, useLocation } from 'react-router-dom'
 
 export default function PrivateRoute( props ) {
   let auth = useAuth();
+/*
+  let loc = useLocation()
+  console.group('Inside PrivateRoute')
   console.log(auth)
+  console.log(loc)
+  console.groupEnd()
+*/
 
   if(auth.user && auth.token) {
     return <Route {...props} />
