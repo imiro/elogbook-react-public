@@ -159,6 +159,7 @@ function LogbookEntry (props) {
       const optionSkill = useSkdiKtnList().map(x => {
 	return {value: x.id, label: x.keterampilan}
       })*/
+	console.log('skdi', skdi)
 
 
     return (
@@ -197,13 +198,15 @@ function LogbookEntry (props) {
                     <label>Diagnosis</label>
                     <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} className="logbook-entry-select" />
                     <label>Tingkat kompetensi Diagnosis</label>
-                    <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"></input>
+                    <input readOnly type="text" placeholder="Tingkat kompetensi" className="logbook-entry-input"
+	    		value={skdi.dx.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_dx.find(y => y.id == x.value).kompetensi).join(",")}></input>
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
                     <label>Keterampilan</label>
                     <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti className="logbook-entry-select" styles={colourStyles} onChange={handleSkdiChange("ktn")} />
                     <label>Tingkat kompetensi Keterampilan</label>
-                    <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"></input>
+                    <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"
+	    		value={skdi.ktn.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_ktn.find(y => y.id == x.value).kompetensi).join(",")}></input>
                     <label>Catatan</label>
                     <textarea name="catatan" placeholder="Masukkan catatan pribadi"></textarea>
                   </div>
