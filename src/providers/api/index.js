@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 const endpoint = process.env.REACT_APP_API_URL 
 const api_url = process.env.REACT_APP_API_URL 
 
-function useFetchWithAuth(endpoint, init) {
+function useFetchWithAuth() {
 	const { token } = useAuth()
+	return function(endpoint, init) {
 	  var url = api_url + endpoint
 	  if(!init) init = {}
 	  if(init && init.headers) {
-	console.log('entries')
 	    if(init.headers instanceof Headers)
 	      init.headers.append('Authorization', 'Bearer ' + token)
 	    else
@@ -18,17 +18,29 @@ function useFetchWithAuth(endpoint, init) {
 	    init.headers = {'Authorization': 'Bearer ' + token}
 
 	  return fetch(url, init)
+	}
 }
 
 export const useEntries = function() {
 
 	// TODO caching?
-	const req = useFetchWithAuth('/entries')
+	const req = useFetchWithAuth()
 	const [entries, setEntries] = useState([]);
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
-		req.then(res => res.json())
-		   .then(json => setEntries(json.data))
+		if(loading) return
+		setLoading(true)
+		req('/entries')
+		   .then(res => res.json())
+		   .then(json => {
+			   setEntries(json.data)
+			   setLoading(false)
+		   })
+	           .catch(err => {
+			   setLoading(false)
+			   throw err
+		   })
 	}, [])
 
 	return entries;
