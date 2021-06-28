@@ -379,6 +379,8 @@ class LogbookData extends Component{
 	   if(item.keterampilan_extra) 
 		ret.jenisKeterampilan += (item.skdi_ktn.length ? ", " : "") + item.keterampilan_extra.join(", ") 
 
+	   // for editing entry to work
+	   ret.raw = item
 	   // console.log('processData', ret)
 	   return ret;
 	});

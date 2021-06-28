@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {NavLink, Redirect, useHistory, useLocation } from 'react-router-dom'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
@@ -25,10 +25,10 @@ function LogbookEntry (props) {
 	}
   }
 
+  const params = ["tanggal", "stase", "wahana", "lokasi", "nrm", "nama",
+			"gender", "usia", "satuanusia", "catatan"]
   const form = React.createRef()
   const handleSubmit = function(e) {
-	const params = ["tanggal", "stase", "wahana", "lokasi", "nrm", "nama",
-			"gender", "usia", "satuanusia", "catatan"]
 	let inputs = {}
 	for(var p of params)
 	  inputs[p] = form.current[p].value
@@ -51,7 +51,8 @@ function LogbookEntry (props) {
 
 	// TODO handle edit instead of insert
 	if(locationState && locationState.editing) {
-
+		console.log(locationState)
+		alert('Work In Progress')
 	} else
 	  createEntry(inputs)
 	  .then(function handleSuccess() {
