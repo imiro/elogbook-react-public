@@ -420,10 +420,6 @@ export default function logbookTable (props)  {
     setRows(changedRows);
   };
 
-  const tes = (e) => {
-    alert(getRowId(e))
-  }
-
   const stylesDetailRow = {
     
       backgroundColor: '#f5f5f5',
@@ -440,21 +436,8 @@ export default function logbookTable (props)  {
       }}
     />
   );
-  
-//   const [tableColumnExtensions] = useState([
-//     { columnName: 'region', width: 150 },
-//     { columnName: 'sector', width: 180 },
-//     { columnName: 'channel', width: 120 },
-//     { columnName: 'product', width: 230 },
-//     { columnName: 'customer', width: 230 },
-//     { columnName: 'saleDate', width: 130 },
-//     { columnName: 'units', width: 80 },
-//     { columnName: 'amount', align: 'right', width: 140 },
-//   ]);
 
   const [tableColumnExtensions] = useState([
-    // { columnName: 'tes2', width: 200 },
-    // { columnName: 'tes', width: 200 },
     { columnName: 'noentry', width: 110},
     { columnName: 'nrm', width: 132 },
     { columnName: 'tanggal', width: 150 },
@@ -503,17 +486,21 @@ export default function logbookTable (props)  {
       </span>
     </Tooltip>
   );
+
+  const CellTooltip = props => (
+    <DataTypeProvider
+      for={columns.map(({ name }) => name)}
+      formatterComponent={TooltipFormatter}
+      {...props}
+    />
+  );
   
   useEffect(() => {
 	  setRows(props.data.map(item => {return {...item, id: item.noentry}}))
   }, [props.data])
 
   return (
-    // alert(props.greeting),
     <Paper>
-      {/* <div className="logbook-popup">popup</div> */}
-      {/* {this.props.greeting} */}
-      
       <Grid
         rows={rows}
         columns={columns}
@@ -540,13 +527,17 @@ export default function logbookTable (props)  {
         <Table columnExtensions={tableColumnExtensions} 
             tableComponent={TableComponent}
             cellComponent={Cell}
+            
         />
          {/* <TableColumnReordering
           defaultOrder={['noentry','nrm','tanggal','stase','lokasiRS','ruangan','inisialPasien', 'jenisKelamin','usia', 'diagnosis','kompetensiDiagnosis','jenisTindakan', 'jenisKeterampilan','catatan','kompetensiKeterampilan',TableEditColumn.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE]}
         /> */}
        
         <PagingPanel pageSizes={pageSizes} />
-        <TableColumnResizing defaultColumnWidths={tableColumnExtensions} />
+        <TableColumnResizing 
+          defaultColumnWidths={tableColumnExtensions} 
+          minColumnWidth = {96}
+        />
         <TableHeaderRow 
           showSortingControls 
           sortLabelComponent={sortLabel}

@@ -524,7 +524,8 @@ class LogbookData extends Component{
                         endDate={this.state.endDate}
                         selectsRange
                         dateFormat="yyyy/MM/dd"
-                        className="filter-box-dropdown"
+                        className="filter-date-dropdown"
+                        placeholderText="Pilih tanggal"
                       />
 
                       </div>
