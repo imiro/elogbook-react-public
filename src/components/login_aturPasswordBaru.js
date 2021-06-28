@@ -57,7 +57,7 @@ const [isSaved, setSaved] = useState(false);
 			setTimeout(() => setRedirect(true), 1500)
 		} else {
 			console.error(resp)
-			alert('Failed')
+			alert('Gagal. Pastikan kedua password Anda sama. Tautan Anda mungkin sudah kadaluwarsa.')
 			// handle error
 		}
 	}).catch(function() {
@@ -68,10 +68,9 @@ const [isSaved, setSaved] = useState(false);
     return (
       <div className="container-login">
       <LoginStaticPage/>
-        <div className={isSaved ? "alert-password" : "alert-password-saved"}></div>
-	{isSaved ? <span id="alert-password-text">Password berhasil disimpan</span>
-		 : <span id="alert-password-saved-text">Atur password baru Anda yang nanti dapat digunakan untuk masuk ke dalam akun <br></br>E-logbook Anda dengan menggunakan email UI</span>}
-        
+        <div className={isSaved ? "alert-password-saved" : "alert-password"}></div>
+	{isSaved ? <span id="alert-password-saved-text">Password berhasil disimpan</span>
+		 : <span id="alert-password-text">Atur password baru Anda yang nanti dapat digunakan untuk masuk ke dalam akun <br></br>E-logbook Anda dengan menggunakan email UI</span>}
         <div className="form-new-password">
             <div className="login-text">Atur Password Baru</div>
             <form onSubmit={e => handleFormSubmit(e)}>

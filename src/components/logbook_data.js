@@ -18,7 +18,7 @@ class LogbookData extends Component{
         room: [],
         competence:[],
         // startDate: new Date(),
-        startDate: new Date(),
+        startDate: null,
         endDate: null,
         rangeDate: ""
       };
@@ -464,6 +464,7 @@ class LogbookData extends Component{
       return (
         // <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
         <div id="logbook-data" className="logbook-data">
+          
                 <div className="logbook-filter-title">Filter </div>
                 <div className="logbook-filter">
                   <div className="filter-box">
@@ -526,7 +527,8 @@ class LogbookData extends Component{
                         endDate={this.state.endDate}
                         selectsRange
                         dateFormat="yyyy/MM/dd"
-                        className="filter-box-dropdown"
+                        className="filter-date-dropdown"
+                        placeholderText="Pilih tanggal"
                       />
 
                       </div>

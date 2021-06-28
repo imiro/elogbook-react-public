@@ -120,8 +120,9 @@ export default function LoginPage() {
       <div className="form-login">
         <div className="login-text">Login</div>
         <form onSubmit={e => handleLogin(e)}>
-          <div className="form-input">
             <label htmlFor="email" className="login-label">Email UI </label>
+          {/* <div className="form-input">
+          <div className="login-text">Login</div> */}
             <div className= "email-box">
               <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className={emailError ? "login-textfield-error" : "login-textfield"} onChange={(e) => validateEmail(e)}></input>
               <span className="email-error"><img id="email-error" src={error}/>{emailError}</span> 
@@ -136,9 +137,9 @@ export default function LoginPage() {
             </div>
             <input id="login-submit" type="submit" value="Login" className="login-button" />
             <div className="login-or"><img src={atau}></img></div>
-            <Link id="link-login" to="/login-atur-password-baru"><button id="login-sso-submit" type="submit" value="Login dengan SSO" className="login-button" onClick={e => handleSSOLogin(e)}>Login dengan SSO</button></Link>
+            <button className="login-sso-submit" type="submit" value="Login dengan SSO" onClick={e => handleSSOLogin(e)}>Login dengan SSO</button>
             <div className="login-confirm"><div>Pertama kali menggunakan E-Logbook? </div><div>Silahkan Login dengan SSO terlebih dahulu</div> </div>
-          </div>
+          {/* </div> */}
         </form>
       </div>
     </div>
