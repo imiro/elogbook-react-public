@@ -1,5 +1,4 @@
 import { createServer, Response } from "miragejs"
-console.log("MIRAGE FILE START")
 
 const options = {
     routes() {
@@ -176,5 +175,8 @@ const options = {
 	})
     }
 }
-createServer(options)
+if(process.env.REACT_APP_MOCK_SERVER === 'true') {
+	console.log("MIRAGE FILE START")
+	createServer(options)
+}
 
