@@ -142,6 +142,19 @@ export const useCreateEntry = function() {
 }
 }
 
+export const useEditEntry = function() {
+	const fwa = useFetchWithAuth()
+	return function(id, inputs) {
+	return fwa('/entry/' + id, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(inputs)
+	})
+	}
+}
+
 export const useAPI = function() {
   const { token } = useAuth()
 

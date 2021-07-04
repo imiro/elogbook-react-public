@@ -5,18 +5,34 @@ import Navbar from './Navbar'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-import { useCreateEntry, useSkdiDxList, useSkdiKtnList, useDictionary } from '../providers/api'
+import { useEditEntry, useCreateEntry, useSkdiDxList, useSkdiKtnList, useDictionary } from '../providers/api'
 import { withDictionaryOptions } from './logbook'
 
 function LogbookEntry (props) {
   const { state: locationState } = useLocation()
   const history = useHistory()
   const createEntry = useCreateEntry()
+  const editEntry = useEditEntry()
 
   const [isSearchable, setSearchable] = useState(true)
+  const initSkdi = function(t) {
+	if(!locationState || !locationState.data || !locationState.data.raw)
+	  	return []
+	let val = []
+	const k = "skdi_" + t
+	const j = t == "dx" ? "dx_extra" : "keterampilan_extra"
+	const v = t == "dx" ? "diagnosis" : "keterampilan"  
+	val = locationState.data.raw[k].map(x => (
+		{value: x, 
+		 label: props.dictionary[k].find(({id}) => x == id)[v]
+		}))
+	if(locationState.data.raw[j] && locationState.data.raw[j].length)
+	  val = val.concat(locationState.data.raw[j].map(x => ({value: x, label: x, __isNew__: true})))
+	return val
+  }
   const [skdi, setSkdi] = useState({
-	  dx: [],
-	  ktn: []
+	  dx: initSkdi("dx"),
+	  ktn: initSkdi("ktn")
   })
   const toggleSearchable = () => setSearchable(state => !state)
   const handleSkdiChange = (type) => {
@@ -27,6 +43,28 @@ function LogbookEntry (props) {
 
   const params = ["tanggal", "stase", "wahana", "lokasi", "nrm", "nama",
 			"gender", "usia", "satuanusia", "catatan"]
+  const usingReactSelect = ["stase", "wahana", "lokasi", "gender", "satuanusia"]
+  const [inputValues, setInputValues] = useState(params.reduce(
+  function (init, p) {
+	if(locationState && locationState.data && locationState.data.raw
+		&& locationState.data.raw[p])
+	  init[p] = locationState.data.raw[p]
+	else
+	  init[p] = null
+	return init
+  }, {}))
+
+  const handleInputChange = function(p) {
+	return function(e) {
+		let val = usingReactSelect.includes(p) ? e.value : e.target.value
+		setInputValues(current => {return {
+			...current,
+			[p]: val
+		}})
+
+	}
+  }
+
   const form = React.createRef()
   const handleSubmit = function(e) {
 	let inputs = {}
@@ -51,8 +89,25 @@ function LogbookEntry (props) {
 
 	// TODO handle edit instead of insert
 	if(locationState && locationState.editing) {
-		console.log(locationState)
-		alert('Work In Progress')
+		editEntry(locationState.data.raw.id, inputs)
+		.then(async function (resp) {
+			if(resp.ok) {
+			history.push({
+				pathname: '/logbook',
+				state: {
+					successfulEntry: true
+			}})
+			} else {
+				alert("Error")
+				console.error(resp)
+				console.error(resp.status, resp.statusText)
+				console.error(await resp.text())
+			}
+		})
+		.catch(function (err) {
+			console.warn(err)
+			alert("Network error")
+		})
 	} else
 	  createEntry(inputs)
 	  .then(function handleSuccess() {
@@ -160,7 +215,6 @@ function LogbookEntry (props) {
       const optionSkill = useSkdiKtnList().map(x => {
 	return {value: x.id, label: x.keterampilan}
       })*/
-	console.log('skdi', skdi)
 
 
     return (
@@ -178,33 +232,33 @@ function LogbookEntry (props) {
             <div id="logbook-entry" className="logbook-entry">
                     <div className="logbook-entry-title">Data Entry Baru</div> 
                     <label>Tanggal</label>
-                    <input type="date"id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal"></input> 
+                    <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
                     <label>Stase</label>
-                    <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" />
+                    <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} />
                     <label>Lokasi Rumah Sakit</label>
-                    <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" />
+                    <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" value={optionRS.filter(x => x.value == inputValues.wahana)} onChange={handleInputChange("wahana")} />
                     <label>Ruangan</label>
-                    <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" />
+                    <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" value={optionRoom.filter(x => x.value == inputValues.lokasi)} onChange={handleInputChange("lokasi")}/>
                     <label>NRM</label>
-                    <input type="text" placeholder="Masukkan NRM" name="nrm" className="logbook-entry-input"></input>
+                    <input type="text" placeholder="Masukkan NRM" name="nrm" className="logbook-entry-input" value={inputValues.nrm} onChange={handleInputChange("nrm")}></input>
                     <label>Inisial Pasien</label>
-                    <input type="text" placeholder="Masukkan inisial pasien" name="nama" className="logbook-entry-input"></input>
+                    <input type="text" placeholder="Masukkan inisial pasien" name="nama" className="logbook-entry-input" value={inputValues.nama} onChange={handleInputChange("nama")}></input>
                     <label>Jenis Kelamin</label>
-                    <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" />
+                    <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" value={optionGender.filter(x => x.value == inputValues.gender)} onChange={handleInputChange("gender")}/>
                     <label>Usia</label>
                     <div className="logbook-entry-age">
-                      <input type="number" name="usia" placeholder="Usia Pasien" id="idAge" className="logbook-entry-input"></input>
-                      <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" />
+                      <input type="number" name="usia" placeholder="Usia Pasien" id="idAge" className="logbook-entry-input" value={inputValues.usia} onChange={handleInputChange("usia")}></input>
+                      <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")}/>
                     </div>
                     <label>Diagnosis</label>
-                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} className="logbook-entry-select" />
+                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} className="logbook-entry-select" />
                     <label>Tingkat kompetensi Diagnosis</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi" className="logbook-entry-input"
 	    		value={skdi.dx.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_dx.find(y => y.id == x.value).kompetensi).join(",")}></input>
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
                     <label>Keterampilan</label>
-                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti className="logbook-entry-select" styles={colourStyles} onChange={handleSkdiChange("ktn")} />
+                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti className="logbook-entry-select" styles={colourStyles} value={skdi.ktn} onChange={handleSkdiChange("ktn")} />
                     <label>Tingkat kompetensi Keterampilan</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"
 	    		value={skdi.ktn.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_ktn.find(y => y.id == x.value).kompetensi).join(",")}></input>
