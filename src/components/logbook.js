@@ -9,7 +9,7 @@ import search from '../assets/images/logbook/search.png'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 import { AlignLeft } from 'react-feather';
 import LogbookData from './logbook_data'
-import { useEntries, useDictionary, useSkdiDxList } from '../providers/api'
+import { useEntries, useCompleteDictionary } from '../providers/api'
 
 class Logbook extends Component <*, State> {
   constructor(props) {
@@ -17,12 +17,6 @@ class Logbook extends Component <*, State> {
     this.state = {
     };
   }
-
-
-  handleData = (data) => {
-  }
-  
- 
 
   render() {
     return (
@@ -59,44 +53,44 @@ class Logbook extends Component <*, State> {
   }
 }
 
+export function withDictionaryOptions(Component) {
+	return function(props) {
+	const dict = useCompleteDictionary()
+
+	function toValueLabel(obj) {
+		var ret = []
+		for(var key in obj)
+		   ret.push({
+			   value: key,
+			   label: obj[key]
+		   })
+		return ret;
+	}
+
+	const options = {
+	   optionRS: toValueLabel(dict.wahana),
+	   optionStase: toValueLabel(dict.stase),
+	   optionRoom: toValueLabel(dict.lokasi),
+	   optionCompetence: toValueLabel({
+		'1': '1', '2': '2',
+		'3A': '3A', '3B': '3B', '4A': '4A', '4B': '4B'
+	   })
+	}
+
+	return <Component options={options}
+			  dictionary={dict} {...props} />
+	}
+}
+
 function injectAPI(Component) {
 	const InjectedLogbook = function(props) {
 		const entries = useEntries()
-		let dict = useDictionary()
-		const skdi_dx = useSkdiDxList()
-		
-		function toValueLabel(obj) {
-		   	var ret = []
-			for(var key in obj)
-			   ret.push({
-				   value: key,
-				   label: obj[key]
-			   })
-		        return ret;
-		}
-
-		const options = {
-		   optionRS: toValueLabel(dict.wahana),
-		   optionStase: toValueLabel(dict.stase),
-		   optionRoom: toValueLabel(dict.lokasi),
-		   optionCompetence: toValueLabel({
-			'1': '1', '2': '2',
-			'3A': '3A', '3B': '3B', '4A': '4A', '4B': '4B'
-		   })
-		}
-		dict = {...dict, skdi_dx: skdi_dx}
-
-		console.log('dict', dict)
-		console.log('options', options)
-
-		// console.log(entries)
-		// console.log("^ entries")
 		return <Component {...props} 
 		        data={entries} 
-			dictionary={dict} options={options} />
+			/>
 	}
 	
-	return InjectedLogbook;
+	return withDictionaryOptions(InjectedLogbook);
 }
 
 export default injectAPI(Logbook)

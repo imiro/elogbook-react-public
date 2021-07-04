@@ -114,7 +114,7 @@ const styles = theme => ({
     </TableFixedColumns.Cell>
   );
 
-  const HighlightedCell = ({ value, style, ...restProps }) => (
+  const HighlightedCell = ({ value, style, row, ...restProps }) => (
     <Table.Cell
       {...restProps}
       style={{
@@ -133,7 +133,13 @@ const styles = theme => ({
           cursor:'pointer',
         }}
       >
-        <NavLink to="/logbook-entry"><img src={edit}></img></NavLink>
+        <NavLink to={{pathname: "/logbook-entry",
+		      state: {
+		      	editing: true,
+		      	data: row 
+		      }}}>
+	  <img src={edit}></img>
+	 </NavLink>
         <img src={remove} onClick={() => {}} className="delete-row-icon"></img>
       </span>
     </Table.Cell>
@@ -235,7 +241,6 @@ const styles = theme => ({
   };
 
   const Cell = (props) => {
-    
     const {column}  = props;
     if (column.name === 'action') {
        return <HighlightedCell {...props} />;

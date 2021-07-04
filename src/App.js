@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthWrapper, PrivateRoute } from './providers/auth'
 import LoginPage from './components/login'
 import HomePage from './components/home'
@@ -23,27 +23,29 @@ export default function App() {
 
   return (
     <AuthWrapper>
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
+	  <PrivateRoute exact path="/" component={Dashboard} />
           <Route exact path="/login">
             <LoginPage />
           </Route>
+	  
           <Route path="/login-forgot-password" component={LoginForgotPasswordPage} />
           <Route path="/login-setup-password" component={LoginSetupPasswordPage} />
           <Route path="/login-confirm-password" component={LoginConfirmPasswordPage} />
           <Route path="/login-atur-password-baru" component={LoginAturPasswordBaruPage} />
-          {/* <Route path="/dashboard" component={Dashboard} />
-          <Route path="/profile" component={Profile} /> */}
-        </Switch>
-          {/* <PrivateRoute path="/home" component={HomePage} />
-          <PrivateRoute component={HomePage} /> */}
           <PrivateRoute path="/dashboard" component={Dashboard} />
           <PrivateRoute path="/logbook" component={Logbook} />
           <PrivateRoute path="/logbook-entry" component={LogbookEntry} />
           <PrivateRoute path="/skdi" component={SKDI} />
           <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/logout" component={Logout} />
-      </BrowserRouter>
+          {/* <Route path="/dashboard" component={Dashboard} />
+          <Route path="/profile" component={Profile} /> */}
+        </Switch>
+          {/* <PrivateRoute path="/home" component={HomePage} />
+          <PrivateRoute component={HomePage} /> */}
+      </HashRouter>
     </AuthWrapper>
   );
 }

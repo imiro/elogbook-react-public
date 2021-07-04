@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 const endpoint = process.env.REACT_APP_API_URL 
 const api_url = process.env.REACT_APP_API_URL 
 
-function useFetchWithAuth(endpoint, init) {
+function useFetchWithAuth() {
 	const { token } = useAuth()
+	return function(endpoint, init) {
 	  var url = api_url + endpoint
 	  if(!init) init = {}
 	  if(init && init.headers) {
-	console.log('entries')
 	    if(init.headers instanceof Headers)
 	      init.headers.append('Authorization', 'Bearer ' + token)
 	    else
@@ -18,17 +18,29 @@ function useFetchWithAuth(endpoint, init) {
 	    init.headers = {'Authorization': 'Bearer ' + token}
 
 	  return fetch(url, init)
+	}
 }
 
 export const useEntries = function() {
 
 	// TODO caching?
-	const req = useFetchWithAuth('/entries')
+	const req = useFetchWithAuth()
 	const [entries, setEntries] = useState([]);
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
-		req.then(res => res.json())
-		   .then(json => setEntries(json.data))
+		if(loading) return
+		setLoading(true)
+		req('/entries')
+		   .then(res => res.json())
+		   .then(json => {
+			   setEntries(json.data)
+			   setLoading(false)
+		   })
+	           .catch(err => {
+			   setLoading(false)
+			   throw err
+		   })
 	}, [])
 
 	return entries;
@@ -63,6 +75,71 @@ export const useSkdiDxList = function() {
 	})
 
 	return dx
+}
+
+let skdi_ktn = []
+export const useSkdiKtnList = function() {
+	const [ktn, setKtn] = useState(skdi_ktn)
+	useEffect(() => {
+		if(!ktn.length)
+			fetch(api_url + '/skdi_keterampilan/list')
+			.then(resp => resp.json())
+			.then(dx_a => {
+			    skdi_ktn = dx_a
+			    setKtn(dx_a)
+			})
+	})
+
+	return ktn
+}
+
+export const useCompleteDictionary = function() {
+	const dx = useSkdiDxList()
+	const ktn = useSkdiKtnList()
+	const dict = useDictionary()
+
+	return {...dict, skdi_dx: dx, skdi_ktn: ktn}
+}
+
+export const requestForgotPassword = function(email) {
+	return fetch(api_url + '/forgot-password?email=' + email)
+	.then(function(resp) {
+		return !!resp.ok
+	})
+}
+
+export const setPassword = function(params) {
+	let {token, email, password, password_confirmation} = params
+	console.log('sending', params)
+	return fetch(api_url + '/set-password', {
+		method: "POST",
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(params)
+	}).then(function(resp) {
+		if(resp.ok) return {ok: true}
+		return resp.json()
+		// TODO handle error
+	}).then(function (err) {
+		return {ok: false, ...err}
+	})
+}
+
+export const useCreateEntry = function() {
+	const { token } = useAuth()
+	return function createEntry(inputs) {
+	return fetch(api_url + '/entry', {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + token},
+		body: JSON.stringify(inputs)
+	}).then(function (resp) {
+		if(resp.ok) return resp.json();
+		throw resp;
+	})
+}
 }
 
 export const useAPI = function() {

@@ -24,7 +24,8 @@ export default function LoginPage() {
   
   function handleSSOLogin(ev) {
       ev.preventDefault()
-      if(process.env.REACT_APP_MOCK_USER) {
+      if(process.env.REACT_APP_MOCK_USER === 'true') {
+	    console.warn("Mock SSO user")
             processTokenUpdate("toKen123")    
             return
       }
@@ -83,9 +84,6 @@ export default function LoginPage() {
 		return
 	}
 
-	console.log(e.target.email.value)
-	console.log(e.target.password.value)
-	
 	attemptPasswordLogin(e.target.email.value,
 			     e.target.password.value)
 	.then(function (tkn) {
@@ -104,8 +102,10 @@ export default function LoginPage() {
     // SEE https://reactrouter.com/web/example/auth-workflow
 
 	  // TODO to dashboard if password set, to password setting otherwise
-    // if(user.is_password_set)
-    return <Redirect to="/dashboard" />
+    if(user.is_password_set)
+    	return <Redirect to="/dashboard" />
+    else
+	  return <Redirect to={`/login-atur-password-baru?email=${user.email}&token=${user.set_password_token}`} />
 
     return (
       <div>
@@ -120,14 +120,14 @@ export default function LoginPage() {
       <div className="form-login">
         <div className="login-text">Login</div>
         <form onSubmit={e => handleLogin(e)}>
+            <label htmlFor="email" className="login-label">Email UI </label>
           {/* <div className="form-input">
           <div className="login-text">Login</div> */}
-            <label for="email" className="login-label">Email UI </label>
             <div className= "email-box">
               <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className={emailError ? "login-textfield-error" : "login-textfield"} onChange={(e) => validateEmail(e)}></input>
               <span className="email-error"><img id="email-error" src={error}/>{emailError}</span> 
             </div>
-            <label for="password" className="login-label">Password </label>
+            <label htmlFor="password" className="login-label">Password </label>
             <div className= "password-box">
               <input id="password" type="password" name="password" placeholder="Masukkan Password Anda" className="login-textfield"></input>
               <div id="togglePassword" className={isHide ? "hide-password" : "show-password"} onClick={togglePassword}></div>
@@ -137,7 +137,7 @@ export default function LoginPage() {
             </div>
             <input id="login-submit" type="submit" value="Login" className="login-button" />
             <div className="login-or"><img src={atau}></img></div>
-            <Link id="link-login" to="/login-atur-password-baru"><button className="login-sso-submit" type="submit" value="Login dengan SSO">Login dengan SSO</button></Link>
+            <button className="login-sso-submit" type="submit" value="Login dengan SSO" onClick={e => handleSSOLogin(e)}>Login dengan SSO</button>
             <div className="login-confirm"><div>Pertama kali menggunakan E-Logbook? </div><div>Silahkan Login dengan SSO terlebih dahulu</div> </div>
           {/* </div> */}
         </form>

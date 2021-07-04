@@ -20,11 +20,7 @@ class LogbookData extends Component{
         // startDate: new Date(),
         startDate: null,
         endDate: null,
-        rangeDate: "", 
-	optionStase: [],
-	optionRoom: [],
-	optionRS: [],
-	optionCompetence: []
+        rangeDate: ""
       };
     }
 
@@ -375,10 +371,16 @@ class LogbookData extends Component{
 	  ret.diagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).diagnosis)
 	  ret.kompetensiDiagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).kompetensi).join(',')
 	  ret.diagnosis = ret.diagnosis.join(', ')
-	  if(item.diagnosisExtra)
-		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.diagnosisExtra
-	   
+	  if(item.dx_extra)
+		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.dx_extra.join(', ')
 
+	   ret.jenisKeterampilan = item.skdi_ktn.map(x => this.props.dictionary.skdi_ktn.find(o => o.id == x).keterampilan).join(',')
+	   ret.kompetensiKeterampilan = item.skdi_ktn.map(x => this.props.dictionary.skdi_ktn.find(o => o.id == x).kompetensi).join(',')
+	   if(item.keterampilan_extra) 
+		ret.jenisKeterampilan += (item.skdi_ktn.length ? ", " : "") + item.keterampilan_extra.join(", ") 
+
+	   // for editing entry to work
+	   ret.raw = item
 	   // console.log('processData', ret)
 	   return ret;
 	});
@@ -423,6 +425,7 @@ class LogbookData extends Component{
           }),
         };
   
+	/*
         const optionStase = [
           { value: '1', label: 'Stase 1', searchable: false },
           { value: '2', label: 'Stase 2' },
@@ -446,7 +449,7 @@ class LogbookData extends Component{
           { value: '3A', label: '3A' },
           { value: '3B', label: '3B' },
           { value: '4A', label: '4A' }
-        ]
+        ] */
       
       if( !this.props.optionRS || !this.props.optionRoom || 
 	  !this.props.optionStase || !this.props.optionCompetence )
