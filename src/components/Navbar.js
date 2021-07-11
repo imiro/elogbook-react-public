@@ -4,7 +4,8 @@ import expand from '../assets/images/navbar/expand_more.png'
 import profile from '../assets/images/navbar/profile.png'
 import logout from '../assets/images/navbar/logout.png'
 import logoutPopup from '../assets/images/navbar/logout_popup.png'
-
+import { useAuth } from '../providers/auth'
+import { useHistory } from 'react-router-dom'
 
 
 class Popup extends Component {
@@ -31,6 +32,7 @@ class Navbar extends Component {
     super(props);
     this.state = {isToggle: false,  showPopup: false};
     this.toggleDropdown = this.toggleDropdown.bind(this);
+    this.handleLogout = this.handleLogout.bind(this)
   }
 
   toggleDropdown(e) {
@@ -42,6 +44,12 @@ class Navbar extends Component {
       showPopup: !this.state.showPopup,
       isToggle: !this.state.isToggle
     });
+  }
+
+  handleLogout() {
+	// TODO refactor this to be inside auth instead?
+	this.props.auth.updateCredentials(null)
+	this.props.history.push('/login')
   }
  
 
@@ -86,7 +94,7 @@ class Navbar extends Component {
               <div className="dropdown-divider"></div>
               <div className="dropdown-menu-box-bottom">
                 <NavLink className="dropdown-item-menu"  style={ {textDecoration: 'none'}} to='/profile'><img src={profile}></img> Lihat Profil</NavLink>
-                <div className="dropdown-item-menu" onClick={this.togglePopup.bind(this)}><img src={logout}></img>Sign Out</div>
+                <div className="dropdown-item-menu" onClick={this.handleLogout}><img src={logout}></img>Sign Out</div>
               </div>
             </div>
           </div>
@@ -97,4 +105,16 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar
+function withHooks(Component) {
+	
+	return function (props) {
+		const auth =  useAuth()
+		const history = useHistory()
+
+		return <Component
+			{...props}
+			auth={auth} history={history} />
+	}
+}
+
+export default withHooks(Navbar)
