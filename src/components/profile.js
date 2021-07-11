@@ -101,7 +101,7 @@ export default function ProfilePage() {
     const onChangeNewPassword = (e) =>{
       setPasswordNew(e.target.value);
       // alert(password==passwordNew);
-      if(password==passwordNew){
+      if(password===passwordNew){
         document.getElementById("passwordbaru").style.borderColor = "red";
         document.getElementById("error-new").style.display = "block";
       }
