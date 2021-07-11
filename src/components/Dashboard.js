@@ -11,8 +11,17 @@ import graph2 from '../assets/images/dashboard/graph2.png'
 import left from '../assets/images/dashboard/chevron_left.png'
 import right from '../assets/images/dashboard/chevron_right.png'
 import sort from '../assets/images/dashboard/sort.png'
+import MultiSelect from "react-multi-select-component";
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+      stase :[],
+      
+    };
+  }
   render() {
     const showTable = () =>{
       document.getElementById("dashboard-table-title").style.display = "block";
@@ -34,6 +43,15 @@ class Dashboard extends Component {
     const hideCompetencyTip = () =>{
       document.getElementById("competency-tip").style.visibility = "hidden";
     }
+
+    const optionStase = [
+      { value: '1', label: 'Stase 1', searchable: false },
+      { value: '2', label: 'Stase 2' },
+      { value: '3', label: 'Stase 3' },
+    ]
+
+    
+
 
     return (
       <div className="container-dashboard">
@@ -59,6 +77,13 @@ class Dashboard extends Component {
                 <option value="">Stase 2</option>
                 <option value="">Stase 3</option>
               </select>
+              {/* <MultiSelect
+                        options="[]"
+                        value="[]"
+                        labelledBy="Pilih Stase" 
+                        className="stase"
+                        // overrideStrings={this.placeholderStase}
+                      /> */}
             </div>
            
             <div className="row1-container-dashboard">

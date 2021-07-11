@@ -42,7 +42,7 @@ class Logbook extends Component <*, State> {
           {/*this.props.data ? <LogbookData {...this.props.options} data={this.props.data}/> : 
               null
           */ }
-	    <LogbookData {...this.props.options}
+	        <LogbookData {...this.props.options}
 	    		 dictionary={this.props.dictionary}
 	    		 data={this.props.data} />
           </div>
