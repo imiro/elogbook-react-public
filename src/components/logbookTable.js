@@ -171,12 +171,8 @@ const styles = theme => ({
       {...restProps}
       style={{
         display: 'flex',
-        // justifyContent:'center',
-        // flexDirection: 'row',
-        // flexWrap: 'wrap',
-        // position:'sticky',
+        width:'fit-content',
         backgroundColor: '#DCE0E9',
-        width: 'fit-content',
         ...style,
       }}
     >
@@ -518,7 +514,7 @@ export default function logbookTable (props)  {
   }, [props.data])
 
   return (
-    <Paper>
+    <Paper className="logbook-result-table">
       <Grid
         rows={rows}
         columns={columns}

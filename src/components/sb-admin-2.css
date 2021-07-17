@@ -546,7 +546,7 @@ body {
 }
 
 .navbar-dashboard{
-    width: 100%;
+    width: calc(100% - 256px);
     height: 64px;
     background-color:#004445;
     /* position: fixed; */
@@ -1196,9 +1196,7 @@ body {
 /* logbook */
 
     .logbook-nodata{
-        /* padding-top: 251px;
-        padding-left: 447px; */
-        width: 1110px;
+        width: 100%;
         height:100%;
         display: flex;
         justify-content: center;
@@ -1212,11 +1210,8 @@ body {
 
     .logbook-data{
         width: 100%;
-        /* margin-top: 24px;
-        margin-left: 24px; */
         display: flex;
         flex-direction: column;
-        padding-right: 24px;
         padding-bottom: 24px;
     }
 
@@ -1230,10 +1225,11 @@ body {
     }
 
     .logbook-filter{
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-items: flex-end;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
     }
 
     #container-filter {
@@ -1252,8 +1248,7 @@ body {
         display: flex;
         flex-direction: column;
         margin-right:16px;
-        /* position: relative; */
-        z-index: -1;
+
       }
 
       .filter-box-title{
@@ -1267,23 +1262,21 @@ body {
       }
 
       .filter-box-dropdown{
-        /* position: relative;
-        z-index: 400; */
-        width:160px;
+        width:150px;
         height:40px;
         background-color: #FFFDFF;
-        /* border: 1px solid #C5C9D7; */
         box-sizing: border-box;
         border-radius: 6px;
         font-family: Source Sans Pro;
         font-style: normal;
         font-weight: normal;
         /* color:#C5C9D7; */
+        /* margin-bottom: 16px; */
       }
 
       .filter-date-dropdown{
         /* position: relative; */
-        width:160px;
+        width:150px;
         height:40px;
         background-color: #FFFDFF;
         border: 1px solid #C5C9D7;
@@ -1396,6 +1389,7 @@ body {
         align-items: center;
         border-radius: 6px;
         cursor:pointer;
+        margin-top: 16px;
     }
 
     .logbook-filter-cancelAll-disabled{
@@ -1408,7 +1402,15 @@ body {
         align-items: center;
         border-radius: 6px;
         cursor:default;
-        /* opacity: 0.4; */
+        margin-top: 16px;
+    }
+
+    .logbook-result-table{
+        z-index: 0;
+    }
+
+    .logbook-table-content{
+        background-color:#DCE0E9;
     }
 
     .logbook-table-content th{
@@ -1489,9 +1491,12 @@ body {
         background-color: #DBF1FF ;
     }
 
+    .logbook-table-content tr:nth-child(odd){
+        background-color:  #FFFFFF ;
+    }
+
     .logbook-table-content tr:nth-child(even){
-        /* border: 1px solid #EDF0F5; */
-        background-color:  #DBF1FF !important;
+        background-color:  #DBF1FF ;
     }
 
     .table tr{
@@ -1509,7 +1514,8 @@ body {
 
     .row-detail{
         display: flex;
-        flex-direction: row;
+        flex-direction:row;
+        /* flex-wrap:wrap; */
         /* background-color: #C43006; */
         /* position: absolute;
         float:left; */
