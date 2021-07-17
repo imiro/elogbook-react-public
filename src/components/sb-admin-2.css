@@ -846,20 +846,17 @@ body {
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        align-content: space-around;
-        padding-bottom: 24px;
-        padding-right: 24px;
+        /* align-content: space-around; */
+        padding: 24px;
         overflow-x: hidden;
-        width: 100%;
+        width: calc(100% - 256px);
     }
 
     .top-container-dashboard{
         display: flex;
         flex-direction: row;
-        width: 1062px;
+        width: 100%;
         height: 152px;
-        margin-top:24px;
-        margin-left:24px;
         background-color: #004445;
         box-shadow: 4px 8px 24px rgba(114, 110, 115, 0.2), 4px 8px 24px rgba(114, 110, 115, 0.2);
         border-radius: 6px;
@@ -930,7 +927,7 @@ body {
         font-weight: normal;
         font-size: 16px;
         line-height: 24px;
-        margin-left:24px;
+        /* margin-left:24px; */
         color:  #C5C9D7;
         padding-left: 16px;
     }
@@ -945,8 +942,8 @@ body {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        width: 1110px;
-        margin-left: 24px;
+        width: 100%;
+        /* margin-left: 24px; */
     }
 
     .row1-container-dashboard-content{
@@ -1017,8 +1014,8 @@ body {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        width: 1110px;
-        margin-left: 24px;
+        width: 100%;
+        /* margin-left: 24px; */
     }
 
     .row2-container-dashboard-content{
@@ -1214,9 +1211,9 @@ body {
     }
 
     .logbook-data{
-        width: 1080px;
-        margin-top: 24px;
-        margin-left: 24px;
+        width: 100%;
+        /* margin-top: 24px;
+        margin-left: 24px; */
         display: flex;
         flex-direction: column;
         padding-right: 24px;
@@ -1236,7 +1233,7 @@ body {
         display: flex;
         flex-direction: row;
         align-items: flex-end;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     #container-filter {
@@ -1416,6 +1413,7 @@ body {
 
     .logbook-table-content th{
         /* height: 56px; */
+        width:100%;
         border: 1px solid #FFFFFF;
         background-color: #004445;
         font-family: Source Sans Pro;
@@ -1524,8 +1522,8 @@ body {
         flex-direction: column;
         justify-content: flex-start;
         text-align: left;
-        margin-left: 48px;
-        margin-right:48px;
+        margin-left: 44px;
+        margin-right:44px;
         color: #726E73;
     }
 
@@ -1568,11 +1566,14 @@ body {
         align-items: center;
         justify-content: center;
         color: #FFFDFF;
-        z-index: -1;
+        
         /* margin-left: 433px; */
     }
 
     #logbook-save-entry{
+        float:right;
+        position:fixed;
+        right: 24px;
         width: 229px;
         height: 32px; 
         background: #008C8F;
@@ -1587,7 +1588,7 @@ body {
         align-items: center;
         justify-content: center;
         color: #FFFDFF;
-        margin-left: 737px;
+        /* margin-left: 737px; */
     }
 
     #logbook-back{
@@ -1597,8 +1598,9 @@ body {
 
     .logbook-box{
         overflow-y: auto;
-        padding-bottom: 24px;
+        padding: 24px;
         height:100%;
+        width: calc(100% - 256px);
         z-index: -1;
     }
 
@@ -1651,16 +1653,6 @@ body {
     ::placeholder{
         
         color:#808080;
-    }
-
-    .logbook-entry-select{
-        
-        width:326px;
-        height:40px;
-        border: 1px solid #C5C9D7;
-        box-sizing: border-box;
-        border-radius: 6px;
-        margin-bottom: 16px;
     }
 
     .logbook-entry-select{
@@ -1923,7 +1915,7 @@ body {
     }
 
     .profile-bar{
-        
+        position: relative;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -1939,6 +1931,7 @@ body {
         color: #FFFDFF;
         padding-top: 8px;
         padding-bottom: 8px;
+        z-index: -1;
     }
 
     .profile-bar img{

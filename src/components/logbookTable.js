@@ -170,18 +170,25 @@ const styles = theme => ({
     <TableRowDetail.Cell
       {...restProps}
       style={{
+        display: 'flex',
+        // justifyContent:'center',
+        // flexDirection: 'row',
+        // flexWrap: 'wrap',
+        // position:'sticky',
         backgroundColor: '#DCE0E9',
-        // position:'relative',
-        height:'168px',
-        // overflow:'hidden',
+        width: 'fit-content',
         ...style,
       }}
     >
-      <span
-        // style={{
-        //   color: 'white',
-        // }}
-      >
+      {/* <span
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          width: '100%',
+          backgroundolor: '#DCE0E9',
+        }}
+      > */}
         <div className="row-detail">
           <div className="row-detail-column">
             <div className="row-detail-label">NRM</div>
@@ -222,7 +229,13 @@ const styles = theme => ({
             <div>{row.catatan}</div>
           </div>
         </div>
-      </span>
+      {/* </span> */}
+      <span
+      style={{
+        width: '100%',
+        backgroundolor: '#DCE0E9',
+      }}
+      ></span>
     </TableRowDetail.Cell>
   );
   

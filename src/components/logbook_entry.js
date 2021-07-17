@@ -3,7 +3,7 @@ import {NavLink, Redirect, useHistory, useLocation } from 'react-router-dom'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { useEditEntry, useCreateEntry, useSkdiDxList, useSkdiKtnList, useDictionary } from '../providers/api'
 import { withDictionaryOptions } from './logbook'
@@ -131,32 +131,32 @@ function LogbookEntry (props) {
   var yyyy = today.getFullYear();
   
   today = yyyy + '-' + mm + '-' + dd;
-
-
       const colourStyles = {
+        control: styles => ({ ...styles, width:'326px', marginBottom:'16px' }),
         multiValue: (styles) => ({
             ...styles,
-            display:'flex',
-            flexDirection:'row',
-            flexWrap:'wrap',
-            // position:'absolute',
+            // display:'flex',
+            // flexDirection:'row',
+            // flexWrap:'wrap',
             alignItems:'center',
-            justifyContent:'space-around',
+            // justifyContent:'space-around',
             backgroundColor: '#008C8F',
             borderRadius: '16px',
-            width:'160px',
-            height: '40px',
             padding:'3px 6px 3px 6px',
+            cursor: 'pointer',
+            whiteSpace: 'pre-wrap'
         }),
         multiValueLabel: (styles) => ({
           ...styles,
           color: '#FFFDFF',
-          
+          whiteSpace: 'pre-wrap'
         }),
-        multiValueRemove: (styles, { data }) => ({
+        multiValueRemove: (styles) => ({
           ...styles,
+          // position:'absolute',
           float:'right',
-          right:'8px',
+          right:'16px',
+          // marginTop:'3px',
           backgroundColor: '#FFFDFF',
           color: '#008C8F',
           borderRadius: '50%',
@@ -166,23 +166,6 @@ function LogbookEntry (props) {
         }),
       };
 
-      /*const optionStase = [
-        { value: '1', label: 'Stase 1', searchable: false },
-        { value: '2', label: 'Stase 2' },
-        { value: '3', label: 'Stase 3' },
-      ]
-
-      const optionRS = [
-        { value: '1', label: 'RS 1' },
-        { value: '2', label: 'RS 2' },
-        { value: '3', label: 'RS 3' }
-      ]
-
-      const optionRoom = [
-        { value: '1', label: 'Ruangan 1' },
-        { value: '2', label: 'Ruangan 2' },
-        { value: '3', label: 'Ruangan 3' }
-      ]*/
       const { optionStase, optionRS, optionRoom } = props.options
       const optionDiagnosis = props.dictionary.skdi_dx.map(x => ({
 	      value: x.id,
@@ -254,14 +237,14 @@ function LogbookEntry (props) {
                       <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")}/>
                     </div>
                     <label>Diagnosis</label>
-                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} className="logbook-entry-select" />
+                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} />
                     <label>Tingkat kompetensi Diagnosis</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi" className="logbook-entry-input"
 	    		value={skdi.dx.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_dx.find(y => y.id == x.value).kompetensi).join(",")}></input>
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
                     <label>Keterampilan</label>
-                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti className="logbook-entry-select" styles={colourStyles} value={skdi.ktn} onChange={handleSkdiChange("ktn")} />
+                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti styles={colourStyles} value={skdi.ktn} onChange={handleSkdiChange("ktn")}  />
                     <label>Tingkat kompetensi Keterampilan</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"
 	    		value={skdi.ktn.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_ktn.find(y => y.id == x.value).kompetensi).join(",")}></input>
