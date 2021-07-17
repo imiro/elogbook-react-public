@@ -51,7 +51,7 @@ export default function LoginPage() {
   }
 
   const [isHide, setHide] = useState("false");
-
+  
   const togglePassword = () => {
     setHide(!isHide);
     const password = document.querySelector('#password');
@@ -84,18 +84,22 @@ export default function LoginPage() {
 		return
 	}
 
+  
 	attemptPasswordLogin(e.target.email.value,
 			     e.target.password.value)
 	.then(function (tkn) {
 		updateCredentials(tkn)
 	}).catch(function (e) {
 		console.log(e)
-		if(e.status == 422)
-			alert("Email / Password tidak sesuai")
-		else
-			alert(e.statusText)
+    
+		setWrong(true);
+		// if(e.status == 422)
+    // alert(e.statusText)
+		// else
+		// 	alert(e.statusText)
 	})
   }
+  const [isWrong, setWrong] = useState(false);
 
   if(user) {
     // TODO redirect to original location, using callbacks
@@ -117,30 +121,40 @@ export default function LoginPage() {
     return (
     <div className="container-login">
       <LoginStaticPage/>
-      <div className="form-login">
-        <div className="login-text">Login</div>
-        <form onSubmit={e => handleLogin(e)}>
-            <label htmlFor="email" className="login-label">Email UI </label>
-          {/* <div className="form-input">
-          <div className="login-text">Login</div> */}
-            <div className= "email-box">
-              <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className={emailError ? "login-textfield-error" : "login-textfield"} onChange={(e) => validateEmail(e)}></input>
-              <span className="email-error"><img id="email-error" src={error}/>{emailError}</span> 
-            </div>
-            <label htmlFor="password" className="login-label">Password </label>
-            <div className= "password-box">
-              <input id="password" type="password" name="password" placeholder="Masukkan Password Anda" className="login-textfield"></input>
-              <div id="togglePassword" className={isHide ? "hide-password" : "show-password"} onClick={togglePassword}></div>
-            </div>
-            <div className="forgot-password">
-              <Link id="forgot-password" to="/login-forgot-password">Lupa password?</Link>
-            </div>
-            <input id="login-submit" type="submit" value="Login" className="login-button" />
-            <div className="login-or"><img src={atau}></img></div>
-            <button className="login-sso-submit" type="submit" value="Login dengan SSO" onClick={e => handleSSOLogin(e)}>Login dengan SSO</button>
-            <div className="login-confirm"><div>Pertama kali menggunakan E-Logbook? </div><div>Silahkan Login dengan SSO terlebih dahulu</div> </div>
-          {/* </div> */}
-        </form>
+      <div className= "container-form-login">
+        <div className="container-error-login">
+        {isWrong? 
+          <div className="alert-login"></div> : null }
+         {isWrong ? 
+        <span className="alert-login-text">Password/ Email UI yang Anda masukkan tidak sesuai, silahkan <br></br> masukkan password/ Email UI yang benar</span>
+        :null
+        }
+        </div>
+        <div className="form-login">
+          <div className="login-text">Login</div>
+          <form onSubmit={e => handleLogin(e)}>
+              <label htmlFor="email" className="login-label">Email UI </label>
+            {/* <div className="form-input">
+            <div className="login-text">Login</div> */}
+              <div className= "email-box">
+                <input id="email" type="email" name="email" placeholder="Masukkan Email UI Anda" className={emailError ? "login-textfield-error" : "login-textfield"} onChange={(e) => validateEmail(e)}></input>
+                <span className="email-error"><img id="email-error" src={error}/>{emailError}</span> 
+              </div>
+              <label htmlFor="password" className="login-label">Password </label>
+              <div className= "password-box">
+                <input id="password" type="password" name="password" placeholder="Masukkan Password Anda" className="login-textfield"></input>
+                <div id="togglePassword" className={isHide ? "hide-password" : "show-password"} onClick={togglePassword}></div>
+              </div>
+              <div className="forgot-password">
+                <Link id="forgot-password" to="/login-forgot-password">Lupa password?</Link>
+              </div>
+              <input id="login-submit" type="submit" value="Login" className="login-button" />
+              <div className="login-or"><img src={atau}></img></div>
+              <div className="login-sso-submit" type="submit" value="Login dengan SSO" onClick={e => handleSSOLogin(e)}>Login dengan SSO</div>
+              <div className="login-confirm"><div>Pertama kali menggunakan E-Logbook? </div><div>Silahkan Login dengan SSO terlebih dahulu</div> </div>
+            {/* </div> */}
+          </form>
+        </div>
       </div>
     </div>
     ) 
