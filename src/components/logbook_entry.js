@@ -5,7 +5,7 @@ import Navbar from './Navbar'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-import { useEditEntry, useCreateEntry, useSkdiDxList, useSkdiKtnList, useDictionary } from '../providers/api'
+import { useEditEntry, useCreateEntry } from '../providers/api'
 import { withDictionaryOptions } from './logbook'
 
 function LogbookEntry (props) {

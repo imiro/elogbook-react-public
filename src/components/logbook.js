@@ -39,12 +39,11 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
-          {/*this.props.data ? <LogbookData {...this.props.options} data={this.props.data}/> : 
-              null
-          */ }
+	    { this.props.data ? 
 	    <LogbookData {...this.props.options}
 	    		 dictionary={this.props.dictionary}
-	    		 data={this.props.data} />
+	    		 data={this.props.data} /> :
+		    null }
           </div>
         </div>
       </div>
@@ -66,6 +65,8 @@ export function withDictionaryOptions(Component) {
 		   })
 		return ret;
 	}
+	
+	if(!dict) return null
 
 	const options = {
 	   optionRS: toValueLabel(dict.wahana),

@@ -25,7 +25,7 @@ export const useEntries = function() {
 
 	// TODO caching?
 	const req = useFetchWithAuth()
-	const [entries, setEntries] = useState([]);
+	const [entries, setEntries] = useState(null);
 	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
@@ -46,11 +46,11 @@ export const useEntries = function() {
 	return entries;
 }
 
-let dictionary = {}
+let dictionary = null
 export const useDictionary = function() {
 	const [dict, setDict] = useState(dictionary)
 	useEffect(() => {
-		if(!dictionary.stase)
+		if(!dictionary || !dictionary.stase)
 		  fetch(api_url + '/dictionary').then(resp => resp.json())
 		  .then(d => {
 			dictionary = {...d}
@@ -61,11 +61,11 @@ export const useDictionary = function() {
 	return dict;
 }
 
-let skdi_dx = []
+let skdi_dx = null
 export const useSkdiDxList = function() {
 	const [dx, setDx] = useState(skdi_dx)
 	useEffect(() => {
-		if(!dx.length)
+		if(!dx || !dx.length)
 			fetch(api_url + '/skdi_dx/list')
 			.then(resp => resp.json())
 			.then(dx_a => {
@@ -77,11 +77,11 @@ export const useSkdiDxList = function() {
 	return dx
 }
 
-let skdi_ktn = []
+let skdi_ktn = null
 export const useSkdiKtnList = function() {
 	const [ktn, setKtn] = useState(skdi_ktn)
 	useEffect(() => {
-		if(!ktn.length)
+		if(!ktn || !ktn.length)
 			fetch(api_url + '/skdi_keterampilan/list')
 			.then(resp => resp.json())
 			.then(dx_a => {
@@ -98,6 +98,7 @@ export const useCompleteDictionary = function() {
 	const ktn = useSkdiKtnList()
 	const dict = useDictionary()
 
+	if(!dx || !ktn || !dict) return null
 	return {...dict, skdi_dx: dx, skdi_ktn: ktn}
 }
 
