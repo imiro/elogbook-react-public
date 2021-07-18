@@ -3,16 +3,20 @@ import {NavLink, Redirect, useHistory, useLocation } from 'react-router-dom'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { useEditEntry, useCreateEntry } from '../providers/api'
 import { withDictionaryOptions } from './logbook'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import dialog from '../assets/images/logbook/dialog.png'
 
 function LogbookEntry (props) {
   const { state: locationState } = useLocation()
   const history = useHistory()
   const createEntry = useCreateEntry()
   const editEntry = useEditEntry()
+
 
   const [isSearchable, setSearchable] = useState(true)
   const initSkdi = function(t) {
@@ -95,7 +99,8 @@ function LogbookEntry (props) {
 			history.push({
 				pathname: '/logbook',
 				state: {
-					successfulEntry: true
+					successfulEntry: true,
+          newEntry: false
 			}})
 			} else {
 				alert("Error")
@@ -114,12 +119,13 @@ function LogbookEntry (props) {
 			history.push({
 				pathname: '/logbook',
 				state: {
-					successfulEntry: true
+					successfulEntry: true,
+          newEntry:true,
 				}
 			})
 		}, async function handleFailure(err) {
 		  // handle validation failure etc
-			alert("Error. Pastikan data yang Anda masukkan sudah lengkap")
+			// alert("Error. Pastikan data yang Anda masukkan sudah lengkap")
 			console.log(err.status, err.statusText)
 			console.log(await err.text())
 		})
@@ -131,32 +137,32 @@ function LogbookEntry (props) {
   var yyyy = today.getFullYear();
   
   today = yyyy + '-' + mm + '-' + dd;
-
-
       const colourStyles = {
+        control: styles => ({ ...styles, width:'326px', marginBottom:'16px' }),
         multiValue: (styles) => ({
             ...styles,
-            display:'flex',
-            flexDirection:'row',
-            flexWrap:'wrap',
-            // position:'absolute',
+            // display:'flex',
+            // flexDirection:'row',
+            // flexWrap:'wrap',
             alignItems:'center',
-            justifyContent:'space-around',
+            // justifyContent:'space-around',
             backgroundColor: '#008C8F',
             borderRadius: '16px',
-            width:'160px',
-            height: '40px',
             padding:'3px 6px 3px 6px',
+            cursor: 'pointer',
+            whiteSpace: 'pre-wrap'
         }),
         multiValueLabel: (styles) => ({
           ...styles,
           color: '#FFFDFF',
-          
+          whiteSpace: 'pre-wrap'
         }),
-        multiValueRemove: (styles, { data }) => ({
+        multiValueRemove: (styles) => ({
           ...styles,
+          // position:'absolute',
           float:'right',
-          right:'8px',
+          right:'16px',
+          // marginTop:'3px',
           backgroundColor: '#FFFDFF',
           color: '#008C8F',
           borderRadius: '50%',
@@ -166,23 +172,6 @@ function LogbookEntry (props) {
         }),
       };
 
-      /*const optionStase = [
-        { value: '1', label: 'Stase 1', searchable: false },
-        { value: '2', label: 'Stase 2' },
-        { value: '3', label: 'Stase 3' },
-      ]
-
-      const optionRS = [
-        { value: '1', label: 'RS 1' },
-        { value: '2', label: 'RS 2' },
-        { value: '3', label: 'RS 3' }
-      ]
-
-      const optionRoom = [
-        { value: '1', label: 'Ruangan 1' },
-        { value: '2', label: 'Ruangan 2' },
-        { value: '3', label: 'Ruangan 3' }
-      ]*/
       const { optionStase, optionRS, optionRoom } = props.options
       const optionDiagnosis = props.dictionary.skdi_dx.map(x => ({
 	      value: x.id,
@@ -218,22 +207,41 @@ function LogbookEntry (props) {
       const optionSkill = useSkdiKtnList().map(x => {
 	return {value: x.id, label: x.keterampilan}
       })*/
-
+     
+      // history.push("/logbook-entry", { from: "LogbookEntry" })
 
     return (
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          
+          <Navbar page= {locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} />
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <NavLink id="logbook-back" style={{ textDecoration: 'none' }} to="/logbook" ><img src={chevronLeft} ></img>Kembali</NavLink>
-            <button id="logbook-save-entry" style={{ textDecoration: 'none' }} onClick={e => handleSubmit(e)}>Simpan Entry Baru</button>
+            <Popup trigger={<button id="logbook-save-entry" style={{ textDecoration: 'none' }}>{locationState?"Simpan Entry":"Simpan Entry Baru"}</button>} modal>
+              {close => (
+                <div className="popup-new-entry" >
+                  <img src={dialog} ></img>
+                  <div className="popup-new-entry-title" >
+                    {locationState?"Simpan Entry":"Simpan Entry Baru"}
+                  </div>
+                  <div className="popup-new-entry-content" >
+                    Jika Anda sudah yakin dengan semua data yang Anda isikan, silahkan {locationState?"simpan entry yang Anda telah ubah.":"simpan entry baru yang Anda telah buat."} 
+                  </div>
+                  <div className="popup-new-entry-button">
+                    <div className="popup-new-entry-button-cancel"  onClick={() => { close();}}>Batal</div>
+                    <div className="popup-new-entry-button-save" onClick={e => handleSubmit(e)}>Simpan</div>
+                  </div>
+                </div>
+              )}
+            </Popup>
+            {/* <button id="logbook-save-entry" style={{ textDecoration: 'none' }} onClick={e => handleSubmit(e)}>Simpan Entry Baru</button> */}
           </div>
           <div className="logbook-box">
 	    <form ref={form}>
             <div id="logbook-entry" className="logbook-entry">
-                    <div className="logbook-entry-title">Data Entry Baru</div> 
+                    <div className="logbook-entry-title">{locationState?"Edit Data Entry":"Data Entry Baru"}</div> 
                     <label>Tanggal</label>
                     <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
                     <label>Stase</label>
@@ -254,14 +262,14 @@ function LogbookEntry (props) {
                       <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")}/>
                     </div>
                     <label>Diagnosis</label>
-                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} className="logbook-entry-select" />
+                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} />
                     <label>Tingkat kompetensi Diagnosis</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi" className="logbook-entry-input"
 	    		value={skdi.dx.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_dx.find(y => y.id == x.value).kompetensi).join(",")}></input>
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
                     <label>Keterampilan</label>
-                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti className="logbook-entry-select" styles={colourStyles} value={skdi.ktn} onChange={handleSkdiChange("ktn")} />
+                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti styles={colourStyles} value={skdi.ktn} onChange={handleSkdiChange("ktn")}  />
                     <label>Tingkat kompetensi Keterampilan</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"
 	    		value={skdi.ktn.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_ktn.find(y => y.id == x.value).kompetensi).join(",")}></input>

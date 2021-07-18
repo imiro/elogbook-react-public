@@ -170,18 +170,21 @@ const styles = theme => ({
     <TableRowDetail.Cell
       {...restProps}
       style={{
+        display: 'flex',
+        width:'fit-content',
         backgroundColor: '#DCE0E9',
-        // position:'relative',
-        height:'168px',
-        // overflow:'hidden',
         ...style,
       }}
     >
-      <span
-        // style={{
-        //   color: 'white',
-        // }}
-      >
+      {/* <span
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          width: '100%',
+          backgroundolor: '#DCE0E9',
+        }}
+      > */}
         <div className="row-detail">
           <div className="row-detail-column">
             <div className="row-detail-label">NRM</div>
@@ -222,7 +225,13 @@ const styles = theme => ({
             <div>{row.catatan}</div>
           </div>
         </div>
-      </span>
+      {/* </span> */}
+      <span
+      style={{
+        width: '100%',
+        backgroundolor: '#DCE0E9',
+      }}
+      ></span>
     </TableRowDetail.Cell>
   );
   
@@ -505,7 +514,7 @@ export default function logbookTable (props)  {
   }, [props.data])
 
   return (
-    <Paper>
+    <Paper className="logbook-result-table">
       <Grid
         rows={rows}
         columns={columns}
@@ -515,7 +524,7 @@ export default function logbookTable (props)  {
           onCommitChanges={commitChanges}
         /> */}
         <RowDetailState
-          defaultExpandedRowIds={[2,5]}
+          // defaultExpandedRowIds={[]}
         />
         <PagingState
           defaultCurrentPage={0}

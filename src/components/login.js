@@ -151,6 +151,7 @@ export default function LoginPage() {
               <input id="login-submit" type="submit" value="Login" className="login-button" />
               <div className="login-or"><img src={atau}></img></div>
               <div className="login-sso-submit" type="submit" value="Login dengan SSO" onClick={e => handleSSOLogin(e)}>Login dengan SSO</div>
+              {/* <Link className="login-sso-submit" type="submit" value="Login dengan SSO" to="/login-atur-password-baru">Login dengan SSO</Link> */}
               <div className="login-confirm"><div>Pertama kali menggunakan E-Logbook? </div><div>Silahkan Login dengan SSO terlebih dahulu</div> </div>
             {/* </div> */}
           </form>
