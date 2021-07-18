@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {Redirect, useHistory} from 'react-router-dom'
+import { useAuth } from '../providers/auth'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
@@ -37,6 +38,7 @@ class Popup extends React.Component {
 
 export default function ProfilePage() {
   
+    const { user } = useAuth()
     const history = useHistory();
     const updatePhoto = () =>{
       document.getElementById("profile-box").style.display = "none";
@@ -136,21 +138,21 @@ export default function ProfilePage() {
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          <Navbar page="Profile"/>
           <div id= "profile-popup" className="profile-popup"><Popup/></div>
           <div className="navbar-divider"></div>
           <div className="profile-bar"> <img src={chevronLeft} onClick= {()=> {history.goBack();}}></img>Kembali</div>
           <div className="dashboard-box">
             <div id="profile-box" className="profile-box">
               <div className="profile-avatar">JD<img src={editPhoto} onClick={updatePhoto}></img></div>
-              <div className="profile-name">John Doe</div>
+              <div className="profile-name">{user.name}</div>
               <div className="profile-id-box">
                 <div className="profile-id-label">Nama</div>
-                <div className="profile-id-value">John Doe</div>
+                <div className="profile-id-value">{user.name}</div>
                 <div className="profile-id-label">Nomor Induk Mahasiswa</div>
-                <div className="profile-id-value">1306554689</div>
+                <div className="profile-id-value">{user.npm ? user.npm : ""}</div>
                 <div className="profile-id-label">Email UI </div>
-                <div className="profile-id-value">john.doe21@ui.ac.id</div>
+                <div className="profile-id-value">{user.email}</div>
                 <div className="profile-id-label">Kata sandi<img src={editPassword} onClick={updatePassword}></img></div>
               </div>
             </div>

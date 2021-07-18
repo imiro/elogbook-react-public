@@ -6,6 +6,7 @@ import './sb-admin-2.css'
 import "../../node_modules/font-awesome/css/font-awesome.min.css";
 import LoginStaticPage from './login_background'
 import { setPassword } from '../providers/api'
+import error from '../assets/images/profile/error.png'
 
 
 export default function LoginForgotPasswordPage() {  
@@ -30,11 +31,16 @@ const [isHideConfirm, setHideConfirm] = useState("false");
   };
 
 const [isSaved, setSaved] = useState(false);
+const [passwordNew, setPasswordNew] = useState('')
+const [passwordConfirm, setPasswordConfirm] = useState('')
 
-  const toggleAlertSaved = () => {
-    setSaved(!isSaved);
-    // document.getElementById('alert-password-text').innerHTML = "Password berhasil disimpan";
-  };
+const onChangeNewPassword = (e) =>{
+  setPasswordNew(e.target.value);
+}
+
+const onChangeConfirmPassword = (e) =>{
+    setPasswordConfirm(e.target.value)    
+}
 
     const [redirect, setRedirect] = useState(false)
     if(redirect)
@@ -77,18 +83,25 @@ const [isSaved, setSaved] = useState(false);
                 <div className="form-input">
                     <label htmlFor="password" className="login-label">Password Baru</label>
                     <div className= "password-box">
-                    <input id="passwordbaru" type="password" name="password" placeholder="Masukkan Password Baru Anda" className="login-textfield"></input>
+                    <input id="passwordbaru" type="password" name="password" placeholder="Masukkan Password Baru Anda" className="login-textfield" onChange={onChangeNewPassword}></input>
                     <div id="togglePassword" className={isHideNew ? "hide-password" : "show-password"} onClick={togglePasswordNew}></div>
                     </div>
                     <label htmlFor="password" className="login-label">Konfirmasi Password </label>
                     <div className= "password-box">
-                    <input id="passwordkonfirmasi" type="password" name="password_confirmation" placeholder="Konfirmasi Password Anda" className="login-textfield"></input>
+                    <input id="passwordkonfirmasi" type="password" name="password_confirmation" placeholder="Konfirmasi Password Anda" className="login-textfield" style={passwordNew!==passwordConfirm?{border: "1px solid #F03738"}:{border: "1px solid #C5C9D7"}}  onChange={onChangeConfirmPassword}></input>
                     <div id="togglePassword" className={isHideConfirm ? "hide-password" : "show-password"} onClick={togglePasswordConfirm}></div>
                     </div>
+                    {passwordNew!==passwordConfirm
+                      ?
+                      <span id="error-confirm" className="error-password"><img src={error}></img>Konfirmasi Password yang dimasukkan tidak sesuai</span>
+                      :
+                      null
+                    } 
                     <button id="" value="simpan" className="send-button" >Simpan</button>
                     </div>
             </form>
             </div>
       </div>
+      
     ) 
 }

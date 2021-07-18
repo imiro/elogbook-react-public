@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {NavLink, useHistory} from 'react-router-dom'
+import {NavLink,  useLocation, useHistory } from 'react-router-dom'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import Sidebar from './NavSidebar'
@@ -10,6 +10,9 @@ import chevronLeft from '../assets/images/profile/chevron_left.png'
 import { AlignLeft } from 'react-feather';
 import LogbookData from './logbook_data'
 import { useEntries, useCompleteDictionary } from '../providers/api'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import dialog from '../assets/images/logbook/dialog.png'
 
 class Logbook extends Component <*, State> {
   constructor(props) {
@@ -17,13 +20,40 @@ class Logbook extends Component <*, State> {
     this.state = {
     };
   }
+   
 
   render() {
+   
+    var popup = null;
+    if(this.props.location.state != null) {
+	if(this.props.location.state.successfulEntry) {
+                    popup = 
+		    <Popup modal defaultOpen>
+                      {close => (
+                        <div className="popup-new-entry" >
+                          <img src={dialog} ></img>
+                          <div className="popup-new-entry-title" >
+			      {this.props.location.state.newEntry ? 
+				      <>Entry Baru Disimpan</> :
+				      <>Entry Disimpan</>}
+                          </div>
+                          <div className="popup-new-entry-content" >
+			      {this.props.location.state.newEntry ? 
+				      <>Entry baru yang Anda masukkan telah berhasil disimpan</> :
+				      <>Entry yang Anda ubah telah berhasil disimpan</>}
+                            
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+	}
+    }
+
     return (
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          <Navbar page="Logbook"/>
           <div className="navbar-divider"></div>
                 <div className="profile-bar">
                    <select name="kategori" id="kategori">
@@ -39,12 +69,12 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
-          {/*this.props.data ? <LogbookData {...this.props.options} data={this.props.data}/> : 
-              null
-          */ }
-	        <LogbookData {...this.props.options}
+	    { popup }
+	    { this.props.data ? 
+	    <LogbookData {...this.props.options}
 	    		 dictionary={this.props.dictionary}
-	    		 data={this.props.data} />
+	    		 data={this.props.data} /> :
+		    null }
           </div>
         </div>
       </div>
@@ -66,6 +96,8 @@ export function withDictionaryOptions(Component) {
 		   })
 		return ret;
 	}
+	
+	if(!dict) return null
 
 	const options = {
 	   optionRS: toValueLabel(dict.wahana),
