@@ -7,12 +7,16 @@ import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { useEditEntry, useCreateEntry, useSkdiDxList, useSkdiKtnList, useDictionary } from '../providers/api'
 import { withDictionaryOptions } from './logbook'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import dialog from '../assets/images/logbook/dialog.png'
 
 function LogbookEntry (props) {
   const { state: locationState } = useLocation()
   const history = useHistory()
   const createEntry = useCreateEntry()
   const editEntry = useEditEntry()
+
 
   const [isSearchable, setSearchable] = useState(true)
   const initSkdi = function(t) {
@@ -95,7 +99,8 @@ function LogbookEntry (props) {
 			history.push({
 				pathname: '/logbook',
 				state: {
-					successfulEntry: true
+					successfulEntry: true,
+          newEntry: false
 			}})
 			} else {
 				alert("Error")
@@ -114,12 +119,13 @@ function LogbookEntry (props) {
 			history.push({
 				pathname: '/logbook',
 				state: {
-					successfulEntry: true
+					successfulEntry: true,
+          newEntry:true,
 				}
 			})
 		}, async function handleFailure(err) {
 		  // handle validation failure etc
-			alert("Error. Pastikan data yang Anda masukkan sudah lengkap")
+			// alert("Error. Pastikan data yang Anda masukkan sudah lengkap")
 			console.log(err.status, err.statusText)
 			console.log(await err.text())
 		})
@@ -201,22 +207,41 @@ function LogbookEntry (props) {
       const optionSkill = useSkdiKtnList().map(x => {
 	return {value: x.id, label: x.keterampilan}
       })*/
-
+     
+      // history.push("/logbook-entry", { from: "LogbookEntry" })
 
     return (
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          
+          <Navbar page= {locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} />
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <NavLink id="logbook-back" style={{ textDecoration: 'none' }} to="/logbook" ><img src={chevronLeft} ></img>Kembali</NavLink>
-            <button id="logbook-save-entry" style={{ textDecoration: 'none' }} onClick={e => handleSubmit(e)}>Simpan Entry Baru</button>
+            <Popup trigger={<button id="logbook-save-entry" style={{ textDecoration: 'none' }}>{locationState?"Simpan Entry":"Simpan Entry Baru"}</button>} modal>
+              {close => (
+                <div className="popup-new-entry" >
+                  <img src={dialog} ></img>
+                  <div className="popup-new-entry-title" >
+                    {locationState?"Simpan Entry":"Simpan Entry Baru"}
+                  </div>
+                  <div className="popup-new-entry-content" >
+                    Jika Anda sudah yakin dengan semua data yang Anda isikan, silahkan {locationState?"simpan entry yang Anda telah ubah.":"simpan entry baru yang Anda telah buat."} 
+                  </div>
+                  <div className="popup-new-entry-button">
+                    <div className="popup-new-entry-button-cancel"  onClick={() => { close();}}>Batal</div>
+                    <div className="popup-new-entry-button-save" onClick={e => handleSubmit(e)}>Simpan</div>
+                  </div>
+                </div>
+              )}
+            </Popup>
+            {/* <button id="logbook-save-entry" style={{ textDecoration: 'none' }} onClick={e => handleSubmit(e)}>Simpan Entry Baru</button> */}
           </div>
           <div className="logbook-box">
 	    <form ref={form}>
             <div id="logbook-entry" className="logbook-entry">
-                    <div className="logbook-entry-title">Data Entry Baru</div> 
+                    <div className="logbook-entry-title">{locationState?"Edit Data Entry":"Data Entry Baru"}</div> 
                     <label>Tanggal</label>
                     <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
                     <label>Stase</label>

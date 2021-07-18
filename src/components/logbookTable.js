@@ -524,7 +524,7 @@ export default function logbookTable (props)  {
           onCommitChanges={commitChanges}
         /> */}
         <RowDetailState
-          defaultExpandedRowIds={[2,5]}
+          // defaultExpandedRowIds={[]}
         />
         <PagingState
           defaultCurrentPage={0}

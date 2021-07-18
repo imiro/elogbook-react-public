@@ -29,7 +29,7 @@ class SKDI extends Component {
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          <Navbar page="SKDI" />
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <div className="skdi-bar-title">Kompetensi</div>

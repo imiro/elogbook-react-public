@@ -136,7 +136,7 @@ export default function ProfilePage() {
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          <Navbar page="Profile"/>
           <div id= "profile-popup" className="profile-popup"><Popup/></div>
           <div className="navbar-divider"></div>
           <div className="profile-bar"> <img src={chevronLeft} onClick= {()=> {history.goBack();}}></img>Kembali</div>

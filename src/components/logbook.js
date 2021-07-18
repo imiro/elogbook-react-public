@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {NavLink, useHistory} from 'react-router-dom'
+import {NavLink,  useLocation, useHistory } from 'react-router-dom'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import Sidebar from './NavSidebar'
@@ -10,6 +10,9 @@ import chevronLeft from '../assets/images/profile/chevron_left.png'
 import { AlignLeft } from 'react-feather';
 import LogbookData from './logbook_data'
 import { useEntries, useCompleteDictionary } from '../providers/api'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import dialog from '../assets/images/logbook/dialog.png'
 
 class Logbook extends Component <*, State> {
   constructor(props) {
@@ -17,13 +20,15 @@ class Logbook extends Component <*, State> {
     this.state = {
     };
   }
+   
 
   render() {
+   
     return (
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          <Navbar page="Logbook"/>
           <div className="navbar-divider"></div>
                 <div className="profile-bar">
                    <select name="kategori" id="kategori">
@@ -39,6 +44,43 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
+              {this.props.history.location.state==null
+                  ?null
+                  :this.props.history.location.state.successfulEntry
+                    ? 
+                    this.props.history.location.state.newEntry
+                    ?
+                    <Popup modal defaultOpen>
+                      {close => (
+                        <div className="popup-new-entry" >
+                          <img src={dialog} ></img>
+                          <div className="popup-new-entry-title" >
+                            Entry Baru Disimpan
+                          </div>
+                          <div className="popup-new-entry-content" >
+                            Entry baru yang Anda masukkan telah berhasil disimpan
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+                    :
+                    <Popup modal defaultOpen>
+                      {close => (
+                        <div className="popup-new-entry" >
+                          <img src={dialog} ></img>
+                          <div className="popup-new-entry-title" >
+                            Entry Disimpan
+                          </div>
+                          <div className="popup-new-entry-content" >
+                            Entry yang Anda ubah telah berhasil disimpan
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+                    :
+                    null
+              }
+            
           {/*this.props.data ? <LogbookData {...this.props.options} data={this.props.data}/> : 
               null
           */ }

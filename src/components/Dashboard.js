@@ -57,7 +57,7 @@ class Dashboard extends Component {
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar />
+          <Navbar page="Dashboard" />
           <div className="dashboard-box">
             <div className="top-container-dashboard">
                 <div className="quote-dashboard">
