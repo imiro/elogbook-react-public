@@ -84,7 +84,7 @@ class Navbar extends Component {
           <div className=" navbar-avatar-box">
               <div className= "navbar-avatar">JD</div>
               <a className="navbar-name" onClick={this.toggleDropdown}>
-                John Doe
+	    	{this.props.auth.user.name}
               </a>
               <img className="navbar-expand" onClick={this.toggleDropdown} src={expand}></img>
             <div className="dropdown-menu-box" style={{display: this.state.isToggle ? 'block': 'none'}}>
