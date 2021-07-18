@@ -4,6 +4,7 @@ import Navbar from './Navbar'
 import search from '../assets/images/logbook/search.png'
 import info from '../assets/images/dashboard/info.png'
 import sort from '../assets/images/dashboard/sort.png'
+import Select from 'react-select'
 import { useSkdiDxList, useSkdiDxCount } from '../providers/api'
 
 
@@ -12,9 +13,9 @@ function SKDI() {
    const data = useSkdiDxCount()
 
    const [filterTingkat, setFilterTingkat] = useState([])
-   const toggleFilter = function(tingkat) {
+   const toggleFilter = function(tingkat, setFilter=setFilterTingkat) {
 	return function(e) {
-	setFilterTingkat(current => {
+	setFilter(current => {
 	if(current.includes(tingkat)) {
 		let next = [...current]
 		next.splice(current.indexOf(tingkat), 1);
@@ -25,12 +26,10 @@ function SKDI() {
 	})
 	}
    }
-
-   const changeTextColor = (e) =>{
-      document.getElementById(e.target.id).style.color="#000000";
-    }
-
-    var expanded = false;
+   const [sistem, setSistem] = useState([])
+   const handleSistemChange = function(e) {
+	setSistem(e.map(k => k.value))
+   }
 
    var [tableData, setTableData] = useState(null);
    useEffect(function() {
@@ -43,7 +42,6 @@ function SKDI() {
 		  else
 			ntableData[k.kategori] = [kdata]
 		})
-	console.log('eff', ntableData, data)
 	setTableData(ntableData)
 	}
    }, [skdi, data])
@@ -75,16 +73,16 @@ function SKDI() {
                 <div>Informasi Terkait Kompetensi</div>
               </div>
             </div>
-            <div className="skdi-row2">
-                      <select name="" id=""className="filter-box-dropdown"onChange={(e) => changeTextColor(e)}>
-                        <option disabled selected value>Semua Sistem</option>
-                        <option value="">Sistem 1</option>
-                        <option value="">Sistem 2</option>
-                        <option value="">Sistem 3</option>
-                      </select>
+            <div className="skdi-row2" style={{width: "600px"}}>
+	    	{ tableData ? 
+		  <Select isMulti 
+			options={Object.keys(tableData).map(k => ({value: k, label: k}))}
+			onChange={handleSistemChange} /> : null }
             </div>
 	    { tableData ? 
-	      Object.keys(tableData).map(kategori => (
+	      Object.keys(tableData)
+		 .filter(kategori => !sistem.length || sistem.includes(kategori))
+		 .map(kategori => (
 	      <>
               <div className="skdi-table-title">{kategori}</div>
               <table className="skdi-table-content">
