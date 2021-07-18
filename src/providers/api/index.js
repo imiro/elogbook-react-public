@@ -156,6 +156,23 @@ export const useEditEntry = function() {
 	}
 }
 
+export const useSkdiDxCount = function() {
+	const fwa = useFetchWithAuth()
+	const [count, setCount] = useState(null)
+	
+	useEffect(function() {
+	  fwa('/skdi_dx/count?flatten=1')
+	  .then(function (resp) {
+	    if(resp.ok) return resp.json()
+	    else throw resp
+	  }).then(function (json) {
+	    setCount(json)
+	  })
+	}, [])
+
+	return count 
+}
+
 export const useAPI = function() {
   const { token } = useAuth()
 

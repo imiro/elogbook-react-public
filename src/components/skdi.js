@@ -1,30 +1,53 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import search from '../assets/images/logbook/search.png'
 import info from '../assets/images/dashboard/info.png'
 import sort from '../assets/images/dashboard/sort.png'
+import { useSkdiDxList, useSkdiDxCount } from '../providers/api'
 
 
-class SKDI extends Component {
-  render() {
-    const changeTextColor = (e) =>{
+function SKDI() {
+   const skdi = useSkdiDxList()
+   const data = useSkdiDxCount()
+
+   const [filterTingkat, setFilterTingkat] = useState([])
+   const toggleFilter = function(tingkat) {
+	return function(e) {
+	setFilterTingkat(current => {
+	if(current.includes(tingkat)) {
+		let next = [...current]
+		next.splice(current.indexOf(tingkat), 1);
+		return next
+	} else {
+		return current.concat(tingkat)
+	}
+	})
+	}
+   }
+
+   const changeTextColor = (e) =>{
       document.getElementById(e.target.id).style.color="#000000";
     }
 
     var expanded = false;
 
-    function showCheckboxes() {
-      // alert("masuk");
-      var checkboxes = document.getElementById("checkboxes");
-      if (!expanded) {
-        checkboxes.style.display = "block";
-        expanded = true;
-      } else {
-        checkboxes.style.display = "none";
-        expanded = false;
-      }
-    }
+   var [tableData, setTableData] = useState(null);
+   useEffect(function() {
+	if(skdi) {
+		let ntableData = {}
+		skdi.forEach(k => {
+		  let kdata = {...k, n: data && data[k.id]!=null ? data[k.id] : '-'}
+		  if(ntableData[k.kategori])
+			ntableData[k.kategori].push(kdata)
+		  else
+			ntableData[k.kategori] = [kdata]
+		})
+	console.log('eff', ntableData, data)
+	setTableData(ntableData)
+	}
+   }, [skdi, data])
+
     return (
       <div className="container-dashboard">
         <Sidebar />
@@ -33,11 +56,11 @@ class SKDI extends Component {
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <div className="skdi-bar-title">Kompetensi</div>
-            <div className="skdi-bar-competency">1</div>
-            <div className="skdi-bar-competency">2</div>
-            <div className="skdi-bar-competency">3A</div>
-            <div className="skdi-bar-competency">3B</div>
-            <div className="skdi-bar-competency">4</div>
+	    { ['1', '2', '3A', '3B', '4A'].map(tingkat =>
+            <div onClick={toggleFilter(tingkat)} className="skdi-bar-competency"
+		  style={filterTingkat.includes(tingkat) ? {
+		  	   color: 'white', background: '#008C8F'} : {}}>{tingkat}</div>
+	    )}
             <div id= "skdi-search-box"className="skdi-search-box">
                 <input id="skdi-search" type="text" placeholder="Cari"></input><img src={search}></img>
             </div>
@@ -53,25 +76,6 @@ class SKDI extends Component {
               </div>
             </div>
             <div className="skdi-row2">
-              {/* <form>
-                <div class="multiselect">
-                  <div class="selectBox" onClick={showCheckboxes}>
-                    <select>
-                      <option>Semua Sistem</option>
-                    </select>
-                    <div class="overSelect"></div>
-                  </div>
-                  <div id="checkboxes">
-                    <label for="one">
-                      <input type="checkbox" id="one" /><span>Sistem 1</span></label>
-                    <label for="two">
-                      <input type="checkbox" id="two" />Sistem 2</label>
-                    <label for="three">
-                      <input type="checkbox" id="three" />Sistem 3</label>
-                  </div>
-                </div>
-              </form> */}
-  
                       <select name="" id=""className="filter-box-dropdown"onChange={(e) => changeTextColor(e)}>
                         <option disabled selected value>Semua Sistem</option>
                         <option value="">Sistem 1</option>
@@ -79,47 +83,34 @@ class SKDI extends Component {
                         <option value="">Sistem 3</option>
                       </select>
             </div>
-            <div className="skdi-table-title">Ilmu Kedokteran Forensik dan Medikolegal</div>
+	    { tableData ? 
+	      Object.keys(tableData).map(kategori => (
+	      <>
+              <div className="skdi-table-title">{kategori}</div>
               <table className="skdi-table-content">
                 <tr>
                   <th>Diagnosis</th>
                   <th>Kompetensi</th>
                   <th><img src={sort}></img>Jumlah ditemui</th>
                 </tr>
+		{ 
+		tableData[kategori]
+		.filter(kdata => (!filterTingkat.length || filterTingkat.includes(kdata.kompetensi)))
+		.map(kdata => (
                 <tr>
-                  <td>Trauma Kimia</td>
-                  <td>3A</td>
-                  <td>0</td>
+                  <td>{kdata.diagnosis}</td>
+                  <td>{kdata.kompetensi}</td>
+                  <td>{kdata.n}</td>
                 </tr>
-                <tr>
-                  <td>Luka Tembak</td>
-                  <td>3A</td>
-                  <td>1</td>
-                </tr>
+		))
+		}
               </table>
-              <div className="skdi-table-title">Sistem Hematologi dan Imunologi</div>
-              <table className="skdi-table-content">
-                <tr>
-                  <th>Diagnosis</th>
-                  <th>Kompetensi</th>
-                  <th><img src={sort}></img>Jumlah ditemui</th>
-                </tr>
-                <tr>
-                  <td>Anemia defisiensi besi</td>
-                  <td>3A</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>Demam dengue, DHF</td>
-                  <td>3A</td>
-                  <td>1</td>
-                </tr>
-              </table>
+	      </>) )
+		    : null }
           </div>
         </div>
       </div>
     )
-  }
 }
 
 export default SKDI
