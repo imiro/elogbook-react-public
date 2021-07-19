@@ -27,6 +27,31 @@ class Logbook extends Component <*, State> {
       { value: 'diagnosis', label: 'Diagnosis' },
       { value: 'keterampilan', label: 'Keterampilan' }
     ]
+   
+    var popup = null;
+    if(this.props.location.state != null) {
+	if(this.props.location.state.successfulEntry) {
+                    popup = 
+		    <Popup modal defaultOpen>
+                      {close => (
+                        <div className="popup-new-entry" >
+                          <img src={dialog} ></img>
+                          <div className="popup-new-entry-title" >
+			      {this.props.location.state.newEntry ? 
+				      <>Entry Baru Disimpan</> :
+				      <>Entry Disimpan</>}
+                          </div>
+                          <div className="popup-new-entry-content" >
+			      {this.props.location.state.newEntry ? 
+				      <>Entry baru yang Anda masukkan telah berhasil disimpan</> :
+				      <>Entry yang Anda ubah telah berhasil disimpan</>}
+                            
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+	}
+    }
 
     return (
       <div className="container-dashboard">
@@ -49,49 +74,12 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
-              {this.props.history.location.state==null
-                  ?null
-                  :this.props.history.location.state.successfulEntry
-                    ? 
-                    this.props.history.location.state.newEntry
-                    ?
-                    <Popup modal defaultOpen>
-                      {close => (
-                        <div className="popup-new-entry" >
-                          <img src={dialog} ></img>
-                          <div className="popup-new-entry-title" >
-                            Entry Baru Disimpan
-                          </div>
-                          <div className="popup-new-entry-content" >
-                            Entry baru yang Anda masukkan telah berhasil disimpan
-                          </div>
-                        </div>
-                      )}
-                    </Popup>
-                    :
-                    <Popup modal defaultOpen>
-                      {close => (
-                        <div className="popup-new-entry" >
-                          <img src={dialog} ></img>
-                          <div className="popup-new-entry-title" >
-                            Entry Disimpan
-                          </div>
-                          <div className="popup-new-entry-content" >
-                            Entry yang Anda ubah telah berhasil disimpan
-                          </div>
-                        </div>
-                      )}
-                    </Popup>
-                    :
-                    null
-              }
-            
-          {/*this.props.data ? <LogbookData {...this.props.options} data={this.props.data}/> : 
-              null
-          */ }
-	        <LogbookData {...this.props.options}
+	    { popup }
+	    { this.props.data ? 
+	    <LogbookData {...this.props.options}
 	    		 dictionary={this.props.dictionary}
-	    		 data={this.props.data} />
+	    		 data={this.props.data} /> :
+		    null }
           </div>
         </div>
       </div>
@@ -113,6 +101,8 @@ export function withDictionaryOptions(Component) {
 		   })
 		return ret;
 	}
+	
+	if(!dict) return null
 
 	const options = {
 	   optionRS: toValueLabel(dict.wahana),

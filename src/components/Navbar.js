@@ -9,6 +9,16 @@ import { useHistory } from 'react-router-dom'
 
 
 class Popup extends Component {
+  constructor(props) {
+	  super(props)
+  }
+
+  handleLogout() {
+	// TODO refactor this to be inside auth instead?
+	this.props.auth.updateCredentials(null)
+	this.props.history.push('/login')
+  }
+
   render() {
     return (
       <div className='popup'>
@@ -18,7 +28,7 @@ class Popup extends Component {
           <div className='logout-text'>Apakah Anda yakin ingin keluar dari<br></br>E-logbook?</div>
           <div className='logout-button-box'>
             <button className='logout-cancel-button' onClick={this.props.closePopup}>Batal</button>
-            <NavLink to='/login'><button className='logout-button'>Keluar</button></NavLink>
+            <button onClick={this.handleLogout.bind(this)} className='logout-button'>Keluar</button>
           </div>
         </div>
       </div>
@@ -32,7 +42,7 @@ class Navbar extends Component {
     super(props);
     this.state = {isToggle: false,  showPopup: false};
     this.toggleDropdown = this.toggleDropdown.bind(this);
-    this.handleLogout = this.handleLogout.bind(this)
+    this.togglePopup = this.togglePopup.bind(this);
   }
 
   toggleDropdown(e) {
@@ -46,13 +56,6 @@ class Navbar extends Component {
     });
   }
 
-  handleLogout() {
-	// TODO refactor this to be inside auth instead?
-	this.props.auth.updateCredentials(null)
-	this.props.history.push('/login')
-  }
- 
-
   render() {
     
     return (
@@ -63,6 +66,7 @@ class Navbar extends Component {
             <div className="collapse navbar-collapse " id="navbarSupportedContent">
             {this.state.showPopup ? 
                 <Popup
+	          auth={this.props.auth} history={this.props.history}
                   closePopup={this.togglePopup.bind(this)}
                 />
                 : null
@@ -70,21 +74,21 @@ class Navbar extends Component {
                 <div className=" navbar-avatar-box">
                     <div className= "navbar-avatar">JD</div>
                     <a className="navbar-name" onClick={this.toggleDropdown}>
-                      John Doe
+	    	{this.props.auth.user.name}
                     </a>
                     <img className="navbar-expand" onClick={this.toggleDropdown} src={expand}></img>
                   <div className="dropdown-menu-box" style={{display: this.state.isToggle ? 'block': 'none'}}>
                     <div className="dropdown-item-avatar-box">
                       <div className= "dropdown-item-avatar">JD</div>
                       <div className= "dropdown-item-text">
-                        <div className="dropdown-item-username">John Doe</div>
-                        <div className="dropdown-item-id">1306443587</div>
+                  <div className="dropdown-item-username">{this.props.auth.user.name}</div>
+                  <div className="dropdown-item-id">{this.props.auth.user.npm ? this.props.auth.user.npm : ""}</div>
                       </div>
                     </div>
                     <div className="dropdown-divider"></div>
                     <div className="dropdown-menu-box-bottom">
                       <NavLink className="dropdown-item-menu"  style={ {textDecoration: 'none'}} to='/profile'><img src={profile}></img> Lihat Profil</NavLink>
-                      <div className="dropdown-item-menu" onClick={this.handleLogout}><img src={logout}></img>Sign Out</div>
+                      <div className="dropdown-item-menu" onClick={this.togglePopup}><img src={logout}></img>Sign Out</div>
                     </div>
                   </div>
                 </div>
