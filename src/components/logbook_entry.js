@@ -139,6 +139,10 @@ function LogbookEntry (props) {
   today = yyyy + '-' + mm + '-' + dd;
       const colourStyles = {
         control: styles => ({ ...styles, width:'326px', marginBottom:'16px' }),
+        placeholder: base => ({
+          ...base,
+          color: '#C5C9D7',
+        }),
         multiValue: (styles) => ({
             ...styles,
             // display:'flex',
@@ -245,21 +249,56 @@ function LogbookEntry (props) {
                     <label>Tanggal</label>
                     <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
                     <label>Stase</label>
-                    <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} />
+                    <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} 
+                      styles={{
+                        placeholder: base => ({
+                          ...base,
+                          color: '#C5C9D7',
+                        }),
+                      }} 
+                    />
                     <label>Lokasi Rumah Sakit</label>
-                    <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" value={optionRS.filter(x => x.value == inputValues.wahana)} onChange={handleInputChange("wahana")} />
+                    <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" value={optionRS.filter(x => x.value == inputValues.wahana)} onChange={handleInputChange("wahana")} 
+                      styles={{
+                        placeholder: base => ({
+                          ...base,
+                          color: '#C5C9D7',
+                        }),
+                      }} 
+                    />
                     <label>Ruangan</label>
-                    <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" value={optionRoom.filter(x => x.value == inputValues.lokasi)} onChange={handleInputChange("lokasi")}/>
+                    <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" value={optionRoom.filter(x => x.value == inputValues.lokasi)} onChange={handleInputChange("lokasi")}
+                      styles={{
+                        placeholder: base => ({
+                          ...base,
+                          color: '#C5C9D7',
+                        }),
+                      }} 
+                    />
                     <label>NRM</label>
                     <input type="text" placeholder="Masukkan NRM" name="nrm" className="logbook-entry-input" value={inputValues.nrm} onChange={handleInputChange("nrm")}></input>
                     <label>Inisial Pasien</label>
                     <input type="text" placeholder="Masukkan inisial pasien" name="nama" className="logbook-entry-input" value={inputValues.nama} onChange={handleInputChange("nama")}></input>
                     <label>Jenis Kelamin</label>
-                    <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" value={optionGender.filter(x => x.value == inputValues.gender)} onChange={handleInputChange("gender")}/>
+                    <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" value={optionGender.filter(x => x.value == inputValues.gender)} onChange={handleInputChange("gender")}
+                      styles={{
+                        placeholder: base => ({
+                          ...base,
+                          color: '#C5C9D7',
+                        }),
+                      }} 
+                    />
                     <label>Usia</label>
                     <div className="logbook-entry-age">
                       <input type="number" name="usia" placeholder="Usia Pasien" id="idAge" className="logbook-entry-input" value={inputValues.usia} onChange={handleInputChange("usia")}></input>
-                      <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")}/>
+                      <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")}
+                        styles={{
+                          placeholder: base => ({
+                            ...base,
+                            color: '#C5C9D7',
+                          }),
+                        }} 
+                      />
                     </div>
                     <label>Diagnosis</label>
                     <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} />

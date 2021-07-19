@@ -23,7 +23,11 @@ class Logbook extends Component <*, State> {
    
 
   render() {
-   
+    const optionCategory = [
+      { value: 'diagnosis', label: 'Diagnosis' },
+      { value: 'keterampilan', label: 'Keterampilan' }
+    ]
+
     return (
       <div className="container-dashboard">
         <Sidebar />
@@ -31,11 +35,12 @@ class Logbook extends Component <*, State> {
           <Navbar page="Logbook"/>
           <div className="navbar-divider"></div>
                 <div className="profile-bar">
-                   <select name="kategori" id="kategori">
+                   {/* <select name="kategori" id="kategori">
                    <option disabled selected value>Kategori</option>
                    <option value="">Diagnosis</option>
                    <option value="">Keterampilan</option>
-                 </select>
+                 </select> */}
+                 <Select className="category" options={optionCategory} name="category"/>
                  <div id= "logbook-search-box"className="logbook-search-box">
                    <input id="search" type="text" placeholder="Cari"></input><img src={search}></img>
                  </div>

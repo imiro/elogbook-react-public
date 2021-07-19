@@ -19,6 +19,21 @@ body {
 #app{
     background-color:#EDF0F5;
 }
+
+::-webkit-input-placeholder { /* Edge */
+    color: #C5C9D7 !important;
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #C5C9D7 !important;
+  }
+  
+  ::placeholder {
+
+    color: #C5C9D7 !important;
+    /* opacity: none !important; */
+  }
+
 .container-login {
   width: 100%;
   height: 100%;
@@ -1275,6 +1290,10 @@ body {
         /* margin-bottom: 16px; */
       }
 
+      .rmsc{
+          --rmsc-gray: #C5C9D7 !important;
+      }
+
       .filter-date-dropdown{
         /* position: relative; */
         width:150px;
@@ -1289,9 +1308,8 @@ body {
         padding:8px;
       }
 
-     
-      .filter-date-dropdown ::placeholder{
-        color: #C43006 !important;
+      input[type="date"]::-webkit-input-placeholder {
+        color: orange;
       }
 
       .filter-box-dropdown > input{
@@ -1308,16 +1326,16 @@ body {
 
     .filter-box-dropdown option[disabled]:first-child { display: none; }
 
-    #kategori{
+    .category{
         width:140px;
-        height: 32px;
+        /* height: 32px; */
         background: #FFFDFF;
         border: 1px solid #C5C9D7;
         box-sizing: border-box;
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
         margin-left: 24px;
-        padding-left: 16px;
+        /* padding-left: 16px; */
     }
     
 
@@ -1616,7 +1634,7 @@ body {
         display:flex;
         flex-direction: column;
         width: 560px;
-        height: 1364px;
+        /* height: 1364px; */
         margin-left: 24px;
         margin-top: 24px;
         padding-top:24px;
@@ -1666,7 +1684,6 @@ body {
         
         width:326px;
         height:40px;
-        border: 1px solid #C5C9D7;
         box-sizing: border-box;
         border-radius: 6px;
         margin-bottom: 16px;
