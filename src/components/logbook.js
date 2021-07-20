@@ -18,10 +18,17 @@ class Logbook extends Component <*, State> {
   constructor(props) {
     super(props);
     this.state = {
+      open: true,
     };
+    this.showModal()
   }
-   
-
+  showModal = () => {
+    setTimeout(() => {
+      this.setState({
+        open: false,
+      });
+    }, 3000);
+  };
   render() {
     const optionCategory = [
       { value: 'diagnosis', label: 'Diagnosis' },
@@ -32,7 +39,7 @@ class Logbook extends Component <*, State> {
     if(this.props.location.state != null) {
 	if(this.props.location.state.successfulEntry) {
                     popup = 
-		    <Popup modal defaultOpen>
+		    <Popup modal open={this.state.open}>
                       {close => (
                         <div className="popup-new-entry" >
                           <img src={dialog} ></img>
@@ -74,7 +81,7 @@ class Logbook extends Component <*, State> {
                  </NavLink>
                 </div>        
           <div className="logbook-box">
-	    { popup }
+	    {popup}
 	    { this.props.data ? 
 	    <LogbookData {...this.props.options}
 	    		 dictionary={this.props.dictionary}
