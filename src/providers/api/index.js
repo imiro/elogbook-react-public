@@ -173,6 +173,18 @@ export const useSkdiDxCount = function() {
 	return count 
 }
 
+export const useSkdiDxDataFetcher = function() {
+	const fwa = useFetchWithAuth()
+	return function(dxId) {
+	  return fwa('/skdi_dx/count?flatten=1&stase=' + dxId).then(
+	   function(resp) {
+		if(resp.ok) return resp.json()
+		throw resp
+	   }
+	  )
+	}
+}
+
 export const useAPI = function() {
   const { token } = useAuth()
 

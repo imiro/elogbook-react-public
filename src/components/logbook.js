@@ -97,6 +97,7 @@ export function withDictionaryOptions(Component) {
 		return ret;
 	}
 	
+	// TODO show loading component instead of this
 	if(!dict) return null
 
 	const options = {

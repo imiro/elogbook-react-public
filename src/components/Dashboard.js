@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import logo from '../assets/images/dashboard/dashboard-quote.png'
@@ -11,18 +11,12 @@ import graph2 from '../assets/images/dashboard/graph2.png'
 import left from '../assets/images/dashboard/chevron_left.png'
 import right from '../assets/images/dashboard/chevron_right.png'
 import sort from '../assets/images/dashboard/sort.png'
+import Select from 'react-select'
 import MultiSelect from "react-multi-select-component";
+import { withDictionaryOptions } from './logbook'
+import { useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
 
-class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-      stase :[],
-      
-    };
-  }
-  render() {
+function Dashboard(props) {
     const showTable = () =>{
       document.getElementById("dashboard-table-title").style.display = "block";
       document.getElementById("dashboard-table-content").style.display = "block";
@@ -44,15 +38,39 @@ class Dashboard extends Component {
       document.getElementById("competency-tip").style.visibility = "hidden";
     }
 
-    const optionStase = [
-      { value: '1', label: 'Stase 1', searchable: false },
-      { value: '2', label: 'Stase 2' },
-      { value: '3', label: 'Stase 3' },
-    ]
+    // const optionStase = [
+    //   { value: '1', label: 'Stase 1', searchable: false },
+    //   { value: '2', label: 'Stase 2' },
+    //   { value: '3', label: 'Stase 3' },
+    // ]
+    const skdiDxCount = useSkdiDxCount()
+    const fetchSkdiDxData = useSkdiDxDataFetcher()
 
-    
+    const optionStase = props.options.optionStase
+    const [selectedStase, setSelectedStase] = useState(null)
+    const [cardsData, setCardsData] = useState(null)
 
+    const hitung = data => Object.keys(data).reduce((c,i) => data[i] ? c+1 : c, 0);
+    const handleStaseSelection = function(chosen) {
+	setSelectedStase({
+		id: chosen.value,
+		nama: chosen.label,
+		data: null
+	})
+	fetchSkdiDxData(chosen.value)
+	.then(function (data) {
+		setSelectedStase({
+			id: chosen.value,
+			nama: chosen.label,
+			data: data
+		})
+		setCardsData({
+			nKompetensi: hitung(data) 
+		})
+	})
+    }
 
+	
     return (
       <div className="container-dashboard">
         <Sidebar />
@@ -61,7 +79,7 @@ class Dashboard extends Component {
           <div className="dashboard-box">
             <div className="top-container-dashboard">
                 <div className="quote-dashboard">
-                  <div className="quote-username-dashboard">Selamat Pagi, John!</div>
+                  <div className="quote-username-dashboard">Selamat Pagi!</div>
                   <div className="quote-content-dashboard">“We should be concerned not only about the health of individual patients, but also the health of our entire society.”</div>
                   <div className="quote-content-dashboard">- Ben Carson</div>
                 </div>
@@ -71,12 +89,13 @@ class Dashboard extends Component {
             </div>
             <div className="stase-container">
               <label className="label-stase">Stase</label>
-              <select name="stase" className="stase" onChange={showTable}>
+	    {/* <select name="stase" className="stase" onChange={showTable}>
                 <option disabled selected value>Pilih Stase</option>
                 <option value="">Stase 1</option>
                 <option value="">Stase 2</option>
                 <option value="">Stase 3</option>
-              </select>
+              </select> */}
+	      <Select options={optionStase} onChange={handleStaseSelection} />
               {/* <MultiSelect
                         options="[]"
                         value="[]"
@@ -98,8 +117,8 @@ class Dashboard extends Component {
               <div id="row1-container-dashboard-competency" className="row1-container-dashboard-content">
                 <img src={competencyLogo}></img>
                 <div className="row1-text">
-                  <div className="progress-number">20</div>
-                  <div className="total-number">/ 56</div>
+                  <div className="progress-number">{cardsData ? cardsData.nKompetensi : skdiDxCount ? hitung(skdiDxCount) : null}</div>
+                  <div className="total-number">{"/ " + (selectedStase && selectedStase.data ? Object.keys(selectedStase.data).length : skdiDxCount ? Object.keys(skdiDxCount).length : null)}</div>
                   <div className="row1-title">Total kompetensi didapat</div>
                 </div>
               </div>
@@ -158,29 +177,31 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <div id="dashboard-table-title">Diagnosis Stase Kesehatan Anak dan Remaja</div>
-              <table id="dashboard-table-content">
+	    { (!selectedStase || !selectedStase.data) ? null : 
+            <><div style={{display: 'block'}} id="dashboard-table-title">Diagnosis Stase {selectedStase.nama}</div>
+              <table style={{display: 'block'}} id="dashboard-table-content">
+		<thead>
                 <tr>
                   <th>Diagnosis</th>
                   <th>Kompetensi</th>
                   <th><img src={sort}></img>Jumlah ditemui</th>
                 </tr>
-                <tr>
-                  <td>Trauma Kimia</td>
-                  <td>3A</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>Luka Tembak</td>
-                  <td>3A</td>
-                  <td>1</td>
-                </tr>
+		</thead>
+		<tbody>
+		{ Object.keys(selectedStase.data).map(dxId => (
+		<tr key={dxId}>
+		  <td>{props.dictionary.skdi_dx.find(x => x.id == dxId).diagnosis}</td>
+		  <td>{props.dictionary.skdi_dx.find(x => x.id == dxId).kompetensi}</td>
+		  <td>{selectedStase.data[dxId]}</td>
+		</tr>
+		)) }
+		</tbody>
               </table>
-          </div>
+	    </>}
+          </div> 
         </div>
       </div>
     )
-  }
 }
 
-export default Dashboard
+export default withDictionaryOptions(Dashboard)
