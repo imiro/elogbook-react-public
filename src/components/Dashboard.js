@@ -46,8 +46,14 @@ function Dashboard(props) {
     const skdiDxCount = useSkdiDxCount()
     const fetchSkdiDxData = useSkdiDxDataFetcher()
 
-    const optionStase = props.options.optionStase
-    const [selectedStase, setSelectedStase] = useState(null)
+    const optionStase = [{
+	    value: -1,
+	    label: "Semua stase"
+    },...props.options.optionStase]
+    const [selectedStase, setSelectedStase] = useState({
+	    id: -1,
+	    name: "Semua stase"
+    })
     const [cardsData, setCardsData] = useState(null)
 
     const hitung = data => Object.keys(data).reduce((c,i) => data[i] ? c+1 : c, 0);
@@ -95,7 +101,8 @@ function Dashboard(props) {
                 <option value="">Stase 2</option>
                 <option value="">Stase 3</option>
               </select> */}
-	      <Select options={optionStase} onChange={handleStaseSelection} />
+	      <Select style={{"width": "300px"}}
+	        value={optionStase.find(x => x.value == selectedStase.id)} options={optionStase} onChange={handleStaseSelection} />
               {/* <MultiSelect
                         options="[]"
                         value="[]"
