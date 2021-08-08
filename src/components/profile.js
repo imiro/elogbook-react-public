@@ -137,8 +137,10 @@ export default function ProfilePage() {
             {isTab === "main"
             ?
             <div id="profile-box" className="profile-box">
-              <div className="profile-avatar">JD<img src={editPhoto} onClick={updatePhoto}></img></div>
-              <div className="profile-name">{user.name}</div>
+              <div className="profile-avatar-box">
+                <div className="profile-avatar">JD<img src={editPhoto} onClick={updatePhoto}></img></div>
+                <div className="profile-name">{user.name}</div>
+              </div>
               <div className="profile-id-box">
                 <div className="profile-id-label">Nama</div>
                 <div className="profile-id-value">{user.name}</div>

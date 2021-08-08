@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import search from '../assets/images/logbook/search.png'
 import info from '../assets/images/dashboard/info.png'
-import sort from '../assets/images/dashboard/sort.png'
 import MultiSelect from "react-multi-select-component";
 import Paper from '@material-ui/core/Paper';
 import {SortingState, IntegratedSorting, DataTypeProvider,} from '@devexpress/dx-react-grid';
@@ -143,10 +143,10 @@ function SKDI() {
               <div className="skdi-row1-title">
                 Sistem
               </div>
-              <div className="skdi-row1-info">
+              <Link style={{ textDecoration: 'none' }} to="/info-skdi" className="skdi-row1-info">
                 <img src={info}></img>
                 <div>Informasi Terkait Kompetensi</div>
-              </div>
+              </Link>
             </div>
             <div className="skdi-row2">
               { tableData ? 

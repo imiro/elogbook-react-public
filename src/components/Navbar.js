@@ -93,7 +93,7 @@ class Navbar extends Component {
             //     />
                 : null
               }
-                <div className=" navbar-avatar-box">
+                <div className=" navbar-avatar-box" onMouseLeave={this.toggleDropdown}>
                     <div className= "navbar-avatar">JD</div>
                     <a className="navbar-name" onClick={this.toggleDropdown}>
 	    	{this.props.auth.user.name}

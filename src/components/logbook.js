@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {NavLink,  useLocation, useHistory } from 'react-router-dom'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
@@ -67,13 +67,44 @@ class Logbook extends Component <*, State> {
       control: styles => ({ ...styles, minHeight:'0px', borderRadius:'none', height:'32px', border: '1px solid #C5C9D7',  boxShadow: 'none', '&:hover': {
         border: 'none',
       }}),
-      option: styles => ({ ...styles, height:'32px', boxShadow: 'none', }),
+      option: styles => ({ ...styles, height:'32px', boxShadow: 'none', color:'black' }),
       placeholder: base => ({
         ...base,
         color: '#C5C9D7',
         top: '40%',
       }),
+      singleValue: base => ({
+        ...base,
+        top:'40%',
+      }),
+     
     }
+
+    const SingleValue = ({ children, ...props }) => (
+      <div style={{ top: '0', }}>
+        <components.SingleValue {...props}>{children}</components.SingleValue>
+      </div>
+    );
+    
+
+    const IndicatorsContainer = props => {
+      return (
+        <div style={{ marginTop:"-8px" }}>
+          <components.IndicatorsContainer {...props} />
+        </div>
+      );
+    };
+
+    const indicatorSeparatorStyle = {
+      display: 'none',
+    };
+    const IndicatorSeparator = ({ innerProps }) => {
+      return <span style={indicatorSeparatorStyle} {...innerProps} />;
+    };
+
+    const indicatorDropdownStyle = {
+      paddingTop: "1px",
+    };
 
     return (
       <div className="container-dashboard">
@@ -87,7 +118,7 @@ class Logbook extends Component <*, State> {
                    <option value="">Diagnosis</option>
                    <option value="">Keterampilan</option>
                  </select> */}
-                 <Select className="category" options={optionCategory} name="category" styles={colourStyles}/>
+                 <Select placeholder="Pilih Kategori" className="category" options={optionCategory} name="category" styles={colourStyles} components={{ IndicatorSeparator, IndicatorsContainer}}/>
                  <div id= "logbook-search-box"className="logbook-search-box">
                    <input id="search" type="text" placeholder="Cari"></input><img src={search}></img>
                  </div>

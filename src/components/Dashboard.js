@@ -11,6 +11,7 @@ import graph2 from '../assets/images/dashboard/graph2.png'
 import left from '../assets/images/dashboard/chevron_left.png'
 import right from '../assets/images/dashboard/chevron_right.png'
 import MultiSelect from "react-multi-select-component";
+import Select from 'react-select'
 import Paper from '@material-ui/core/Paper';
 import {SortingState, IntegratedSorting, DataTypeProvider,} from '@devexpress/dx-react-grid';
 import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
@@ -24,6 +25,7 @@ class Dashboard extends Component {
     this.state = {
 
       stase :[],
+      isSearchable: true, 
       showTable : false,
       caseTip : false,
       competencyTip : false,
@@ -35,11 +37,6 @@ class Dashboard extends Component {
     };
   }
   render() {
-    const showTable = () =>{
-      this.setState({
-        showTable : true,
-      })
-    }
 
     const toggleCaseTip = () =>{
       this.setState(prevState => ({
@@ -53,15 +50,6 @@ class Dashboard extends Component {
       }));
     }
 
-    const placeholderSistem =
-    {
-      "allItemsAreSelected": "Semua opsi dipilih",
-      "noOptions": "tidak ada opsi",
-      "search": "Cari opsi",
-      "selectAll": "Pilih semua",
-      "selectSomeItems": "Pilih stase"
-    }
-
     const optionStase = [
       { value: '1', label: 'Stase 1' },
       { value: '2', label: 'Stase 2' },
@@ -73,8 +61,25 @@ class Dashboard extends Component {
         stase : e,
         showTable : true,
       })
-      alert(JSON.stringify(e))
      }
+
+    const colourStyles = {
+      control: styles => ({ ...styles, border: '1px solid #C5C9D7', borderTopLeftRadius: '6px',
+      borderBottomLeftRadius: '6px',  boxShadow: 'none', '&:hover': {
+        border: '1px solid #096D6F',
+      }}),
+      placeholder: base => ({
+        ...base,
+        color: '#C5C9D7',
+      }),
+    }
+
+    const indicatorSeparatorStyle = {
+      display: 'none',
+    };
+    const IndicatorSeparator = ({ innerProps }) => {
+      return <span style={indicatorSeparatorStyle} {...innerProps} />;
+    };
 
     const columns = [ 
       { name: 'diagnosis', title: 'Diagnosis' },
@@ -84,13 +89,6 @@ class Dashboard extends Component {
       { diagnosis: "Trauma Kimia" , kompetensi: "3A", jumlah: "0" },
       { diagnosis: "Luka Tembak" , kompetensi: "3A", jumlah: "1" },
     ];
-
-    
-
-    // const [tableColumnExtensions] = useState([
-    //   { columnName: 'kompetensi',  width: 150 },
-    //   { columnName: 'jumlah',  width: 150 },
-    // ]);
 
     const TooltipFormatter = ({ value }) => (
       <Tooltip title={(
@@ -152,18 +150,7 @@ class Dashboard extends Component {
             </div>
             <div className="stase-container">
               <label className="label-stase">Stase</label>
-              {/* <select name="stase" className="stase" onChange={showTable}>
-                <option disabled selected value>Pilih Stase</option>
-                <option value="">Stase 1</option>
-                <option value="">Stase 2</option>
-                <option value="">Stase 3</option>
-              </select> */}
-              
-              <MultiSelect className="stase" overrideStrings={placeholderSistem}
-              options={optionStase}
-              value={this.state.stase}
-              labelledBy="Sistem" 
-              onChange={handleStaseChange} />
+              <Select placeholder="Pilih Stase" options={optionStase} isSearchable={this.state.isSearchable}  className="stase" name="stase" onChange={handleStaseChange} styles={colourStyles} components={{ IndicatorSeparator }}/>
               
             </div>
            
