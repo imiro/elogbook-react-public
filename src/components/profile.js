@@ -162,7 +162,7 @@ export default function ProfilePage() {
                   </div>
                   <div className="profile-update-label">Password Baru</div>
                   <div className= "profile-password-box">
-                    <input onChange={onChangeNewPassword} id="passwordbaru" type="password" name="password" placeholder="Masukkan password baru" className="profile-textfield" style={(password===passwordNew)&&(passwordNew!=="")?{border: "1px solid #F03738"}:{border: "1px solid #C5C9D7"}}></input>
+                    <input onChange={onChangeNewPassword} id="passwordbaru" type="password" name="password" placeholder="Masukkan password baru" className={(password===passwordNew)&&(passwordNew!=="")?"profile-textfield-error":"profile-textfield"}></input>
                     <div id="toggle-profile" className={isHideNew ? "hide-password" : "show-password"} onClick={togglePasswordNew}></div>
                   </div>
                   {(password===passwordNew)&&(passwordNew!=="")
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                   }
                   <div className="profile-update-label">Konfirmasi Password Baru </div>
                   <div className= "profile-password-box"> 
-                    <input onChange={onChangeConfirmPassword} id="passwordkonfirmasi" type="password" name="passwordkonfirmasi" placeholder="Konfirmasi password baru" className="profile-textfield" style={passwordNew!==passwordConfirm?{border: "1px solid #F03738"}:{border: "1px solid #C5C9D7"}}></input>
+                    <input onChange={onChangeConfirmPassword} id="passwordkonfirmasi" type="password" name="passwordkonfirmasi" placeholder="Konfirmasi password baru" className={passwordNew!==passwordConfirm?"profile-textfield-error":"profile-textfield"}></input>
                     <div id="toggle-profile" className={isHideConfirm ? "hide-password" : "show-password"} onClick={togglePasswordConfirm}></div>
                   </div>
                   {passwordNew!==passwordConfirm

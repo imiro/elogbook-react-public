@@ -29,6 +29,9 @@ class Logbook extends Component <*, State> {
       });
     }, 3000);
   };
+
+
+  
   render() {
     const optionCategory = [
       { value: 'diagnosis', label: 'Diagnosis' },
@@ -60,6 +63,18 @@ class Logbook extends Component <*, State> {
 	}
     }
 
+    const colourStyles = {
+      control: styles => ({ ...styles, minHeight:'0px', borderRadius:'none', height:'32px', border: '1px solid #C5C9D7',  boxShadow: 'none', '&:hover': {
+        border: 'none',
+      }}),
+      option: styles => ({ ...styles, height:'32px', boxShadow: 'none', }),
+      placeholder: base => ({
+        ...base,
+        color: '#C5C9D7',
+        top: '40%',
+      }),
+    }
+
     return (
       <div className="container-dashboard">
         <Sidebar />
@@ -72,7 +87,7 @@ class Logbook extends Component <*, State> {
                    <option value="">Diagnosis</option>
                    <option value="">Keterampilan</option>
                  </select> */}
-                 <Select className="category" options={optionCategory} name="category"/>
+                 <Select className="category" options={optionCategory} name="category" styles={colourStyles}/>
                  <div id= "logbook-search-box"className="logbook-search-box">
                    <input id="search" type="text" placeholder="Cari"></input><img src={search}></img>
                  </div>
