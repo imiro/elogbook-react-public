@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import logo from '../assets/images/dashboard/dashboard-quote.png'
@@ -10,49 +10,161 @@ import graph1 from '../assets/images/dashboard/graph1.png'
 import graph2 from '../assets/images/dashboard/graph2.png'
 import left from '../assets/images/dashboard/chevron_left.png'
 import right from '../assets/images/dashboard/chevron_right.png'
-import sort from '../assets/images/dashboard/sort.png'
 import MultiSelect from "react-multi-select-component";
+import Select from 'react-select'
+import Paper from '@material-ui/core/Paper';
+import {SortingState, IntegratedSorting, DataTypeProvider,} from '@devexpress/dx-react-grid';
+import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withDictionaryOptions } from './logbook'
+import { useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
 
-class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+function Dashboard(props) {
+    const [state, setState] = useState({
+      caseTip : false,
+      competencyTip : false,
+    })
 
-      stase :[],
-      
+    const sortingStateColumnExtensions = [
+        { columnName: 'diagnosis', sortingEnabled: false },
+        { columnName: 'kompetensi', sortingEnabled: false },
+        { columnName: 'jumlah', sortingEnabled: true },
+      ]
+    const toggleCaseTip = () =>{
+      setState(prevState => ({
+        ...prevState,
+	caseTip: !prevState.caseTip
+      }));
+    }
+
+    const toggleCompetencyTip = () =>{
+      setState(prevState => ({
+        ...prevState,
+	competencyTip: !prevState.competencyTip
+      }));
+    }
+    const colourStyles = {
+      control: styles => ({ ...styles, border: '1px solid #C5C9D7', borderTopLeftRadius: '6px',
+      borderBottomLeftRadius: '6px',  boxShadow: 'none', '&:hover': {
+        border: '1px solid #096D6F',
+      }}),
+      placeholder: base => ({
+        ...base,
+        color: '#C5C9D7',
+      }),
+    }
+
+    // const optionStase = [
+    //   { value: '1', label: 'Stase 1', searchable: false },
+    //   { value: '2', label: 'Stase 2' },
+    //   { value: '3', label: 'Stase 3' },
+    // ]
+    const skdiDxCount = useSkdiDxCount()
+    const fetchSkdiDxData = useSkdiDxDataFetcher()
+
+    const optionStase = [{
+	    value: -1,
+	    label: "Semua stase"
+    }, ...props.options.optionStase]
+    const [selectedStase, setSelectedStase] = useState({
+	    id: -1,
+	    name: "Semua stase"
+    })
+    const [cardsData, setCardsData] = useState(null)
+
+    const indicatorSeparatorStyle = {
+      display: 'none',
     };
-  }
-  render() {
-    const showTable = () =>{
-      document.getElementById("dashboard-table-title").style.display = "block";
-      document.getElementById("dashboard-table-content").style.display = "block";
+    const IndicatorSeparator = ({ innerProps }) => {
+      return <span style={indicatorSeparatorStyle} {...innerProps} />;
+    };
+    const columns = [ 
+      { name: 'diagnosis', title: 'Diagnosis' },
+      { name: 'kompetensi', title: 'Kompetensi' },
+      { name: 'jumlah', title: 'Jumlah ditemui' },];
+    /* const rows = [ 
+      { diagnosis: "Trauma Kimia" , kompetensi: "3A", jumlah: "0" },
+      { diagnosis: "Luka Tembak" , kompetensi: "3A", jumlah: "1" },
+    ]; */
+
+    const TooltipFormatter = ({ value }) => (
+      <Tooltip title={(
+        <span>
+          {value}
+        </span>
+      )}
+      >
+        <span>
+          {value}
+        </span>
+      </Tooltip>
+    );
+  
+    const CellTooltip = props => (
+      <DataTypeProvider
+        for={columns.map(({ name }) => name)}
+        formatterComponent={TooltipFormatter}
+        {...props}
+      />
+    );
+
+    const hitung = data => Object.keys(data).reduce((c,i) => data[i] ? c+1 : c, 0);
+    const handleStaseSelection = function(chosen) {
+	setSelectedStase({
+		id: chosen.value,
+		nama: chosen.label,
+		data: null
+	})
+	fetchSkdiDxData(chosen.value)
+	.then(function (data) {
+		setSelectedStase({
+			id: chosen.value,
+			nama: chosen.label,
+			data: data
+		})
+		setCardsData({
+			nKompetensi: hitung(data) 
+		})
+	})
     }
+    const SortingIcon = ({ direction }) => (
+      direction === 'asc'
+        ? <ArrowUpward style={{ fontSize: '18px', color:'#FFFFFF' }} />
+        : <ArrowDownward style={{ fontSize: '18px', color:'#FFFFFF' }} />
+    );
+  
+    const sortLabel = ({ disabled,onSort,children, direction }) => (
+      disabled === false
+      ?
+        <div className="skdi-sort" onClick={onSort}>
+          {children}
+          <div className="sort-table-icon">
+          {( <SortingIcon direction={direction}/>)}
+          </div>
+        </div>
+      : 
+      <div>
+        {children}
+      </div>
+    );
 
-    const showCaseTip = () =>{
-      document.getElementById("case-tip").style.visibility = "visible";
-    }
+   const rows = (!selectedStase || !selectedStase.data) ? null : 
+		Object.keys(selectedStase.data).map(function(dxId) {
+		   let skdi_dx = props.dictionary.skdi_dx.find(x => x.id == dxId)
+		   if(!skdi_dx) return {
+			   diagnosis: "",
+			   kompetensi: "",
+			   jumlah: ""
+		   }
 
-    const hideCaseTip = () =>{
-      document.getElementById("case-tip").style.visibility = "hidden";
-    }
-
-    const showCompetencyTip = () =>{
-      document.getElementById("competency-tip").style.visibility = "visible";
-    }
-
-    const hideCompetencyTip = () =>{
-      document.getElementById("competency-tip").style.visibility = "hidden";
-    }
-
-    const optionStase = [
-      { value: '1', label: 'Stase 1', searchable: false },
-      { value: '2', label: 'Stase 2' },
-      { value: '3', label: 'Stase 3' },
-    ]
-
-    
-
-
+		   return {
+		   	diagnosis: skdi_dx.diagnosis,
+			kompetensi: skdi_dx.kompetensi,
+			jumlah: selectedStase.data[dxId]
+		   }
+		})
     return (
       <div className="container-dashboard">
         <Sidebar />
@@ -61,7 +173,7 @@ class Dashboard extends Component {
           <div className="dashboard-box">
             <div className="top-container-dashboard">
                 <div className="quote-dashboard">
-                  <div className="quote-username-dashboard">Selamat Pagi, John!</div>
+                  <div className="quote-username-dashboard">Selamat Pagi!</div>
                   <div className="quote-content-dashboard">“We should be concerned not only about the health of individual patients, but also the health of our entire society.”</div>
                   <div className="quote-content-dashboard">- Ben Carson</div>
                 </div>
@@ -71,19 +183,8 @@ class Dashboard extends Component {
             </div>
             <div className="stase-container">
               <label className="label-stase">Stase</label>
-              <select name="stase" className="stase" onChange={showTable}>
-                <option disabled selected value>Pilih Stase</option>
-                <option value="">Stase 1</option>
-                <option value="">Stase 2</option>
-                <option value="">Stase 3</option>
-              </select>
-              {/* <MultiSelect
-                        options="[]"
-                        value="[]"
-                        labelledBy="Pilih Stase" 
-                        className="stase"
-                        // overrideStrings={this.placeholderStase}
-                      /> */}
+              <Select placeholder="Pilih Stase" options={optionStase} isSearchable={true}  className="stase" name="stase" onChange={handleStaseSelection} styles={colourStyles} components={{ IndicatorSeparator }}/>
+              
             </div>
            
             <div className="row1-container-dashboard">
@@ -98,8 +199,8 @@ class Dashboard extends Component {
               <div id="row1-container-dashboard-competency" className="row1-container-dashboard-content">
                 <img src={competencyLogo}></img>
                 <div className="row1-text">
-                  <div className="progress-number">20</div>
-                  <div className="total-number">/ 56</div>
+                  <div className="progress-number">{cardsData ? cardsData.nKompetensi : skdiDxCount ? hitung(skdiDxCount) : null}</div>
+                  <div className="total-number">{"/ " + (selectedStase && selectedStase.data ? Object.keys(selectedStase.data).length : skdiDxCount ? Object.keys(skdiDxCount).length : null)}</div>
                   <div className="row1-title">Total kompetensi didapat</div>
                 </div>
               </div>
@@ -116,7 +217,7 @@ class Dashboard extends Component {
               <div className="row2-container-dashboard-content">
                 <div className="row2-title">
                   <div>Kasus Ditemui</div>
-                  <img src={info} onMouseOver={showCaseTip} onMouseOut={hideCaseTip}></img>
+                  <img src={info} onMouseEnter={toggleCaseTip} onMouseLeave={toggleCaseTip} ></img>
                 </div>
                 <div className="row2-select">
                   <select name="case-period" id="case-period" className="period">
@@ -124,7 +225,12 @@ class Dashboard extends Component {
                     <option value="">Weekly</option>
                     <option value="">Monthly</option>
                   </select>
-                  <span id="case-tip" className="tooltiptext">Kasus ditemui adalah grafik jumlah kasus yang sudah Anda temui di stase dan waktu tertentu</span>
+                  {state.caseTip
+                  ?
+                  <div className= "tooltiptext">Kasus ditemui adalah grafik jumlah kasus yang sudah Anda temui di stase dan waktu tertentu</div>
+                  :
+                  null
+                  }
                   <div className="row2-select-period">
                     <img src={left}></img>
                     <div>12 Oct-18 Oct,2020</div>
@@ -138,7 +244,7 @@ class Dashboard extends Component {
               <div className="row2-container-dashboard-content">
                 <div className="row2-title">
                   <div>Kompetensi Didapat</div>
-                  <img src={info} onMouseOver={showCompetencyTip} onMouseOut={hideCompetencyTip}></img>
+                  <img src={info} onMouseOver={toggleCompetencyTip} onMouseOut={toggleCompetencyTip}></img>
                 </div>
                 <div className="row2-select">
                   <select name="case-period" id="case-period" className="period">
@@ -146,7 +252,13 @@ class Dashboard extends Component {
                     <option value="">Weekly</option>
                     <option value="">Monthly</option>
                   </select>
+                  {
+                  state.competencyTip
+                  ?
                   <span id="competency-tip" className="tooltiptext">Kompetensi didapat adalah grafik jumlah kompetensi yang sudah Anda dapat di stase dan waktu tertentu</span>
+                  :
+                  null
+                  }
                   <div className="row2-select-period">
                     <img src={left}></img>
                     <div>12 Oct-18 Oct,2020</div>
@@ -158,29 +270,52 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <div id="dashboard-table-title">Diagnosis Stase Kesehatan Anak dan Remaja</div>
-              <table id="dashboard-table-content">
+	    {/* (!selectedStase || !selectedStase.data) ? null : 
+            <><div style={{display: 'block'}} id="dashboard-table-title">Diagnosis Stase {selectedStase.nama}</div>
+              <table style={{display: 'block'}} id="dashboard-table-content">
+		<thead>
                 <tr>
                   <th>Diagnosis</th>
                   <th>Kompetensi</th>
                   <th><img src={sort}></img>Jumlah ditemui</th>
                 </tr>
-                <tr>
-                  <td>Trauma Kimia</td>
-                  <td>3A</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>Luka Tembak</td>
-                  <td>3A</td>
-                  <td>1</td>
-                </tr>
+		</thead>
+		<tbody>
+		{ Object.keys(selectedStase.data).map(dxId => (
+		<tr key={dxId}>
+		  <td>{props.dictionary.skdi_dx.find(x => x.id == dxId).diagnosis}</td>
+		  <td>{props.dictionary.skdi_dx.find(x => x.id == dxId).kompetensi}</td>
+		  <td>{selectedStase.data[dxId]}</td>
+		</tr>
+		)) }
+		</tbody>
               </table>
-          </div>
+	    </>*/}
+            {(selectedStase && selectedStase.data) ? <div id="dashboard-table-title">Diagnosis Stase Kesehatan Anak dan Remaja</div> : null}
+            {(selectedStase && selectedStase.data) ?
+               <Paper id="dashboard-table-content">
+               <Grid
+                 rows={rows}
+                 columns={columns}
+               >
+                  <SortingState
+                    columnExtensions={sortingStateColumnExtensions}
+                  />
+                  <IntegratedSorting />
+                  <CellTooltip />
+                  <Table />
+                  <TableHeaderRow 
+                    showSortingControls
+                    sortLabelComponent={sortLabel}   
+                  />
+               </Grid>
+             </Paper>
+            :
+            null}
+          </div> 
         </div>
       </div>
     )
-  }
 }
 
-export default Dashboard
+export default withDictionaryOptions(Dashboard)

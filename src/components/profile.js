@@ -8,38 +8,42 @@ import editPhoto from '../assets/images/profile/edit_photo.png'
 import editPassword from '../assets/images/profile/edit_password.png'
 import error from '../assets/images/profile/error.png'
 import message from '../assets/images/profile/message.png'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
-class Popup extends React.Component {
-  render() {
-    const hidePopup = () =>{
-      document.getElementById("profile-popup").style.display = "none";
-      document.getElementById("profile-box").style.display = "block";
-      document.getElementById("profile-update-photo").style.display = "none";
-      document.getElementById("profile-update-password").style.display = "none";
-      document.getElementById("password").value ="";
-      document.getElementById("passwordbaru").value ="";
-      document.getElementById("passwordkonfirmasi").value ="";
-      document.getElementById("error-new").style.display = "none";
-      document.getElementById("error-confirm").style.display = "none";
-      document.getElementById("passwordbaru").style.borderColor = "#C5C9D7";
-      document.getElementById("passwordkonfirmasi").style.borderColor = "#C5C9D7";
-    }
-    return (
-      <div className='popup' onClick={hidePopup}>
-        <div className='popup-inner-profile'>
-          <img src={message}></img>
-          <div className="popup-profile-head">Password Baru Disimpan</div>
-          <div className="popup-profile-content">Password baru yang Anda masukkan telah berhasil disimpan</div>
-        </div>
-      </div>
-    );
-  }
-}
+// class Popup extends React.Component {
+
+//   render() {
+//     const hidePopup = () =>{
+//       document.getElementById("profile-popup").style.display = "none";
+//       document.getElementById("profile-box").style.display = "block";
+//       document.getElementById("profile-update-photo").style.display = "none";
+//       document.getElementById("profile-update-password").style.display = "none";
+//       document.getElementById("password").value ="";
+//       document.getElementById("passwordbaru").value ="";
+//       document.getElementById("passwordkonfirmasi").value ="";
+//       document.getElementById("passwordbaru").style.borderColor = "#C5C9D7";
+//       document.getElementById("passwordkonfirmasi").style.borderColor = "#C5C9D7";
+//     }
+//     return (
+//       <div className='popup' onClick={hidePopup}>
+//         <div className='popup-inner-profile'>
+//           <img src={message}></img>
+//           <div className="popup-profile-head">Password Baru Disimpan</div>
+//           <div className="popup-profile-content">Password baru yang Anda masukkan telah berhasil disimpan</div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 export default function ProfilePage() {
   
     const { user } = useAuth()
     const history = useHistory();
+    const [isTab, setTab] = useState("main");
+    
+
     const updatePhoto = () =>{
       document.getElementById("profile-box").style.display = "none";
       document.getElementById("profile-update-photo").style.display = "block";
@@ -47,22 +51,11 @@ export default function ProfilePage() {
     }
 
     const updatePassword = () =>{
-      document.getElementById("profile-box").style.display = "none";
-      document.getElementById("profile-update-photo").style.display = "none";
-      document.getElementById("profile-update-password").style.display = "block";
+      setTab("password")
     }
 
     const mainProfile = () =>{
-      document.getElementById("profile-box").style.display = "block";
-      document.getElementById("profile-update-photo").style.display = "none";
-      document.getElementById("profile-update-password").style.display = "none";
-      document.getElementById("password").value ="";
-      document.getElementById("passwordbaru").value ="";
-      document.getElementById("passwordkonfirmasi").value ="";
-      document.getElementById("error-new").style.display = "none";
-      document.getElementById("error-confirm").style.display = "none";
-      document.getElementById("passwordbaru").style.borderColor = "#C5C9D7";
-      document.getElementById("passwordkonfirmasi").style.borderColor = "#C5C9D7";
+      setTab("main")
     }
 
     const [isHide, setHide] = useState("false");
@@ -102,50 +95,52 @@ export default function ProfilePage() {
 
     const onChangeNewPassword = (e) =>{
       setPasswordNew(e.target.value);
-      // alert(password==passwordNew);
-      if(password===passwordNew){
-        document.getElementById("passwordbaru").style.borderColor = "red";
-        document.getElementById("error-new").style.display = "block";
-      }
-      else{
-        // alert("masukfalse");
-        document.getElementById("passwordbaru").style.borderColor = "#C5C9D7";
-        document.getElementById("error-new").style.display = "none";
-      }
     }
 
     const onChangeConfirmPassword = (e) =>{
         setPasswordConfirm(e.target.value)
-        
-        alert(passwordNew + " " + passwordConfirm)
-        if(passwordNew!=passwordConfirm){
-          document.getElementById("passwordkonfirmasi").style.borderColor = "red";
-          document.getElementById("error-confirm").style.display = "block";
-        }
-        else{
-          document.getElementById("passwordkonfirmasi").style.borderColor = "#C5C9D7";
-          document.getElementById("error-confirm").style.display = "none";
-        }
-        
     }
 
+    const [popupAppear, setPopupAppear] = useState(false)
+
     const showPopup = () => {
-      document.getElementById("profile-popup").style.display = "block";
-      // history.push('/profile');
+      // alert("masuk")
+      // alert(popupAppear)
+      setPopupAppear(true)
+      // alert(popupAppear)
+      setTimeout(() => {
+        setPopupAppear(false)
+      }, 3000);
     }
+
 
     return (
       <div className="container-dashboard">
         <Sidebar />
         <div className="content-dashboard">
-          <Navbar page="Profile"/>
-          <div id= "profile-popup" className="profile-popup"><Popup/></div>
+          <Navbar page="Profil"/>
+          {popupAppear 
+          ? 
+            <Popup modal open={popupAppear}>
+              <div className='popup-inner-profile'>
+                <img src={message}></img>
+                <div className="popup-profile-head">Password Baru Disimpan</div>
+                <div className="popup-profile-content">Password baru yang Anda masukkan telah berhasil disimpan</div>
+              </div>
+            </Popup> 
+          : 
+            null
+          }
           <div className="navbar-divider"></div>
           <div className="profile-bar"> <img src={chevronLeft} onClick= {()=> {history.goBack();}}></img>Kembali</div>
           <div className="dashboard-box">
+            {isTab === "main"
+            ?
             <div id="profile-box" className="profile-box">
-              <div className="profile-avatar">JD<img src={editPhoto} onClick={updatePhoto}></img></div>
-              <div className="profile-name">{user.name}</div>
+              <div className="profile-avatar-box">
+                <div className="profile-avatar">JD<img src={editPhoto} onClick={updatePhoto}></img></div>
+                <div className="profile-name">{user.name}</div>
+              </div>
               <div className="profile-id-box">
                 <div className="profile-id-label">Nama</div>
                 <div className="profile-id-value">{user.name}</div>
@@ -156,7 +151,8 @@ export default function ProfilePage() {
                 <div className="profile-id-label">Kata sandi<img src={editPassword} onClick={updatePassword}></img></div>
               </div>
             </div>
-            <div id="profile-update-photo" className="profile-box">hahahah</div>
+            // <div id="profile-update-photo" className="profile-box">hahahah</div>
+            :
             <div id="profile-update-password" className="profile-box">
               <div className="profile-update-password-text">Edit Password</div>
                 <div className="profile-update-box">
@@ -168,24 +164,35 @@ export default function ProfilePage() {
                   </div>
                   <div className="profile-update-label">Password Baru</div>
                   <div className= "profile-password-box">
-                    <input onChange={onChangeNewPassword} id="passwordbaru" type="password" name="password" placeholder="Masukkan password baru" className="profile-textfield"></input>
+                    <input onChange={onChangeNewPassword} id="passwordbaru" type="password" name="password" placeholder="Masukkan password baru" className={(password===passwordNew)&&(passwordNew!=="")?"profile-textfield-error":"profile-textfield"}></input>
                     <div id="toggle-profile" className={isHideNew ? "hide-password" : "show-password"} onClick={togglePasswordNew}></div>
                   </div>
-                  <div id="error-new" className="error-password"><img src={error}></img>Password baru harus berbeda dengan password saat ini</div>
+                  {(password===passwordNew)&&(passwordNew!=="")
+                  ?
+                    <div id="error-new" className="error-password"><img src={error}></img>Password baru harus berbeda dengan password saat ini</div>
+                  :
+                    null
+                  }
                   <div className="profile-update-label">Konfirmasi Password Baru </div>
                   <div className= "profile-password-box"> 
-                    <input onChange={onChangeConfirmPassword} id="passwordkonfirmasi" type="password" name="passwordkonfirmasi" placeholder="Konfirmasi password baru" className="profile-textfield"></input>
+                    <input onChange={onChangeConfirmPassword} id="passwordkonfirmasi" type="password" name="passwordkonfirmasi" placeholder="Konfirmasi password baru" className={passwordNew!==passwordConfirm?"profile-textfield-error":"profile-textfield"}></input>
                     <div id="toggle-profile" className={isHideConfirm ? "hide-password" : "show-password"} onClick={togglePasswordConfirm}></div>
                   </div>
+                  {passwordNew!==passwordConfirm
+                  ?
                   <div id="error-confirm" className="error-password"><img src={error}></img>Konfirmasi Password baru tidak sesuai</div>
+                  :
+                  null
+                  }
+                  </form> 
                   <div className = "profile-update-password-button-box">
                     <div onClick={showPopup} className="profile-update-password-save-button">Simpan</div>
                     <div onClick={mainProfile} className="profile-update-password-cancel-button">Batal</div>
                   </div> 
-                  </form> 
-                  {passwordConfirm}
                 </div>
+                
             </div>
+            }
           </div>
         </div>
       </div>

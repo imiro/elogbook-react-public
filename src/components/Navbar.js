@@ -6,35 +6,37 @@ import logout from '../assets/images/navbar/logout.png'
 import logoutPopup from '../assets/images/navbar/logout_popup.png'
 import { useAuth } from '../providers/auth'
 import { useHistory } from 'react-router-dom'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 
-class Popup extends Component {
-  constructor(props) {
-	  super(props)
-  }
+// class Popup extends Component {
+//   constructor(props) {
+// 	  super(props)
+//   }
 
-  handleLogout() {
-	// TODO refactor this to be inside auth instead?
-	this.props.auth.updateCredentials(null)
-	this.props.history.push('/login')
-  }
+//   handleLogout() {
+// 	// TODO refactor this to be inside auth instead?
+// 	this.props.auth.updateCredentials(null)
+// 	this.props.history.push('/login')
+//   }
 
-  render() {
-    return (
-      <div className='popup'>
-        <div className='popup_inner'>
-          <img src={logoutPopup}></img>
-          <div className='logout-title'>Log Out</div>
-          <div className='logout-text'>Apakah Anda yakin ingin keluar dari<br></br>E-logbook?</div>
-          <div className='logout-button-box'>
-            <button className='logout-cancel-button' onClick={this.props.closePopup}>Batal</button>
-            <button onClick={this.handleLogout.bind(this)} className='logout-button'>Keluar</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+//   render() {
+//     return (
+//       <div className='popup'>
+//         <div className='popup-inner'>
+//           <img src={logoutPopup}></img>
+//           <div className='logout-title'>Log Out</div>
+//           <div className='logout-text'>Apakah Anda yakin ingin keluar dari<br></br>E-logbook?</div>
+//           <div className='logout-button-box'>
+//             <button className='logout-cancel-button' onClick={this.props.closePopup}>Batal</button>
+//             <button onClick={this.handleLogout.bind(this)} className='logout-button'>Keluar</button>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 class Navbar extends Component {
  
@@ -45,35 +47,55 @@ class Navbar extends Component {
     this.togglePopup = this.togglePopup.bind(this);
   }
 
-  toggleDropdown(e) {
+  toggleDropdown() {
     this.setState({isToggle: !this.state.isToggle});
   }
 
   togglePopup() {
     this.setState({
       showPopup: !this.state.showPopup,
-      isToggle: !this.state.isToggle
+      isToggle: false
     });
   }
 
+  handleLogout() {
+    // TODO refactor this to be inside auth instead?
+    this.props.auth.updateCredentials(null)
+    this.props.history.push('/login')
+    }
+  
+
   render() {
     
+    var popup = 
+    <Popup modal open={this.state.showPopup} auth={this.props.auth} history={this.props.history}>
+        <div className='popup-inner'>
+          <img src={logoutPopup}></img>
+          <div className='logout-title'>Log Out</div>
+          <div className='logout-text'>Apakah Anda yakin ingin keluar dari<br></br>E-logbook?</div>
+          <div className='logout-button-box'>
+            <button className='logout-cancel-button' onClick={this.togglePopup.bind(this)}>Batal</button>
+            <button onClick={this.handleLogout.bind(this)} className='logout-button'>Keluar</button>
+          </div>
+        </div>
+    </Popup>
+
     return (
 
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dashboard" >
+        <nav className=" navbar-dashboard" >
             <div className="navbar-title">{this.props.page}</div>
-            <div className="collapse navbar-collapse " id="navbarSupportedContent">
+            {/* <div className="collapse navbar-collapse " id="navbarSupportedContent"> */}
             {this.state.showPopup ? 
-                <Popup
-	          auth={this.props.auth} history={this.props.history}
-                  closePopup={this.togglePopup.bind(this)}
-                />
+                popup
+	          // auth={this.props.auth} history={this.props.history}
+            //       closePopup={this.togglePopup.bind(this)}
+            //     />
                 : null
               }
-                <div className=" navbar-avatar-box">
+                <div className=" navbar-avatar-box" onClick={this.toggleDropdown}>
                     <div className= "navbar-avatar">JD</div>
-                    <a className="navbar-name" onClick={this.toggleDropdown}>
+                    <a className="navbar-name">
 	    	{this.props.auth.user.name}
                     </a>
                     <img className="navbar-expand" onClick={this.toggleDropdown} src={expand}></img>
@@ -92,7 +114,7 @@ class Navbar extends Component {
                     </div>
                   </div>
                 </div>
-            </div>
+            {/* </div> */}
           </nav>
         </div>
     )
