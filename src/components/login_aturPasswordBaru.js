@@ -88,7 +88,7 @@ const onChangeConfirmPassword = (e) =>{
                     </div>
                     <label htmlFor="password" className="login-label">Konfirmasi Password </label>
                     <div className= "password-box">
-                    <input id="passwordkonfirmasi" type="password" name="password_confirmation" placeholder="Konfirmasi Password Anda" className="login-textfield" style={passwordNew!==passwordConfirm?{border: "1px solid #F03738"}:{border: "1px solid #C5C9D7"}}  onChange={onChangeConfirmPassword}></input>
+                    <input id="passwordkonfirmasi" type="password" name="password_confirmation" placeholder="Konfirmasi Password Anda" className={passwordNew!==passwordConfirm?"login-textfield-error":"login-textfield"}  onChange={onChangeConfirmPassword}></input>
                     <div id="togglePassword" className={isHideConfirm ? "hide-password" : "show-password"} onClick={togglePasswordConfirm}></div>
                     </div>
                     {passwordNew!==passwordConfirm

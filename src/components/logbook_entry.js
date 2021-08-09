@@ -3,7 +3,7 @@ import {NavLink, Redirect, useHistory, useLocation } from 'react-router-dom'
 import Sidebar from './NavSidebar'
 import Navbar from './Navbar'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
-import Select, { components } from 'react-select'
+import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { useEditEntry, useCreateEntry } from '../providers/api'
 import { withDictionaryOptions } from './logbook'
@@ -137,8 +137,23 @@ function LogbookEntry (props) {
   var yyyy = today.getFullYear();
   
   today = yyyy + '-' + mm + '-' + dd;
-      const colourStyles = {
-        control: styles => ({ ...styles, width:'326px', marginBottom:'16px' }),
+
+  const colourStyles = {
+    control: styles => ({ ...styles, border: '1px solid #C5C9D7', borderTopLeftRadius: '6px',
+    borderBottomLeftRadius: '6px',  boxShadow: 'none', '&:hover': {
+      border: '1px solid #096D6F',
+    }}),
+    // option: styles => ({ ...styles,'&:visited': {backgroundColor:'#096D6F'}}),
+    placeholder: base => ({
+      ...base,
+      color: '#C5C9D7',
+    }),
+  }
+
+      const colourStylesMulti = {
+        control: styles => ({ ...styles, width:'326px', marginBottom:'16px', border: '1px solid #C5C9D7',  boxShadow: 'none', '&:hover': {
+          border: '1px solid #096D6F',
+      }}),
         placeholder: base => ({
           ...base,
           color: '#C5C9D7',
@@ -175,6 +190,8 @@ function LogbookEntry (props) {
           cursor:'pointer',
         }),
       };
+    
+    
 
       const { optionStase, optionRS, optionRoom } = props.options
       const optionDiagnosis = props.dictionary.skdi_dx.map(x => ({
@@ -214,6 +231,13 @@ function LogbookEntry (props) {
      
       // history.push("/logbook-entry", { from: "LogbookEntry" })
 
+      const indicatorSeparatorStyle = {
+        display: 'none',
+      };
+      const IndicatorSeparator = ({ innerProps }) => {
+        return <span style={indicatorSeparatorStyle} {...innerProps} />;
+      };
+
     return (
       <div className="container-dashboard">
         <Sidebar />
@@ -249,66 +273,31 @@ function LogbookEntry (props) {
                     <label>Tanggal</label>
                     <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
                     <label>Stase</label>
-                    <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} 
-                      styles={{
-                        placeholder: base => ({
-                          ...base,
-                          color: '#C5C9D7',
-                        }),
-                      }} 
-                    />
+                    <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} styles={colourStyles} components={{ IndicatorSeparator }} />
                     <label>Lokasi Rumah Sakit</label>
-                    <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" value={optionRS.filter(x => x.value == inputValues.wahana)} onChange={handleInputChange("wahana")} 
-                      styles={{
-                        placeholder: base => ({
-                          ...base,
-                          color: '#C5C9D7',
-                        }),
-                      }} 
-                    />
+                    <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" value={optionRS.filter(x => x.value == inputValues.wahana)} onChange={handleInputChange("wahana")} styles={colourStyles} components={{ IndicatorSeparator }}/>
                     <label>Ruangan</label>
-                    <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" value={optionRoom.filter(x => x.value == inputValues.lokasi)} onChange={handleInputChange("lokasi")}
-                      styles={{
-                        placeholder: base => ({
-                          ...base,
-                          color: '#C5C9D7',
-                        }),
-                      }} 
-                    />
+                    <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" value={optionRoom.filter(x => x.value == inputValues.lokasi)} onChange={handleInputChange("lokasi")} styles={colourStyles} components={{ IndicatorSeparator }} />
                     <label>NRM</label>
                     <input type="text" placeholder="Masukkan NRM" name="nrm" className="logbook-entry-input" value={inputValues.nrm} onChange={handleInputChange("nrm")}></input>
                     <label>Inisial Pasien</label>
                     <input type="text" placeholder="Masukkan inisial pasien" name="nama" className="logbook-entry-input" value={inputValues.nama} onChange={handleInputChange("nama")}></input>
                     <label>Jenis Kelamin</label>
-                    <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" value={optionGender.filter(x => x.value == inputValues.gender)} onChange={handleInputChange("gender")}
-                      styles={{
-                        placeholder: base => ({
-                          ...base,
-                          color: '#C5C9D7',
-                        }),
-                      }} 
-                    />
+                    <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" value={optionGender.filter(x => x.value == inputValues.gender)} onChange={handleInputChange("gender")} styles={colourStyles} components={{ IndicatorSeparator }}/>
                     <label>Usia</label>
                     <div className="logbook-entry-age">
                       <input type="number" name="usia" placeholder="Usia Pasien" id="idAge" className="logbook-entry-input" value={inputValues.usia} onChange={handleInputChange("usia")}></input>
-                      <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")}
-                        styles={{
-                          placeholder: base => ({
-                            ...base,
-                            color: '#C5C9D7',
-                          }),
-                        }} 
-                      />
+                      <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")} styles={colourStyles} components={{ IndicatorSeparator }}/>
                     </div>
                     <label>Diagnosis</label>
-                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStyles} value={skdi.dx} />
+                    <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStylesMulti} value={skdi.dx} components={{ IndicatorSeparator }}/>
                     <label>Tingkat kompetensi Diagnosis</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi" className="logbook-entry-input"
 	    		value={skdi.dx.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_dx.find(y => y.id == x.value).kompetensi).join(",")}></input>
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
                     <label>Keterampilan</label>
-                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti styles={colourStyles} value={skdi.ktn} onChange={handleSkdiChange("ktn")}  />
+                    <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti styles={colourStylesMulti} value={skdi.ktn} onChange={handleSkdiChange("ktn")} components={{ IndicatorSeparator }} />
                     <label>Tingkat kompetensi Keterampilan</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"
 	    		value={skdi.ktn.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_ktn.find(y => y.id == x.value).kompetensi).join(",")}></input>

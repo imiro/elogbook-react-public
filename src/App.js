@@ -13,7 +13,7 @@ import LogbookEntry from './components/logbook_entry'
 import SKDI from './components/skdi'
 import Profile from './components/profile'
 import Logout from './components/logout'
-import Tes from './components/logbookTable'
+import InfoSKDI from './components/infoskdi'
 // import './assets/css/bootstrap.min.css'
 // import './assets/css/light-bootstrap-dashboard.css'
 
@@ -38,6 +38,7 @@ export default function App() {
           <PrivateRoute path="/logbook" component={Logbook} />
           <PrivateRoute path="/logbook-entry" component={LogbookEntry} />
           <PrivateRoute path="/skdi" component={SKDI} />
+          <PrivateRoute path="/info-skdi" component={InfoSKDI} />
           <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/logout" component={Logout} />
           {/* <Route path="/dashboard" component={Dashboard} />
