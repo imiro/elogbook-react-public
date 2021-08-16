@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {Link} from 'react-router-dom'
-import Sidebar from './NavSidebar'
-import Navbar from './Navbar'
+import Layout from './layout'
 import search from '../assets/images/logbook/search.png'
 import info from '../assets/images/dashboard/info.png'
 import MultiSelect from "react-multi-select-component";
@@ -122,10 +121,7 @@ function SKDI() {
     );
       
     return (
-      <div className="container-dashboard">
-        <Sidebar />
-        <div className="content-dashboard">
-          <Navbar page="SKDI" />
+	<Layout page="SKDI" >
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <div className="skdi-bar-title">Kompetensi</div>
@@ -225,8 +221,7 @@ function SKDI() {
         
         } 
           </div>
-        </div>
-      </div>
+	</Layout>
     )
 }
 

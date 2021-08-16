@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {NavLink, Redirect, useHistory, useLocation } from 'react-router-dom'
-import Sidebar from './NavSidebar'
-import Navbar from './Navbar'
+import Layout from './layout'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable'
@@ -239,11 +238,7 @@ function LogbookEntry (props) {
       };
 
     return (
-      <div className="container-dashboard">
-        <Sidebar />
-        <div className="content-dashboard">
-          
-          <Navbar page= {locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} />
+	<Layout page={locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} >
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <NavLink id="logbook-back" style={{ textDecoration: 'none' }} to="/logbook" ><img src={chevronLeft} ></img>Kembali</NavLink>
@@ -305,8 +300,7 @@ function LogbookEntry (props) {
                     <textarea name="catatan" placeholder="Masukkan catatan pribadi"></textarea>
                   </div>
                 </form></div>
-              </div>
-            </div>
+	</Layout>
     );
 }
 

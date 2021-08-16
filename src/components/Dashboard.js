@@ -1,6 +1,5 @@
 import React, { Component, useState } from 'react'
-import Sidebar from './NavSidebar'
-import Navbar from './Navbar'
+import Layout from './layout'
 import logo from '../assets/images/dashboard/dashboard-quote.png'
 import caseLogo from '../assets/images/dashboard/case_logo.png'
 import competencyLogo from '../assets/images/dashboard/competency_logo.png'
@@ -166,10 +165,7 @@ function Dashboard(props) {
 		   }
 		})
     return (
-      <div className="container-dashboard">
-        <Sidebar />
-        <div className="content-dashboard">
-          <Navbar page="Dashboard" />
+	<Layout page="Dashboard" >
           <div className="dashboard-box">
             <div className="top-container-dashboard">
                 <div className="quote-dashboard">
@@ -313,8 +309,7 @@ function Dashboard(props) {
             :
             null}
           </div> 
-        </div>
-      </div>
+	</Layout>
     )
 }
 

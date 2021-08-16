@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import {NavLink,  useLocation, useHistory } from 'react-router-dom'
 import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
-import Sidebar from './NavSidebar'
-import Navbar from './Navbar'
+import Layout from './layout'
 import nodata from '../assets/images/logbook/no_data.png'
 import search from '../assets/images/logbook/search.png'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
@@ -107,10 +106,7 @@ class Logbook extends Component <*, State> {
     };
 
     return (
-      <div className="container-dashboard">
-        <Sidebar />
-        <div className="content-dashboard">
-          <Navbar page="Logbook"/>
+	<Layout page="Logbook" >
           <div className="navbar-divider"></div>
                 <div className="profile-bar">
                    {/* <select name="kategori" id="kategori">
@@ -134,9 +130,7 @@ class Logbook extends Component <*, State> {
 	    		 data={this.props.data} /> :
 		    null }
           </div>
-        </div>
-      </div>
-      
+	</Layout>
     )
   }
 }

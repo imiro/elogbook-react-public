@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import {NavLink} from 'react-router-dom'
-import Sidebar from './NavSidebar'
-import Navbar from './Navbar'
+import Layout from './layout'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 
 
 function infoSKDI() {
     return (
-      <div className="container-dashboard">
-        <Sidebar />
-        <div className="content-dashboard">
-          <Navbar page="SKDI / Informasi Kompetensi" />
+	<Layout page="SKDI / Informasi Kompetensi" >
           <div className="navbar-divider"></div>
           <div className="profile-bar">
           <NavLink id="logbook-back" style={{ textDecoration: 'none' }} to="/skdi" ><img src={chevronLeft} ></img>Kembali</NavLink>
@@ -44,8 +40,7 @@ function infoSKDI() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+	</Layout>
     )
 }
 

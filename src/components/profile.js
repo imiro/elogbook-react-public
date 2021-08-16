@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import {Redirect, useHistory} from 'react-router-dom'
 import { useAuth } from '../providers/auth'
-import Sidebar from './NavSidebar'
-import Navbar from './Navbar'
+import Layout from './layout'
 import chevronLeft from '../assets/images/profile/chevron_left.png'
 import editPhoto from '../assets/images/profile/edit_photo.png'
 import editPassword from '../assets/images/profile/edit_password.png'
@@ -115,10 +114,7 @@ export default function ProfilePage() {
 
 
     return (
-      <div className="container-dashboard">
-        <Sidebar />
-        <div className="content-dashboard">
-          <Navbar page="Profil"/>
+	<Layout page="Profil" >
           {popupAppear 
           ? 
             <Popup modal open={popupAppear}>
@@ -194,8 +190,7 @@ export default function ProfilePage() {
             </div>
             }
           </div>
-        </div>
-      </div>
+	</Layout>
     )
 }
 
