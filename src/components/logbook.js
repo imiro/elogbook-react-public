@@ -105,8 +105,8 @@ class Logbook extends Component <*, State> {
       paddingTop: "1px",
     };
 
-    return (
-	<Layout page="Logbook" >
+    return (<>
+	    {/*<Layout page="Logbook" >*/}
           <div className="navbar-divider"></div>
                 <div className="profile-bar">
                    {/* <select name="kategori" id="kategori">
@@ -130,7 +130,8 @@ class Logbook extends Component <*, State> {
 	    		 data={this.props.data} /> :
 		    null }
           </div>
-	</Layout>
+	    {/*</Layout>*/}
+	    </>
     )
   }
 }

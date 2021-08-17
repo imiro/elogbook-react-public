@@ -7,6 +7,7 @@ import LoginForgotPasswordPage from './components/login_forgotPassword'
 import LoginSetupPasswordPage from './components/login_setupPassword'
 import LoginConfirmPasswordPage from './components/login_confirmPassword'
 import LoginAturPasswordBaruPage from './components/login_aturPasswordBaru'
+/*
 import Dashboard from './components/Dashboard'
 import Logbook from './components/logbook'
 import LogbookEntry from './components/logbook_entry'
@@ -14,6 +15,8 @@ import SKDI from './components/skdi'
 import Profile from './components/profile'
 import Logout from './components/logout'
 import InfoSKDI from './components/infoskdi'
+*/
+import Layout from './components/layout'
 // import './assets/css/bootstrap.min.css'
 // import './assets/css/light-bootstrap-dashboard.css'
 
@@ -25,7 +28,6 @@ export default function App() {
     <AuthWrapper>
       <HashRouter>
         <Switch>
-	  <PrivateRoute exact path="/" component={Dashboard} />
           <Route exact path="/login">
             <LoginPage />
           </Route>
@@ -34,6 +36,8 @@ export default function App() {
           <Route path="/login-setup-password" component={LoginSetupPasswordPage} />
           <Route path="/login-confirm-password" component={LoginConfirmPasswordPage} />
           <Route path="/login-atur-password-baru" component={LoginAturPasswordBaruPage} />
+	  <PrivateRoute component={Layout} />
+	  {/*
           <PrivateRoute path="/dashboard" component={Dashboard} />
           <PrivateRoute path="/logbook" component={Logbook} />
           <PrivateRoute path="/logbook-entry" component={LogbookEntry} />
@@ -41,6 +45,7 @@ export default function App() {
           <PrivateRoute path="/info-skdi" component={InfoSKDI} />
           <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/logout" component={Logout} />
+	  */}
           {/* <Route path="/dashboard" component={Dashboard} />
           <Route path="/profile" component={Profile} /> */}
         </Switch>

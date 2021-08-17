@@ -120,8 +120,7 @@ function SKDI() {
       </div>
     );
       
-    return (
-	<Layout page="SKDI" >
+    return (<>
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <div className="skdi-bar-title">Kompetensi</div>
@@ -222,7 +221,7 @@ function SKDI() {
         
         } 
           </div>
-	</Layout>
+	</>
     )
 }
 

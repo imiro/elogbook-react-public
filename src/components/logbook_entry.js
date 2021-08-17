@@ -237,8 +237,8 @@ function LogbookEntry (props) {
         return <span style={indicatorSeparatorStyle} {...innerProps} />;
       };
 
-    return (
-	<Layout page={locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} >
+    return (<>
+	    {/*<Layout page={locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} >*/}
           <div className="navbar-divider"></div>
           <div className="profile-bar">
             <NavLink id="logbook-back" style={{ textDecoration: 'none' }} to="/logbook" ><img src={chevronLeft} ></img>Kembali</NavLink>
@@ -300,7 +300,8 @@ function LogbookEntry (props) {
                     <textarea name="catatan" placeholder="Masukkan catatan pribadi"></textarea>
                   </div>
                 </form></div>
-	</Layout>
+	    {/*</Layout>*/}
+	  </>
     );
 }
 

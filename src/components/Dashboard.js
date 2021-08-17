@@ -166,9 +166,9 @@ function Dashboard(props) {
 		   }
 		})
     
-    return (
-	<Layout page="Dashboard" >
-          <div className="dashboard-box">
+    return (<div className="dashboard-box">
+	    {/*<Layout page="Dashboard" >*/}
+          
             <div className="top-container-dashboard">
                 <div className="quote-dashboard">
                   <div className="quote-username-dashboard">Selamat Pagi!</div>
@@ -317,8 +317,8 @@ function Dashboard(props) {
              </Paper>
             :
             null}
+	    {/*</Layout>*/}
           </div> 
-	</Layout>
     )
 }
 

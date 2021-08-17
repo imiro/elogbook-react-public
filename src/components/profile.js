@@ -114,7 +114,7 @@ export default function ProfilePage() {
 
 
     return (
-	<Layout page="Profil" >
+	<>
           {popupAppear 
           ? 
             <Popup modal open={popupAppear}>
@@ -190,7 +190,7 @@ export default function ProfilePage() {
             </div>
             }
           </div>
-	</Layout>
+	</>
     )
 }
 
