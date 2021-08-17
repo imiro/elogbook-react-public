@@ -17,6 +17,7 @@ import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Tooltip from '@material-ui/core/Tooltip';
+import SwipeableViews from 'react-swipeable-views';
 import { withDictionaryOptions } from './logbook'
 import { useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
 
@@ -164,6 +165,7 @@ function Dashboard(props) {
 			jumlah: selectedStase.data[dxId]
 		   }
 		})
+    
     return (
 	<Layout page="Dashboard" >
           <div className="dashboard-box">
@@ -183,6 +185,34 @@ function Dashboard(props) {
               
             </div>
            
+            <div className="row1-container-dashboard-mobile">
+            <SwipeableViews enableMouseEvents>
+              <div id="row1-container-dashboard-case" className="row1-container-dashboard-content">
+                <img src={caseLogo}></img>
+                <div className="row1-text">
+                  <div className="progress-number">12</div>
+                  <div className="total-number">/ 20</div>
+                  <div className="row1-title">Total kasus ditemui</div>
+                </div>
+              </div>
+              <div id="row1-container-dashboard-competency" className="row1-container-dashboard-content">
+                <img src={competencyLogo}></img>
+                <div className="row1-text">
+                  <div className="progress-number">{cardsData ? cardsData.nKompetensi : skdiDxCount ? hitung(skdiDxCount) : null}</div>
+                  <div className="total-number">{"/ " + (selectedStase && selectedStase.data ? Object.keys(selectedStase.data).length : skdiDxCount ? Object.keys(skdiDxCount).length : null)}</div>
+                  <div className="row1-title">Total kompetensi didapat</div>
+                </div>
+              </div>
+              <div id="row1-container-dashboard-stase" className="row1-container-dashboard-content">
+                <img src={staseLogo}></img>
+                <div className="row1-text">
+                  <div className="progress-number">10</div>
+                  <div className="total-number">/ 14</div>
+                  <div className="row1-title">Total stase diselesaikan</div>
+                </div>
+              </div>
+              </SwipeableViews>
+            </div>
             <div className="row1-container-dashboard">
               <div id="row1-container-dashboard-case" className="row1-container-dashboard-content">
                 <img src={caseLogo}></img>
@@ -266,27 +296,6 @@ function Dashboard(props) {
                 </div>
               </div>
             </div>
-	    {/* (!selectedStase || !selectedStase.data) ? null : 
-            <><div style={{display: 'block'}} id="dashboard-table-title">Diagnosis Stase {selectedStase.nama}</div>
-              <table style={{display: 'block'}} id="dashboard-table-content">
-		<thead>
-                <tr>
-                  <th>Diagnosis</th>
-                  <th>Kompetensi</th>
-                  <th><img src={sort}></img>Jumlah ditemui</th>
-                </tr>
-		</thead>
-		<tbody>
-		{ Object.keys(selectedStase.data).map(dxId => (
-		<tr key={dxId}>
-		  <td>{props.dictionary.skdi_dx.find(x => x.id == dxId).diagnosis}</td>
-		  <td>{props.dictionary.skdi_dx.find(x => x.id == dxId).kompetensi}</td>
-		  <td>{selectedStase.data[dxId]}</td>
-		</tr>
-		)) }
-		</tbody>
-              </table>
-	    </>*/}
             {(selectedStase && selectedStase.data) ? <div id="dashboard-table-title">Diagnosis Stase Kesehatan Anak dan Remaja</div> : null}
             {(selectedStase && selectedStase.data) ?
                <Paper id="dashboard-table-content">

@@ -150,6 +150,7 @@ function SKDI() {
               options={Object.keys(tableData).map(k => ({value:k, label: k})) }
               value={filter}
               labelledBy="Sistem" 
+              hasSelectAll={false}
               onChange={handleSistemChange} /> : null 
               }
             </div>
