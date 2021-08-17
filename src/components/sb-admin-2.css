@@ -765,6 +765,10 @@ input:focus{
     /* //background-color: transparent; */
     text-decoration: none;
 }
+.side-menu-tab.side-menu-tab-collapsed {
+    width: 72px;
+}
+
 .menu-active {
     background-color: #008C8F;
   }
@@ -979,7 +983,6 @@ input:focus{
 
     .row1-container-dashboard-content{
         height: 140px;
-        width: 100%;
         background: #FFFDFF;
         border-radius: 6px;
         margin-top: 16px;
@@ -987,7 +990,7 @@ input:focus{
         box-shadow: 2px 4px 15px rgba(114, 110, 115, 0.2);
     }
 
-    /* #row1-container-dashboard-case{
+    #row1-container-dashboard-case{
         width: 296px;
     }
 
@@ -997,16 +1000,12 @@ input:focus{
 
     #row1-container-dashboard-stase{
         width: 400px;
-    } */
+    }
 
     .row1-container-dashboard-content img{
         float:right;
         width: 72px;
         height: 72px;
-    }
-
-    .row1-container-dashboard-mobile{
-        display:none;
     }
 
     .row1-text{
@@ -2611,11 +2610,12 @@ input:focus{
     }
     .content-dashboard{
         margin-left: 0px;
+        justify-content: center;
         overflow: hidden;
     }
 
     .dashboard-box{
-        /* position:relative; */
+        position:relative;
         width: 100%;
     }
 
@@ -2665,15 +2665,6 @@ input:focus{
 
     .row1-container-dashboard{
         width:fit-content;
-        display:none;
-    }
-
-    .row1-container-dashboard-mobile{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width:fit-content;
-        display:block;
     }
 
     .row1-container-dashboard-content {
@@ -2702,10 +2693,6 @@ input:focus{
         width: 100%;
     }
 
-    #dashboard-table-content{
-        width: 100%;
-    }
-
 
     /*navbar*/
     .navbar-avatar-box{
@@ -2721,37 +2708,6 @@ input:focus{
     .navbar-name{
         display: none;
     }
-
     
-    /*profile*/
-    .profile-box{
-        width:100%;
-    }
-    .profile-avatar-box{
-        align-items: flex-start;
-        margin-left: 24px;
-    }
-
-    .skdi-search-box{
-        display:none;
-    }
-    .skdi-box{
-        overflow-x: hidden;
-        overflow-y: auto;
-        width: 100%;
-    }
-
-    .skdi-row1-info{
-        display:none;
-    }
-
-    .skdi-select{
-        width: auto;
-    }
-
-    .skdi-table-content{
-        width:100%;
-    }
-
   }
-
+  

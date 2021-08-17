@@ -13,8 +13,8 @@ export default function Layout(props) {
 
     return (
       <div className="container-dashboard">
-	{showSidebar ? <Sidebar /> : null}
-        <div className="content-dashboard" style={!showSidebar ? {marginLeft: 0} : {}}>
+	<Sidebar onBurgerClick={toggleSidebar} collapsed={!showSidebar} />
+        <div className="content-dashboard" style={!showSidebar ? {marginLeft: "88px"} : {}}>
           <Navbar page={props.page} onBurgerClick={toggleSidebar} />
 	    {/* <Switch>
 		  <Route path="/dashboard" component={Dashboard} />
