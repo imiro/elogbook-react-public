@@ -8,6 +8,7 @@ import { useAuth } from '../providers/auth'
 import { useHistory } from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import FontAwesome from 'react-fontawesome'
 
 
 // class Popup extends Component {
@@ -84,7 +85,13 @@ class Navbar extends Component {
 
       <div>
         <nav className=" navbar-dashboard" >
-            <div className="navbar-title">{this.props.page}</div>
+            <div className="navbar-title">
+	     <a href="#" onClick={this.props.onBurgerClick} ><FontAwesome name="bars"
+	    		  style={{color: "white", marginLeft: "10px", paddingRight: "10px",
+			  	  fontSize: "1em"}}
+	    		   /></a>
+	    {this.props.page}
+	    </div>
             {/* <div className="collapse navbar-collapse " id="navbarSupportedContent"> */}
             {this.state.showPopup ? 
                 popup
