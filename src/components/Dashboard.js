@@ -19,7 +19,7 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Tooltip from '@material-ui/core/Tooltip';
 import SwipeableViews from 'react-swipeable-views';
 import { withDictionaryOptions } from './logbook'
-import { useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
+import { useEntriesCount, useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
 
 function Dashboard(props) {
     const [state, setState] = useState({
@@ -63,6 +63,7 @@ function Dashboard(props) {
     // ]
     const skdiDxCount = useSkdiDxCount()
     const fetchSkdiDxData = useSkdiDxDataFetcher()
+    const [entriesCount, changeEntriesCountStase] = useEntriesCount()
 
     const optionStase = [{
 	    value: -1,
@@ -117,17 +118,23 @@ function Dashboard(props) {
 		nama: chosen.label,
 		data: null
 	})
-	fetchSkdiDxData(chosen.value)
-	.then(function (data) {
-		setSelectedStase({
-			id: chosen.value,
-			nama: chosen.label,
-			data: data
+	if(chosen.value > -1 ) {
+		changeEntriesCountStase(chosen.value)
+		fetchSkdiDxData(chosen.value)
+		.then(function (data) {
+			setSelectedStase({
+				id: chosen.value,
+				nama: chosen.label,
+				data: data
+			})
+			setCardsData({
+				nKompetensi: hitung(data) 
+			})
 		})
-		setCardsData({
-			nKompetensi: hitung(data) 
-		})
-	})
+	} else {
+		changeEntriesCountStase()
+		setCardsData(null)
+	}
     }
     const SortingIcon = ({ direction }) => (
       direction === 'asc'
@@ -190,8 +197,7 @@ function Dashboard(props) {
               <div id="row1-container-dashboard-case" className="row1-container-dashboard-content">
                 <img src={caseLogo}></img>
                 <div className="row1-text">
-                  <div className="progress-number">12</div>
-                  <div className="total-number">/ 20</div>
+                  <div className="progress-number">{entriesCount}</div>
                   <div className="row1-title">Total kasus ditemui</div>
                 </div>
               </div>
@@ -217,8 +223,7 @@ function Dashboard(props) {
               <div id="row1-container-dashboard-case" className="row1-container-dashboard-content">
                 <img src={caseLogo}></img>
                 <div className="row1-text">
-                  <div className="progress-number">12</div>
-                  <div className="total-number">/ 20</div>
+                  <div className="progress-number">{entriesCount}</div>
                   <div className="row1-title">Total kasus ditemui</div>
                 </div>
               </div>

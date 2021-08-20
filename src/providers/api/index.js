@@ -185,6 +185,27 @@ export const useSkdiDxDataFetcher = function() {
 	}
 }
 
+export const useEntriesCount = function() {
+	const fwa = useFetchWithAuth()
+	const [count, setCount] = useState(null)
+
+	const changeStase = function(s) {
+	let stase = s ? "?stase="+s : ""
+	fwa('/entry/count' + stase)
+	.then(function (resp) {
+		if(resp.ok) return resp.json()
+		throw resp
+	}).then(function (num) {
+		setCount(num)
+	})
+	}
+
+	// fetch data for all stase at init
+	useEffect(() => changeStase(), [])
+
+	return [count, changeStase]
+}
+
 export const useAPI = function() {
   const { token } = useAuth()
 
