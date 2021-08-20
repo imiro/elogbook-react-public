@@ -7,7 +7,7 @@ import Logbook from './logbook'
 import LogbookEntry from './logbook_entry'
 import SKDI from './skdi'
 import Profile from './profile'
-import InfoSKDI from './/infoskdi'
+import InfoSKDI from './infoskdi'
 
 export default function Layout(props) {
 	
@@ -35,7 +35,7 @@ export default function Layout(props) {
 		    <Route component={Logbook} />
 	    	  </Route>
 		  <Route path="/logbook-entry">
-		    <Navbar page={props.location.state ? "Edit entri" : "Entri baru"} onBurgerClick={toggleSidebar} />
+		    <Navbar page={props.location && props.location.state ? "Edit entri" : "Entri baru"} onBurgerClick={toggleSidebar} />
 		    <Route component={LogbookEntry} />
 	    	  </Route>
 		  <Route path="/skdi" >
