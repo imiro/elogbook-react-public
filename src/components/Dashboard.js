@@ -112,7 +112,7 @@ function Dashboard(props) {
       />
     );
 
-    const hitung = data => Object.keys(data).reduce((c,i) => data[i] ? c+1 : c, 0);
+    const hitung = data => Object.keys(data).reduce((c,i) => parseInt(data[i]) ? c+1 : c, 0);
     const handleStaseSelection = function(chosen) {
 	setSelectedStase({
 		id: chosen.value,
