@@ -19,7 +19,7 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Tooltip from '@material-ui/core/Tooltip';
 import SwipeableViews from 'react-swipeable-views';
 import { withDictionaryOptions } from './logbook'
-import { useEntriesCount, useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
+import { useStaseCount, useEntriesCount, useSkdiDxCount, useSkdiDxDataFetcher } from '../providers/api'
 
 function Dashboard(props) {
     const [state, setState] = useState({
@@ -62,6 +62,7 @@ function Dashboard(props) {
     //   { value: '3', label: 'Stase 3' },
     // ]
     const skdiDxCount = useSkdiDxCount()
+    const staseCount = useStaseCount()
     const fetchSkdiDxData = useSkdiDxDataFetcher()
     const [entriesCount, changeEntriesCountStase] = useEntriesCount()
 
@@ -212,9 +213,9 @@ function Dashboard(props) {
               <div id="row1-container-dashboard-stase" className="row1-container-dashboard-content">
                 <img src={staseLogo}></img>
                 <div className="row1-text">
-                  <div className="progress-number">10</div>
+                  <div className="progress-number">{staseCount}</div>
                   <div className="total-number">/ 14</div>
-                  <div className="row1-title">Total stase diselesaikan</div>
+                  <div className="row1-title">Total stase dilalui</div>
                 </div>
               </div>
               </SwipeableViews>
@@ -238,9 +239,9 @@ function Dashboard(props) {
               <div id="row1-container-dashboard-stase" className="row1-container-dashboard-content">
                 <img src={staseLogo}></img>
                 <div className="row1-text">
-                  <div className="progress-number">10</div>
+                  <div className="progress-number">{staseCount}</div>
                   <div className="total-number">/ 14</div>
-                  <div className="row1-title">Total stase diselesaikan</div>
+                  <div className="row1-title">Total stase dilalui</div>
                 </div>
               </div>
             </div>

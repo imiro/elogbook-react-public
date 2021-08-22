@@ -173,6 +173,23 @@ export const useSkdiDxCount = function() {
 	return count 
 }
 
+export const useStaseCount = function() {
+	const fwa = useFetchWithAuth()
+	const [count, setCount] = useState(null)
+	
+	useEffect(function() {
+	  fwa('/nstase')
+	  .then(function (resp) {
+	    if(resp.ok) return resp.json()
+	    else throw resp
+	  }).then(function (json) {
+	    setCount(json)
+	  })
+	}, [])
+
+	return count 
+}
+
 export const useSkdiDxDataFetcher = function() {
 	const fwa = useFetchWithAuth()
 	return function(dxId) {
