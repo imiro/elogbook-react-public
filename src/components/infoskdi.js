@@ -6,7 +6,7 @@ import chevronLeft from '../assets/images/profile/chevron_left.png'
 
 function infoSKDI() {
     return (
-	<Layout page="SKDI / Informasi Kompetensi" >
+	<>
           <div className="navbar-divider"></div>
           <div className="profile-bar">
           <NavLink id="logbook-back" style={{ textDecoration: 'none' }} to="/skdi" ><img src={chevronLeft} ></img>Kembali</NavLink>
@@ -40,7 +40,7 @@ function infoSKDI() {
               </div>
             </div>
           </div>
-	</Layout>
+	</>
     )
 }
 
