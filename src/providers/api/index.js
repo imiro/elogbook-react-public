@@ -137,8 +137,7 @@ export const useCreateEntry = function() {
 			"Authorization": "Bearer " + token},
 		body: JSON.stringify(inputs)
 	}).then(function (resp) {
-		if(resp.ok) return resp.json();
-		throw resp;
+            return resp
 	})
 }
 }

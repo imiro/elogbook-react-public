@@ -15,7 +15,7 @@ function LogbookEntry (props) {
   const history = useHistory()
   const createEntry = useCreateEntry()
   const editEntry = useEditEntry()
-
+  const [error, setError] = useState({})
 
   const [isSearchable, setSearchable] = useState(true)
   const initSkdi = function(t) {
@@ -58,18 +58,18 @@ function LogbookEntry (props) {
   }, {}))
 
   const handleInputChange = function(p) {
-	return function(e) {
-		let val = usingReactSelect.includes(p) ? e.value : e.target.value
-		setInputValues(current => {return {
-			...current,
-			[p]: val
-		}})
+      return function(e) {
+              let val = usingReactSelect.includes(p) ? e.value : e.target.value
+              setInputValues(current => {return {
+                      ...current,
+                      [p]: val
+              }})
 
-	}
+      }
   }
 
   const form = React.createRef()
-  const handleSubmit = function(e) {
+  const handleSubmit = function(e, closePopup) {
 	let inputs = {}
 	for(var p of params)
 	  inputs[p] = form.current[p].value
@@ -90,44 +90,52 @@ function LogbookEntry (props) {
 	console.log(inputs)
 	console.groupEnd()
 
-	// TODO handle edit instead of insert
+	// TODO handle network error better
 	if(locationState && locationState.editing) {
-		editEntry(locationState.data.raw.id, inputs)
-		.then(async function (resp) {
-			if(resp.ok) {
-			history.push({
-				pathname: '/logbook',
-				state: {
-					successfulEntry: true,
-          newEntry: false
-			}})
-			} else {
-				alert("Error")
-				console.error(resp)
-				console.error(resp.status, resp.statusText)
-				console.error(await resp.text())
-			}
-		})
-		.catch(function (err) {
-			console.warn(err)
-			alert("Network error")
-		})
+          editEntry(locationState.data.raw.id, inputs)
+          .then(async function (resp) {
+            if(resp.ok) {
+              history.push({
+                pathname: '/logbook',
+                state: {
+                  successfulEntry: true,
+                  newEntry: false
+              }})
+            } else { // validation error
+              closePopup()
+              console.warn(resp)
+              console.warn(resp.status, resp.statusText)
+              setError(await resp.json())
+            }
+          })
+          .catch(function (err) {
+               console.error(err)
+               closePopup()
+               window.alert("Network error")
+          })
 	} else
 	  createEntry(inputs)
-	  .then(function handleSuccess() {
-			history.push({
-				pathname: '/logbook',
-				state: {
-					successfulEntry: true,
-          newEntry:true,
-				}
-			})
-		}, async function handleFailure(err) {
-		  // handle validation failure etc
-			// alert("Error. Pastikan data yang Anda masukkan sudah lengkap")
-			console.log(err.status, err.statusText)
-			console.log(await err.text())
-		})
+	  .then(async function handle(resp) {
+              if(!resp.ok) {
+                // most likely validation error
+                // if(resp.status == 422) // to verify validation error
+                console.warn(resp)
+                closePopup()
+                setError(await resp.json())
+                return
+              }
+              history.push({
+                pathname: '/logbook',
+                state: {
+                  successfulEntry: true,
+                  newEntry:true,
+                }
+              })
+           }, function handleNetworkError(err) {
+               console.error(err)
+               closePopup()
+               window.alert("Network error.")
+           })
   }
 
   var today = new Date();
@@ -237,6 +245,10 @@ function LogbookEntry (props) {
         return <span style={indicatorSeparatorStyle} {...innerProps} />;
       };
 
+    const ErrorPlaceholderWithState = function({ field }) {
+      return <ErrorPlaceholder errorState={error} field={field} />
+    }
+
     return (<>
 	    {/*<Layout page={locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} >*/}
           <div className="navbar-divider"></div>
@@ -254,7 +266,7 @@ function LogbookEntry (props) {
                   </div>
                   <div className="popup-new-entry-button">
                     <div className="popup-new-entry-button-cancel"  onClick={() => { close();}}>Batal</div>
-                    <div className="popup-new-entry-button-save" onClick={e => handleSubmit(e)}>Simpan</div>
+                    <div className="popup-new-entry-button-save" onClick={e => handleSubmit(e, close)}>Simpan</div>
                   </div>
                 </div>
               )}
@@ -267,28 +279,37 @@ function LogbookEntry (props) {
                     <div className="logbook-entry-title">{locationState?"Edit Data Entry":"Data Entry Baru"}</div> 
                     <label>Tanggal</label>
                     <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
+                    <ErrorPlaceholderWithState field="tanggal" />
                     <label>Stase</label>
                     <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} styles={colourStyles} components={{ IndicatorSeparator }} />
+                    <ErrorPlaceholderWithState field="stase" />
                     <label>Lokasi Rumah Sakit</label>
                     <Select placeholder="Pilih lokasi rumah sakit"options={optionRS} name="wahana" className="logbook-entry-select" value={optionRS.filter(x => x.value == inputValues.wahana)} onChange={handleInputChange("wahana")} styles={colourStyles} components={{ IndicatorSeparator }}/>
+                    <ErrorPlaceholderWithState field="wahana" />
                     <label>Ruangan</label>
                     <Select placeholder="Pilih ruangan"options={optionRoom} name="lokasi" className="logbook-entry-select" value={optionRoom.filter(x => x.value == inputValues.lokasi)} onChange={handleInputChange("lokasi")} styles={colourStyles} components={{ IndicatorSeparator }} />
+                    <ErrorPlaceholderWithState field="lokasi" />
                     <label>NRM</label>
                     <input type="text" placeholder="Masukkan NRM" name="nrm" className="logbook-entry-input" value={inputValues.nrm} onChange={handleInputChange("nrm")}></input>
+                    <ErrorPlaceholderWithState field="nrm" />
                     <label>Inisial Pasien</label>
                     <input type="text" placeholder="Masukkan inisial pasien" name="nama" className="logbook-entry-input" value={inputValues.nama} onChange={handleInputChange("nama")}></input>
+                    <ErrorPlaceholderWithState field="nama" />
                     <label>Jenis Kelamin</label>
                     <Select placeholder="Pilih jenis kelamin" name="gender" options={optionGender} className="logbook-entry-select" value={optionGender.filter(x => x.value == inputValues.gender)} onChange={handleInputChange("gender")} styles={colourStyles} components={{ IndicatorSeparator }}/>
+                    <ErrorPlaceholderWithState field="gender" />
                     <label>Usia</label>
                     <div className="logbook-entry-age">
                       <input type="number" name="usia" placeholder="Usia Pasien" id="idAge" className="logbook-entry-input" value={inputValues.usia} onChange={handleInputChange("usia")}></input>
                       <Select placeholder="Pilih waktu" name="satuanusia" options={optionTime} id="idTime" className="logbook-entry-select" value={optionTime.filter(x => x.value == inputValues.satuanusia)} onChange={handleInputChange("satuanusia")} styles={colourStyles} components={{ IndicatorSeparator }}/>
                     </div>
+                    <ErrorPlaceholderWithState field="usia" />
                     <label>Diagnosis</label>
                     <CreatableSelect name="dx" placeholder="Pilih diagnosis pasien"options={optionDiagnosis} onChange={handleSkdiChange("dx")} isMulti styles={colourStylesMulti} value={skdi.dx} components={{ IndicatorSeparator }}/>
                     <label>Tingkat kompetensi Diagnosis</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi" className="logbook-entry-input"
 	    		value={skdi.dx.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_dx.find(y => y.id == x.value).kompetensi).join(",")}></input>
+                    <ErrorPlaceholderWithState field="diagnosis" />
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
                     <label>Keterampilan</label>
@@ -303,6 +324,30 @@ function LogbookEntry (props) {
 	    {/*</Layout>*/}
 	  </>
     );
+}
+
+function ErrorPlaceholder(props) {
+  const { errorState, field } = props
+  // console.log('ErrorPlaceholder', errorState, field)
+  if(field == 'usia') {
+    if(errorState['satuanusia'])
+      errorState['usia'] = errorState['usia'] ? 
+        errorState['usia']+"\n"+errorState['satuanusia'] :
+        errorState['satuanusia']
+  } else if(field == 'diagnosis') {
+    if(errorState['skdi_dx'] && errorState['dx_extra'])
+      errorState['diagnosis'] = "The diagnosis field is required."
+    else if(errorState['skdi_dx'])
+      errorState['diagnosis'] = errorState['skdi_dx']
+    else if(errorState['dx_extra'])
+      errorState['diagnosis'] = errorState['dx_extra']
+  }
+  if( !errorState || !errorState[field] ) return null
+  return (
+    <div style={{color: 'red',
+                 marginBottom: '5px'}} >
+    { errorState[field] }
+    </div> )
 }
 
 export default (withDictionaryOptions(LogbookEntry))
