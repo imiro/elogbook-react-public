@@ -20,7 +20,7 @@ export default function Layout(props) {
     return (
       <div className="container-dashboard">
 	<Sidebar onBurgerClick={toggleSidebar} collapsed={!showSidebar} />
-        <div className="content-dashboard" style={!showSidebar ? {marginLeft: "88px"} : {}}>
+        <div className={"content-dashboard" + (!showSidebar ? " sidebar-collapsed" : "")} >
 	    <Switch>
 		  <Route exact path="/"  >
 		    <Navbar page="Dashboard" onBurgerClick={toggleSidebar} />

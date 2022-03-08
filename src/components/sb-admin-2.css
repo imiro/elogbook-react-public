@@ -570,6 +570,9 @@ input:focus{
     position:relative;
     background: #EDF0F5;
 }
+.content-dashboard.sidebar-collapsed {
+    margin-left: 88px;
+}
 
 .logo-container-sidebar-dashboard{
     width: 256px;
@@ -2625,12 +2628,20 @@ input:focus{
         
     }
 
-    .sidebar-dashboard{
+    /* Note: collapsed state is actually shown on mobile */
+    .sidebar-dashboard.sidebar-collapsed{
+        display: block;
+    }
+    .sidebar-dashboard {
         display: none;
     }
-    .content-dashboard{
+
+    .content-dashboard {
         margin-left: 0px;
         overflow: hidden;
+    }
+    .content-dashboard.sidebar-collapsed {
+        margin-left: 88px;
     }
 
     .dashboard-box{

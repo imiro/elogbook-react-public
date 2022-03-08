@@ -86,10 +86,10 @@ class Navbar extends Component {
       <div>
         <nav className=" navbar-dashboard" >
             <div className="navbar-title">
-	    {/*   <a href="#" onClick={this.props.onBurgerClick} ><FontAwesome name="bars"
+	    <a href="#" onClick={this.props.onBurgerClick} ><FontAwesome name="bars"
 	    		  style={{color: "white", marginLeft: "10px", paddingRight: "10px",
 			  	  fontSize: "1em"}}
-	    		   /></a> */}
+	    		   /></a>
 	    {this.props.page}
 	    </div>
             {/* <div className="collapse navbar-collapse " id="navbarSupportedContent"> */}

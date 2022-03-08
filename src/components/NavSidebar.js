@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import "../../node_modules/font-awesome/css/font-awesome.min.css";
 import logo from '../assets/sidebar/elogbook.png'
+import logoWithoutText from '../assets/login/logo.png'
 import dashboardLogo from '../assets/sidebar/dashboard.png'
 import logbookLogo from '../assets/sidebar/logbook.png'
 import skdiLogo from '../assets/sidebar/skdi.png'
@@ -14,18 +15,29 @@ class Sidebar extends Component {
   render() {
     let collapsed = this.props.collapsed
     let sideMenuClass = collapsed ? "side-menu-tab side-menu-tab-collapsed" : "side-menu-tab"
+    /* DEPRECATED
     let burgerStyle = {color: "#C5C9D7", fontSize: "24px"}
     if(collapsed)
 	  burgerStyle = {...burgerStyle, marginLeft: "32px", marginTop: "20px"}
     else
 	  burgerStyle = {...burgerStyle, position: "relative", marginLeft: "50px", top: "8px"}
+    */
+
+    let styleLogoWithoutText = {
+      width: "35px",
+      marginTop: "15px",
+      marginLeft: "25px"
+    }
+
     return (
-      <div className="sidebar-dashboard">
+      <div className={"sidebar-dashboard" + (collapsed ? " sidebar-collapsed" : "")}>
 	    <div className="logo-container-sidebar-dashboard">
-             {collapsed || <img className="logo-elogbook-sidebar" src={logo}></img> }
-	    <a href="#" onClick={this.props.onBurgerClick} ><FontAwesome name="bars"
+             {collapsed ?
+               <img src={logoWithoutText} style={styleLogoWithoutText} ></img> :
+               <img className="logo-elogbook-sidebar" src={logo}></img> }
+             {/* <a href="#" onClick={this.props.onBurgerClick} ><FontAwesome name="bars"
 	    		  style={burgerStyle}
-	    		   /></a>
+	    		   /></a> */}
           </div> 
           <div className="side-menu">
             <NavLink className={sideMenuClass} activeClassName="menu-active" style={ {textDecoration: 'none'}} to='/dashboard'>
