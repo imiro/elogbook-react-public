@@ -114,10 +114,12 @@ class Logbook extends Component <*, State> {
                    <option value="">Diagnosis</option>
                    <option value="">Keterampilan</option>
                  </select> */}
+                  {/* TODO, hide for now
                  <Select placeholder="Pilih Kategori" className="category" options={optionCategory} name="category" styles={colourStyles} components={{ IndicatorSeparator, IndicatorsContainer}}/>
                  <div id= "logbook-search-box"className="logbook-search-box">
                    <input id="search" type="text" placeholder="Cari"></input><img src={search}></img>
                  </div>
+                 */}
                  <NavLink id="logbook-new-entry" style={{ textDecoration: 'none' }} to='/logbook-entry'>
                     <div>  + Tambah Entry Baru</div>
                  </NavLink>

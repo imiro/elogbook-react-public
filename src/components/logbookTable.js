@@ -191,7 +191,7 @@ const styles = theme => ({
             <div>{row.nrm}</div>
             <div className="row-detail-label">Tanggal</div>
             <div>{row.tanggal}</div>
-            <div className="row-detail-label">Inisisal Pasien</div>
+            <div className="row-detail-label">Inisial Pasien</div>
             <div>{row.inisialPasien}</div>
           </div>
           <div className="row-detail-column">
@@ -293,7 +293,7 @@ const getRowId = row => row.id;
 
 export default function logbookTable (props)  {
   const [columns] = useState([
-    { name: 'noentry', title: 'No. Entry' },
+    /* { name: 'noentry', title: 'No. Entry' }, */
     { name: 'nrm', title: 'NRM' },
     { name: 'tanggal', title: 'Tanggal' },
     { name: 'stase', title: 'Stase' },

@@ -1283,7 +1283,8 @@ input:focus{
         display: flex;
         flex-direction: row;
         align-items: flex-end;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow: scroll;
     }
 
     #container-filter {
@@ -1313,6 +1314,7 @@ input:focus{
         line-height: 24px;
         color: #474748;
         margin-bottom: 16px;
+        margin-top: 16px;
       }
 
       .filter-box-dropdown{
