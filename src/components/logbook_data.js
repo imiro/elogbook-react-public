@@ -466,7 +466,7 @@ class LogbookData extends Component{
         <div id="logbook-data" className="logbook-data">
           
                 <div className="logbook-filter-title">Filter </div>
-                <div className="logbook-filter">
+                <div className="logbook-filter-wrapper"><div className="logbook-filter">
                   <div className="filter-box">
                       <div className="filter-box-title">Stase</div>
                       {/* <Select placeholder="Pilih stase"
@@ -536,7 +536,7 @@ class LogbookData extends Component{
                       {this.state.filter == "" ? <div className="logbook-filter-cancelAll-disabled">
                         Hapus Semua
                       </div> : <div className="logbook-filter-cancelAll" onClick={this.cancelFilterAll}> Hapus Semua </div>}
-                </div>
+                </div></div>
                 <div className="logbook-filter-result">
                     {/* {this.state.filter} */}
                   {this.state.filter.map((item, index) => (<div className="logbook-filter-item" ><div>{item}</div><img src={cancel} className="logbook-filter-cancel" onClick={()=>this.cancelFilter(item, index)}></img></div>))}

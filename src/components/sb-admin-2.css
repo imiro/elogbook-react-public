@@ -1284,7 +1284,12 @@ input:focus{
         flex-direction: row;
         align-items: flex-end;
         flex-wrap: nowrap;
-        overflow: scroll;
+        overflow-x: scroll;
+    }
+
+    .logbook-filter-wrapper{
+       /* See: https://stackoverflow.com/questions/6421966/css-overflow-x-visible-and-overflow-y-hidden-causing-scrollbar-issue */
+       overflow: visible;
     }
 
     #container-filter {
@@ -1680,12 +1685,13 @@ input:focus{
         /* display: none; */
         display:flex;
         flex-direction: column;
-        width: 560px;
+        max-width: 560px;
         /* height: 1364px; */
         margin-left: 24px;
         margin-top: 24px;
         padding-top:24px;
         padding-left:24px;
+        padding-right: 24px;
         padding-bottom: 24px;
         background: #FFFDFF;
         border-radius: 6px;
@@ -1713,7 +1719,7 @@ input:focus{
     }
 
     .logbook-entry-input{
-        width:326px;
+        max-width:326px;
         height:40px;
         border: 1px solid #C5C9D7;
         box-sizing: border-box;
@@ -1729,7 +1735,7 @@ input:focus{
 
     .logbook-entry-select{
         
-        width:326px;
+        max-width:326px;
         height:40px;
         box-sizing: border-box;
         border-radius: 6px;
@@ -1748,7 +1754,7 @@ input:focus{
     .logbook-entry-input option[disabled]:first-child { display: none; }
 
     .logbook-entry textarea{
-        width: 326px;
+        max-width: 326px;
         height: 80px;
         padding-left: 8px;
         border: 1px solid #C5C9D7;
@@ -1765,7 +1771,7 @@ input:focus{
     }
 
     .logbook-entry-age{
-        width:326px;
+        max-width:326px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
