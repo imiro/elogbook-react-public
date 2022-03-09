@@ -319,9 +319,10 @@ class LogbookData extends Component{
      usia: '15',
      diagnosis: 'Text',
      kompetensiDiagnosis: '4A, 4A',
-     jenisTindakan: 'Observasi',
-     jenisKeterampilan: 'Text',
-     kompetensiKeterampilan: '1, 2',
+     // jenisTindakan: 'Observasi',
+     // jenisKeterampilan: 'Text',
+     // kompetensiKeterampilan: '1, 2',
+     keterampilan: 'Apendektomi (Asistensi)',
      catatan: 'Tidak ada gejala'
   } (*/
 	if(!this.props.dictionary.stase) return [];
@@ -369,8 +370,8 @@ class LogbookData extends Component{
 		  catatan: item.catatan,
 	  }
 	  ret.diagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).diagnosis)
+                              .join(', ')
 	  ret.kompetensiDiagnosis = item.skdi_dx.map(x => this.props.dictionary.skdi_dx.find(o => o.id == x).kompetensi).join(',')
-	  ret.diagnosis = ret.diagnosis.join(', ')
 	  if(item.dx_extra)
 		ret.diagnosis += (item.skdi_dx.length ? ", " : "") + item.dx_extra.join(', ')
 
@@ -378,6 +379,9 @@ class LogbookData extends Component{
 	   ret.kompetensiKeterampilan = item.skdi_ktn.map(x => this.props.dictionary.skdi_ktn.find(o => o.id == x).kompetensi).join(',')
 	   if(item.keterampilan_extra) 
 		ret.jenisKeterampilan += (item.skdi_ktn.length ? ", " : "") + item.keterampilan_extra.join(", ") 
+          if(item.keterampilan_x)
+             ret.keterampilan_x = item.keterampilan_x.map(o => o.keterampilan).join(', ')
+             // TODO add 'level' as well, need to fetch daftar level from db
 
 	   // for editing entry to work
 	   ret.raw = item

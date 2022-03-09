@@ -191,14 +191,6 @@ const styles = theme => ({
             <div>{row.nrm}</div>
             <div className="row-detail-label">Tanggal</div>
             <div>{row.tanggal}</div>
-            <div className="row-detail-label">Inisial Pasien</div>
-            <div>{row.inisialPasien}</div>
-          </div>
-          <div className="row-detail-column">
-            <div className="row-detail-label">Jenis Kelamin</div>
-            <div>{row.jenisKelamin}</div>
-            <div className="row-detail-label">Usia</div>
-            <div>{row.usia}</div>
             <div className="row-detail-label">Stase</div>
             <div>{row.stase}</div>
           </div>
@@ -207,9 +199,16 @@ const styles = theme => ({
             <div>{row.lokasiRS}</div>
             <div className="row-detail-label">Ruangan</div>
             <div>{row.ruangan}</div>
-            <div className="row-detail-label">Diagnosis</div>
-            <div>{row.diagnosis}</div>
           </div>
+          <div className="row-detail-column">
+            <div className="row-detail-label">Inisial Pasien</div>
+            <div>{row.inisialPasien}</div>
+            <div className="row-detail-label">Jenis Kelamin</div>
+            <div>{row.jenisKelamin}</div>
+            <div className="row-detail-label">Usia</div>
+            <div>{row.usia}</div>
+          </div>
+          {/*
           <div className="row-detail-column">
             <div className="row-detail-label">Kompetensi Diagnosis</div>
             <div>{row.kompetensiDiagnosis}</div>
@@ -218,9 +217,16 @@ const styles = theme => ({
             <div className="row-detail-label">Keterampilan</div>
             <div>{row.jenisKeterampilan}</div>
           </div>
+          */}
           <div className="row-detail-column">
-            <div className="row-detail-label">Kompetensi Keterampilan</div>
-            <div>{row.kompetensiKeterampilan}</div>
+            <div className="row-detail-label">Diagnosis</div>
+            <div>{row.diagnosis}</div>
+          </div>
+          <div className="row-detail-column">
+            <div className="row-detail-label">Keterampilan</div>
+            <div>{row.keterampilan_x}</div>
+          </div>
+          <div className="row-detail-column">
             <div className="row-detail-label">Catatan</div>
             <div>{row.catatan}</div>
           </div>
@@ -235,8 +241,6 @@ const styles = theme => ({
     </TableRowDetail.Cell>
   );
   
-  
-
   const fixedCell = (props) => {
     
     const column  = props;
@@ -304,9 +308,9 @@ export default function logbookTable (props)  {
     { name: 'usia', title: 'Usia' },
     { name: 'diagnosis', title: 'Diagnosis' },
     { name: 'kompetensiDiagnosis', title: 'Kompetensi Diagnosis' },
-    { name: 'jenisTindakan', title: 'Jenis Tindakan' },
+    /*{ name: 'jenisTindakan', title: 'Jenis Tindakan' },
     { name: 'jenisKeterampilan', title: 'Jenis Keterampilan' },
-    { name: 'kompetensiKeterampilan', title: 'Kompetensi Keterampilan' },
+    { name: 'kompetensiKeterampilan', title: 'Kompetensi Keterampilan' },*/
     { name: 'catatan', title: 'Catatan' },
     { name: 'action', title: 'Action' },
   ]);
@@ -463,9 +467,9 @@ export default function logbookTable (props)  {
     { columnName: 'usia', width: 150},
     { columnName: 'diagnosis', width: 150 },
     { columnName: 'kompetensiDiagnosis', width: 170 },
-    { columnName: 'jenisTindakan', width: 150 },
+    /*{ columnName: 'jenisTindakan', width: 150 },
     { columnName: 'jenisKeterampilan', width: 150  },
-    { columnName: 'kompetensiKeterampilan', width: 170 },
+    { columnName: 'kompetensiKeterampilan', width: 170 },*/
     { columnName: 'catatan', width: 173 },
     { columnName: 'action', width: 96 },
   ]);
@@ -481,9 +485,9 @@ export default function logbookTable (props)  {
     { columnName: 'inisialPasien', sortingEnabled: false },
     { columnName: 'diagnosis', sortingEnabled: false },
     { columnName: 'kompetensiDiagnosis', sortingEnabled: false },
-    { columnName: 'jenisTindakan', sortingEnabled: false },
+    /*{ columnName: 'jenisTindakan', sortingEnabled: false },
     { columnName: 'jenisKeterampilan', sortingEnabled: false },
-    { columnName: 'kompetensiKeterampilan', sortingEnabled: false },
+    { columnName: 'kompetensiKeterampilan', sortingEnabled: false },*/
     { columnName: 'catatan', sortingEnabled: false },
     { columnName: 'action', sortingEnabled: false },
   ]);

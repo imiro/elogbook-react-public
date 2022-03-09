@@ -376,6 +376,7 @@ function KeterampilanX(props) {
       onChange("TAMBAH", {keterampilan: "", level: 1})
     }
     
+    // TODO NICE refactor style to css
     return (
       <div>
         {
@@ -390,14 +391,16 @@ function KeterampilanX(props) {
             <div style={ {display: "flex",
                           flexDirection: "row"} } >
             <select className="form-select"
-                    style={ {maxWidth: "326px"} }
+                    style={ {maxWidth: "326px", marginBottom: "16px"} }
                     value={v.level}
                     onChange={changeHandler("level",i)}>
               { Object.keys(levels).map((l,j) => (
               <option value={l} key={5*i+j}>{levels[l]}</option>
               )) }
             </select>
-            <div className='profile-update-password-cancel-button' onClick={hapus(i)} > - </div>
+            <div className='profile-update-password-cancel-button'
+                 style={ {width: "40px", borderColor: "red", color: "red"} }
+                 onClick={hapus(i)} > - </div>
             </div>
           </React.Fragment>
         })
@@ -405,7 +408,7 @@ function KeterampilanX(props) {
         <div className='profile-update-password-cancel-button' 
              onClick={tambahKeterampilan}
              style={ {
-               marginTop: "12px",
+               marginTop: "6px",
                marginBottom: "12px",
                marginLeft: 0
              } }
