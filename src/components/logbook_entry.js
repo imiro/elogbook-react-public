@@ -236,6 +236,8 @@ function LogbookEntry (props) {
       return <ErrorPlaceholder errorState={error} field={field} />
     }
 
+    // TODO validate before submit
+    // TODO clear error state upon editing
     return (<>
 	    {/*<Layout page={locationState?"Logbook / Edit Entry":"Logbook / Entry Baru"} >*/}
           <div className="navbar-divider"></div>
@@ -323,10 +325,12 @@ function ErrorPlaceholder(props) {
   const { errorState, field } = props
   // console.log('ErrorPlaceholder', errorState, field)
   if(field == 'usia') {
-    if(errorState['satuanusia'])
+    if(errorState['satuanusia']) {
       errorState['usia'] = errorState['usia'] ? 
         errorState['usia']+"\n"+errorState['satuanusia'] :
         errorState['satuanusia']
+      errorState['satuanusia'] = ''
+    }
   } else if(field == 'diagnosis') {
     if(errorState['skdi_dx'] && errorState['dx_extra'])
       errorState['diagnosis'] = "The diagnosis field is required."
