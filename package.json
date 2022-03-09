@@ -1,9 +1,9 @@
 {
-  "name": "elogbookfkui-dashboard",
-  "version": "0.1.0",
-  "description": "Elogbook Dashboard",
+  "name": "elogbookfkui",
+  "version": "0.2.0",
+  "description": "Electronic logbook for medical students. Built for FMUI",
   "author": "E-Logbook FKUI Team",
-  "homepage": "https://beta.elogbookfkui.com",
+  "homepage": "https://e-logbook.fk.ui.ac.id/beta/",
   "private": true,
   "dependencies": {
     "@devexpress/dx-react-core": "^2.7.5",
