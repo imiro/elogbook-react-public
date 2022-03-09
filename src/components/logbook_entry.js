@@ -10,6 +10,18 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import dialog from '../assets/images/logbook/dialog.png'
 
+import { colourStyles, colourStylesMulti } from './logbook_entry.styles.js'
+
+function getTodayDate() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  
+  today = yyyy + '-' + mm + '-' + dd;
+  return today
+}
+
 function LogbookEntry (props) {
   const { state: locationState } = useLocation()
   const history = useHistory()
@@ -17,7 +29,7 @@ function LogbookEntry (props) {
   const editEntry = useEditEntry()
   const [error, setError] = useState({})
 
-  const [isSearchable, setSearchable] = useState(true)
+  // BEGIN: SKDI related states
   const initSkdi = function(t) {
 	if(!locationState || !locationState.data || !locationState.data.raw)
 	  	return []
@@ -37,13 +49,17 @@ function LogbookEntry (props) {
 	  dx: initSkdi("dx"),
 	  ktn: initSkdi("ktn")
   })
-  const toggleSearchable = () => setSearchable(state => !state)
   const handleSkdiChange = (type) => {
 	return function (newValue) {
 		setSkdi(prev => ( {...skdi, [type]: newValue} ))
 	}
   }
+  // END: SKDI related states
 
+  const [isSearchable, setSearchable] = useState(true)
+  const toggleSearchable = () => setSearchable(state => !state)
+
+  // BEGIN: form values initialization
   const params = ["tanggal", "stase", "wahana", "lokasi", "nrm", "nama",
 			"gender", "usia", "satuanusia", "catatan"]
   const usingReactSelect = ["stase", "wahana", "lokasi", "gender", "satuanusia"]
@@ -53,18 +69,47 @@ function LogbookEntry (props) {
 		&& locationState.data.raw[p])
 	  init[p] = locationState.data.raw[p]
 	else
-	  init[p] = null
+	  init[p] = (p == "tanggal" ? getTodayDate() : "")
 	return init
   }, {}))
+  // END: values initialization
+
+  // BEGIN: keterampilan_x initialization
+  const [keterampilanX, setKeterampilanX] = useState(
+    // locationState ? locationState.data?.raw?.keterampilan_x : null // not enabled on CRA's babel :((
+    locationState && locationState.data && locationState.data.raw ?
+    locationState.data.raw.keterampilan_x : null
+  )
+  const handleKeterampilanXchange = function(command, options) {
+    setKeterampilanX(function(current) {
+      let newVal = []
+      if(current) newVal = JSON.parse(JSON.stringify(current)) // deep copy!!
+      switch(command) {
+        case "TAMBAH":
+          newVal.push(options)
+          break;
+        case "HAPUS":
+          newVal.splice(options.i, 1)
+          break;
+        case "EDIT":
+          let { i, k, v } = options
+          newVal[i][k] = v
+          break;
+      }
+      // console.log('onChange command options old new', command, options, current, newVal)
+      return newVal
+    })
+    // setKeterampilanX([{keterampilan: "tes", level: 2}])
+  }
+  // END: keterampilan_x
 
   const handleInputChange = function(p) {
       return function(e) {
-              let val = usingReactSelect.includes(p) ? e.value : e.target.value
-              setInputValues(current => {return {
-                      ...current,
-                      [p]: val
-              }})
-
+        let val = usingReactSelect.includes(p) ? e.value : e.target.value
+        setInputValues(current => {return {
+                ...current,
+                [p]: val
+        }})
       }
   }
 
@@ -86,6 +131,9 @@ function LogbookEntry (props) {
 		if(ktn.__isNew__) inputs.keterampilan_extra.push(ktn.value)
 		else inputs.skdi_keterampilan.push(ktn.value)
 	}
+        inputs.keterampilan_x = !keterampilanX ? [] : keterampilanX.filter(
+          function({ keterampilan, level }) { return keterampilan.length }
+        )
 	console.group('Submit clicked')
 	console.log(inputs)
 	console.groupEnd()
@@ -138,77 +186,15 @@ function LogbookEntry (props) {
            })
   }
 
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
-  
-  today = yyyy + '-' + mm + '-' + dd;
-
-  const colourStyles = {
-    control: styles => ({ ...styles, border: '1px solid #C5C9D7', borderTopLeftRadius: '6px',
-    borderBottomLeftRadius: '6px',  boxShadow: 'none', '&:hover': {
-      border: '1px solid #096D6F',
-    }}),
-    // option: styles => ({ ...styles,'&:visited': {backgroundColor:'#096D6F'}}),
-    placeholder: base => ({
-      ...base,
-      color: '#C5C9D7',
-    }),
-  }
-
-      const colourStylesMulti = {
-        control: styles => ({ ...styles, width:'326px', marginBottom:'16px', border: '1px solid #C5C9D7',  boxShadow: 'none', '&:hover': {
-          border: '1px solid #096D6F',
-      }}),
-        placeholder: base => ({
-          ...base,
-          color: '#C5C9D7',
-        }),
-        multiValue: (styles) => ({
-            ...styles,
-            // display:'flex',
-            // flexDirection:'row',
-            // flexWrap:'wrap',
-            alignItems:'center',
-            // justifyContent:'space-around',
-            backgroundColor: '#008C8F',
-            borderRadius: '16px',
-            padding:'3px 6px 3px 6px',
-            cursor: 'pointer',
-            whiteSpace: 'pre-wrap'
-        }),
-        multiValueLabel: (styles) => ({
-          ...styles,
-          color: '#FFFDFF',
-          whiteSpace: 'pre-wrap'
-        }),
-        multiValueRemove: (styles) => ({
-          ...styles,
-          // position:'absolute',
-          float:'right',
-          right:'16px',
-          // marginTop:'3px',
-          backgroundColor: '#FFFDFF',
-          color: '#008C8F',
-          borderRadius: '50%',
-          width:'24px',
-          height: '24px',
-          cursor:'pointer',
-        }),
-      };
-    
-    
-
       const { optionStase, optionRS, optionRoom } = props.options
       const optionDiagnosis = props.dictionary.skdi_dx.map(x => ({
-	      value: x.id,
-	      label: x.diagnosis
-	}))
-	const optionSkill = props.dictionary.skdi_ktn.map(x => ({
-	      value: x.id,
-	      label: x.keterampilan
-	}))
+        value: x.id,
+        label: x.diagnosis
+      }))
+      const optionSkill = props.dictionary.skdi_ktn.map(x => ({
+        value: x.id,
+        label: x.keterampilan
+      }))
 
       const optionGender = [
         { value: 'lk', label: 'Laki-laki' },
@@ -216,6 +202,7 @@ function LogbookEntry (props) {
       ]
 
       const optionTime = [
+        { value: 'hari', label: 'Hari' },
         { value: 'bulan', label: 'Bulan' },
         { value: 'tahun', label: 'Tahun' }
       ]
@@ -278,7 +265,7 @@ function LogbookEntry (props) {
             <div id="logbook-entry" className="logbook-entry">
                     <div className="logbook-entry-title">{locationState?"Edit Data Entry":"Data Entry Baru"}</div> 
                     <label>Tanggal</label>
-                    <input type="date" id="idDate" className="logbook-entry-input" defaultValue={today} name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
+                    <input type="date" id="idDate" className="logbook-entry-input" name="tanggal" value={inputValues.tanggal} onChange={handleInputChange("tanggal")} ></input> 
                     <ErrorPlaceholderWithState field="tanggal" />
                     <label>Stase</label>
                     <Select placeholder="Pilih stase" options={optionStase} isSearchable={isSearchable} className="logbook-entry-select" name="stase" value={optionStase.filter(x => x.value == inputValues.stase)} onChange={handleInputChange("stase")} styles={colourStyles} components={{ IndicatorSeparator }} />
@@ -312,11 +299,17 @@ function LogbookEntry (props) {
                     <ErrorPlaceholderWithState field="diagnosis" />
 	    {/*<label>Jenis Tindakan</label>
                     <Select placeholder="Pilih jenis tindakan"options={optionAction} className="logbook-entry-select" />*/}
+                  {/* TODO SKDI Keterampilan
                     <label>Keterampilan</label>
                     <CreatableSelect  placeholder="Pilih keterampilan"options={optionSkill} isMulti styles={colourStylesMulti} value={skdi.ktn} onChange={handleSkdiChange("ktn")} components={{ IndicatorSeparator }} />
                     <label>Tingkat kompetensi Keterampilan</label>
                     <input readOnly type="text" placeholder="Tingkat kompetensi"className="logbook-entry-input"
 	    		value={skdi.ktn.filter(({__isNew__: baru}) => !baru).map(x => props.dictionary.skdi_ktn.find(y => y.id == x.value).kompetensi).join(",")}></input>
+                  */}
+
+                    <label>Keterampilan</label>
+                    <KeterampilanX values={keterampilanX} onChange={handleKeterampilanXchange} />
+
                     <label>Catatan</label>
                     <textarea name="catatan" placeholder="Masukkan catatan pribadi"></textarea>
                   </div>
@@ -348,6 +341,73 @@ function ErrorPlaceholder(props) {
                  marginBottom: '5px'}} >
     { errorState[field] }
     </div> )
+}
+
+function KeterampilanX(props) {
+    const { values, error, onChange } = props
+    
+    const levels = {
+      1: "Observasi",
+      2: "Asistensi",
+      3: "Operator dalam Supervisi Tidak Langsung",
+      4: "Operator dalam Supervisi Langsung",
+      5: "Operator Mandiri"
+    }
+
+    const changeHandler = function(k,i) {
+      return function(e) {
+        onChange("EDIT", {i, k, v: e.target.value})
+      }
+    }
+    
+    const hapus = function(i) {
+      return function(e) {
+        e.preventDefault()
+        if(values.length < 2) return
+        onChange("HAPUS", {i})
+      }
+    }
+
+    const tambahKeterampilan = function(e) {
+      onChange("TAMBAH", {keterampilan: "", level: 1})
+    }
+    
+    return (
+      <div>
+        {
+        values && values.map(function(v,i) {
+          return <React.Fragment key={i}>
+            <input type="text" placeholder="Keterampilan"
+                   value={v.keterampilan}
+                   onChange={changeHandler("keterampilan",i)}
+                   className="logbook-entry-input"
+                   style={ {width: "100%"} }
+            />
+            <div style={ {display: "flex",
+                          flexDirection: "row"} } >
+            <select className="form-select"
+                    style={ {maxWidth: "326px"} }
+                    value={v.level}
+                    onChange={changeHandler("level",i)}>
+              { Object.keys(levels).map((l,j) => (
+              <option value={l} key={5*i+j}>{levels[l]}</option>
+              )) }
+            </select>
+            <div className='profile-update-password-cancel-button' onClick={hapus(i)} > - </div>
+            </div>
+          </React.Fragment>
+        })
+        }
+        <div className='profile-update-password-cancel-button' 
+             onClick={tambahKeterampilan}
+             style={ {
+               marginTop: "12px",
+               marginBottom: "12px",
+               marginLeft: 0
+             } }
+        >+ tambah</div>
+      </div>
+    )
 }
 
 export default (withDictionaryOptions(LogbookEntry))
