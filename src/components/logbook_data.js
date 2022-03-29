@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import MultiSelect from "react-multi-select-component";
 import LogbookTable from './logbookTable'
 import cancel from '../assets/images/logbook/cancel.png'
@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import nodata from '../assets/images/logbook/no_data.png'
+import FontAwesome from 'react-fontawesome'
+import { useXlsxExporter } from '../providers/api'
 
 class LogbookData extends Component{
 
@@ -468,6 +470,9 @@ class LogbookData extends Component{
       return (
         // <div id="logbook-nodata" className="logbook-nodata"><img src={nodata}></img></div>
         <div id="logbook-data" className="logbook-data">
+            <div>
+              <DownloadButton />
+            </div>
           
                 <div className="logbook-filter-title">Filter </div>
                 <div className="logbook-filter-wrapper"><div className="logbook-filter">
@@ -552,4 +557,31 @@ class LogbookData extends Component{
       );
     }
   }
+
+function DownloadButton(props) {
+    const xlsxExport = useXlsxExporter()
+    const [disabled, setDisabled] = useState(false)
+
+    const downloadHandler = function(e) {
+        e.preventDefault()
+        setDisabled(true)
+        xlsxExport(
+          function success(url) {
+              window.open(url, "_blank")
+              setDisabled(false)
+          },
+          function failure(err) {
+              console.error(err)
+              setDisabled(false)
+          }
+        )
+    }
+    return (
+    <button className="btn-hijau" style={{marginBottom: "16px"}}
+        disabled={disabled}
+        onClick={downloadHandler} >
+        <FontAwesome name="download" /> Unduh semua (.xlsx)
+    </button>)
+}
+
   export default LogbookData

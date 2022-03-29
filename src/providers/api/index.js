@@ -222,6 +222,21 @@ export const useEntriesCount = function() {
 	return [count, changeStase]
 }
 
+export const useXlsxExporter = function() {
+    const fwa = useFetchWithAuth()
+    return function(cbSuccess, cbFailure) {
+        fwa('/entries/download')
+        .then(function (resp) {
+            if (resp.ok) return resp.text()
+            else cbFailure(resp)
+        }).then(url => cbSuccess(api_url + url))
+        .catch(function (err) {
+            cbFailure(err)
+        })
+    }
+
+}
+
 export const useAPI = function() {
   const { token } = useAuth()
 

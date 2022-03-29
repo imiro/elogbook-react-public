@@ -1643,6 +1643,21 @@ input:focus{
         
         /* margin-left: 433px; */
     }
+    
+    .btn-hijau {
+        background-color: #008C8F;
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: Source Sans Pro;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 20px;
+        align-items: center;
+        justify-content: center;
+        color: #FFFDFF;
+        padding: 7px 12px;
+    }
 
     #logbook-save-entry{
         float:right;

@@ -38,28 +38,27 @@ class Logbook extends Component <*, State> {
     ]
    
     var popup = null;
-    if(this.props.location.state != null) {
-	if(this.props.location.state.successfulEntry) {
-                    popup = 
-		    <Popup modal open={this.state.open}>
-                      {close => (
-                        <div className="popup-new-entry" >
-                          <img src={dialog} ></img>
-                          <div className="popup-new-entry-title" >
-			      {this.props.location.state.newEntry ? 
-				      <>Entry Baru Disimpan</> :
-				      <>Entry Disimpan</>}
-                          </div>
-                          <div className="popup-new-entry-content" >
-			      {this.props.location.state.newEntry ? 
-				      <>Entry baru yang Anda masukkan telah berhasil disimpan</> :
-				      <>Entry yang Anda ubah telah berhasil disimpan</>}
-                            
-                          </div>
-                        </div>
-                      )}
-                    </Popup>
-	}
+    if(this.props.location.state && 
+       this.props.location.state.successfulEntry) {
+      popup = 
+      <Popup modal open={this.state.open}>
+        {close => (
+          <div className="popup-new-entry" >
+            <img src={dialog} ></img>
+            <div className="popup-new-entry-title" >
+                {this.props.location.state.newEntry ? 
+                        <>Entry Baru Disimpan</> :
+                        <>Entry Disimpan</>}
+            </div>
+            <div className="popup-new-entry-content" >
+                {this.props.location.state.newEntry ? 
+                        <>Entry baru yang Anda masukkan telah berhasil disimpan</> :
+                        <>Entry yang Anda ubah telah berhasil disimpan</>}
+              
+            </div>
+          </div>
+        )}
+      </Popup>
     }
 
     const colourStyles = {
@@ -126,11 +125,11 @@ class Logbook extends Component <*, State> {
                 </div>        
           <div className="logbook-box">
 	    {popup}
-	    { this.props.data ? 
+	    { this.props.data && 
 	    <LogbookData {...this.props.options}
 	    		 dictionary={this.props.dictionary}
-	    		 data={this.props.data} /> :
-		    null }
+	    		 data={this.props.data} />
+            }
           </div>
 	    {/*</Layout>*/}
 	    </>
