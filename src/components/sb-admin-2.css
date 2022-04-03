@@ -1284,12 +1284,26 @@ input:focus{
         flex-direction: row;
         align-items: flex-end;
         flex-wrap: nowrap;
-        overflow-x: scroll;
+        height: 100px;
     }
 
+    /* 
+     * Wrap .logbook-filter inside two parent divs to overcome different overflow-x and -y values
+     * See:
+     * - https://medium.com/@justicart/overflow-x-scroll-overflow-y-visible-c1a98238e002
+     * - https://stackoverflow.com/questions/6421966/css-overflow-x-visible-and-overflow-y-hidden-causing-scrollbar-issue 
+     */
     .logbook-filter-wrapper{
-       /* See: https://stackoverflow.com/questions/6421966/css-overflow-x-visible-and-overflow-y-hidden-causing-scrollbar-issue */
-       overflow: visible;
+       height: 100px;
+       position: relative;
+    }
+
+    .logbook-filter-container {
+       overflow-x: scroll;
+       position: absolute;
+       top: 0;
+       height: 650px;
+       width: 100%;
     }
 
     #container-filter {
